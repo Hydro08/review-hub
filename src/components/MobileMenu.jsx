@@ -4,14 +4,14 @@ function MobileMenu({ menuOpen, theme, setTheme }) {
   return (
     <>
       <div
-        className={`md:hidden h-[60vh] w-full flex flex-col justify-center light-b-border absolute left-0 transition-all duration-500 ${menuOpen ? "top-0" : "top-[-70vh]"}`}
+        className={`md:hidden h-[60vh] w-full flex flex-col justify-center light-b-border absolute left-0 transition-all duration-500 ${menuOpen ? "top-0" : "top-[-70vh]"} ${theme === "light" ? "light-bg" : "dark-bg"}`}
       >
         <div className="w-full h-[60%] flex justify-center items-center">
           <ul className="flex flex-col justify-center items-center gap-5">
-            <li className="light-border p-2 rounded-lg">Home</li>
-            <li className="light-border p-2 rounded-lg">About</li>
-            <li className="light-border p-2 rounded-lg">Dashboard</li>
-            <li className="light-border p-2 rounded-lg">Contact</li>
+            <li className="light-border p-2 rounded-lg font-bold">HOME</li>
+            <li className="light-border p-2 rounded-lg font-bold">ABOUT</li>
+            <li className="light-border p-2 rounded-lg font-bold">DASHBOARD</li>
+            <li className="light-border p-2 rounded-lg font-bold">CONTACT</li>
           </ul>
         </div>
         <div className="w-full h-[20%] flex justify-center items-center">

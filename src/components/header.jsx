@@ -12,7 +12,7 @@ function HeaderNav({ open, setOpen, theme }) {
         className="md:hidden w-10 h-10 light-border font-bold rounded-lg"
         onClick={handleClick}
       >
-        ≡
+        {open ? "X" : "≡"}
       </button>
 
       <ul className="hidden md:flex justify-center items-center gap-10">
