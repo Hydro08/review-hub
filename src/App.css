@@ -1,12 +1,12 @@
 .light-bg {
-  background: #d598fc;
+  background: #d1a0ee;
 }
 
-.light-border {
+.primary-border {
   border: 2px solid #c263fd;
 }
 
-.light-b-border {
+.primary-b-border {
   border-bottom: 2px solid #c263fd;
 }
 
