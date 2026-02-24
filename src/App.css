@@ -1,3 +1,11 @@
 .light-bg {
-  background: #c76dff;
+  background: #d598fc;
+}
+
+.light-border {
+  border: 2px solid #c263fd;
+}
+
+.light-b-border {
+  border-bottom: 2px solid #c263fd;
 }
