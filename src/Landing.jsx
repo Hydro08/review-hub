@@ -20,6 +20,11 @@ function App() {
     show: { opacity: 1, x: 0 },
   };
 
+  const btnVariants = {
+    popOut: { opacity: 0, scale: 0.5 },
+    popIn: { opacity: 1, scale: 1 },
+  };
+
   useEffect(() => {
     localStorage.setItem("theme", theme);
   }, [theme]);
@@ -95,9 +100,9 @@ function App() {
 
         <div className="flex h-[17vh] w-full flex-col items-center justify-center gap-2 md:flex-row">
           <motion.button
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="show"
+            variants={btnVariants}
+            initial="popOut"
+            whileInView="popIn"
             transition={{ duration: 0.2 }}
             onClick={testClick}
             aria-label="Get Started with Review Hub"
@@ -110,9 +115,9 @@ function App() {
             Get Started
           </motion.button>
           <motion.button
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="show"
+            variants={btnVariants}
+            initial="popOut"
+            whileInView="popIn"
             transition={{ duration: 0.2 }}
             onClick={testClick}
             aria-label="Demo with Review Hub"

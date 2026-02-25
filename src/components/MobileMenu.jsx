@@ -1,31 +1,33 @@
 import lightModeSvg from "../assets/light-mode.svg";
 import darkModeSvg from "../assets/dark-mode.svg";
+import { motion } from "framer-motion";
+import { cn } from "../lib/cn";
 function MobileMenu({ menuOpen, theme, setTheme }) {
   return (
     <>
       <div
-        className={`md:hidden h-[60vh] w-full flex flex-col justify-center primary-b-border fixed left-0 transition-all duration-300 ease-linear ${menuOpen ? "top-[10vh]" : "top-[-70vh]"} ${theme === "light" ? "light-bg" : "dark-bg"}`}
+        className={`primary-b-border fixed left-0 flex h-[60vh] w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden ${menuOpen ? "top-[10vh]" : "top-[-70vh]"} ${theme === "light" ? "light-bg" : "dark-bg"}`}
       >
-        <div className="w-full h-[60%] flex justify-center items-center">
-          <ul className="flex flex-col justify-center items-center gap-5">
-            <li className="primary-border py-2 px-4 rounded-lg font-bold">
+        <div className="flex h-[60%] w-full items-center justify-center">
+          <ul className="flex flex-col items-center justify-center gap-5">
+            <li className="primary-border rounded-lg px-4 py-2 font-bold">
               HOME
             </li>
-            <li className="primary-border py-2 px-4 rounded-lg font-bold">
+            <li className="primary-border rounded-lg px-4 py-2 font-bold">
               ABOUT
             </li>
-            <li className="primary-border py-2 px-4 rounded-lg font-bold">
+            <li className="primary-border rounded-lg px-4 py-2 font-bold">
               DASHBOARD
             </li>
-            <li className="primary-border py-2 px-4 rounded-lg font-bold">
+            <li className="primary-border rounded-lg px-4 py-2 font-bold">
               CONTACT
             </li>
           </ul>
         </div>
-        <div className="w-full h-[20%] flex justify-center items-center">
+        <div className="flex h-[20%] w-full items-center justify-center">
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className="w-30 h-15 primary-border rounded-xl font-bold flex justify-center items-center gap-1"
+            className="primary-border flex h-15 w-30 items-center justify-center gap-1 rounded-xl font-bold"
           >
             <img
               src={theme === "light" ? lightModeSvg : darkModeSvg}
@@ -34,12 +36,12 @@ function MobileMenu({ menuOpen, theme, setTheme }) {
             {theme === "light" ? "Light" : "Dark"}
           </button>
         </div>
-        <div className="w-full h-[20%] flex justify-center items-center gap-10">
-          <button className="w-30 h-15 primary-border rounded-xl font-bold">
-            Login
+        <div className="flex h-[20%] w-full items-center justify-center gap-10">
+          <button className="primary-border h-15 w-30 rounded-xl font-bold">
+            Log In
           </button>
-          <button className="w-30 h-15 primary-border rounded-xl font-bold">
-            Signup
+          <button className="primary-border h-15 w-30 rounded-xl font-bold">
+            Sign Up
           </button>
         </div>
       </div>

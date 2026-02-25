@@ -6,25 +6,25 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
   };
   return (
     <div
-      className={`w-full h-[10vh] primary-b-border flex justify-between items-center p-4 sticky top-0 left-0 z-10 transition-all duration-300 ease-linear ${theme === "light" ? "light-bg" : "dark-bg"}`}
+      className={`primary-b-border sticky top-0 left-0 z-10 flex h-[10vh] w-full items-center justify-between p-4 transition-all duration-300 ease-linear ${theme === "light" ? "light-bg" : "dark-bg"}`}
     >
       <div className="w-[60%]">
-        <h1 className="font-bold text-2xl tracking-tight">Review Hub</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Review Hub</h1>
       </div>
 
       <button
-        className="md:hidden w-10 h-10 primary-border font-bold rounded-lg"
+        className="primary-border h-10 w-10 rounded-lg font-bold md:hidden"
         onClick={handleClick}
       >
         {open ? "X" : "≡"}
       </button>
 
-      <div className="hidden md:flex justify-center items-center gap-5">
+      <div className="hidden items-center justify-center gap-5 md:flex">
         <button
           onClick={() => {
             setTheme(theme === "light" ? "dark" : "light");
           }}
-          className="w-23 h-10 primary-border rounded-xl font-semibold flex justify-center items-center gap-1 cursor-pointer"
+          className="primary-border flex h-10 w-23 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold"
         >
           <img
             src={theme === "light" ? lightModeSvg : darkModeSvg}
@@ -32,20 +32,24 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
           />
           {theme === "light" ? "light" : "dark"}
         </button>
-        <ul className="flex justify-center items-center gap-5">
-          <li className="primary-border rounded-xl py-2 px-3 font-semibold cursor-pointer">
+        <ul className="flex items-center justify-center gap-5">
+          <li className="primary-border cursor-pointer rounded-xl px-3 py-2 font-semibold">
             Home
           </li>
-          <li className="primary-border rounded-xl py-2 px-3 font-semibold cursor-pointer">
+          <li className="primary-border cursor-pointer rounded-xl px-3 py-2 font-semibold">
             About
           </li>
-          <li className="primary-border rounded-xl py-2 px-3 font-semibold cursor-pointer">
+          <li className="primary-border cursor-pointer rounded-xl px-3 py-2 font-semibold">
             Dashboard
           </li>
-          <li className="primary-border rounded-xl py-2 px-3 font-semibold cursor-pointer">
+          <li className="primary-border cursor-pointer rounded-xl px-3 py-2 font-semibold">
             Contact
           </li>
         </ul>
+        <div className="">
+          <button>Log In</button>
+          <button>Sign Up</button>
+        </div>
       </div>
     </div>
   );
