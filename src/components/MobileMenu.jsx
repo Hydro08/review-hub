@@ -4,7 +4,7 @@ function MobileMenu({ menuOpen, theme, setTheme }) {
   return (
     <>
       <div
-        className={`md:hidden h-[60vh] w-full flex flex-col justify-center primary-b-border absolute left-0 transition-all duration-300 ease-linear ${menuOpen ? "top-0" : "top-[-70vh]"} ${theme === "light" ? "light-bg" : "dark-bg"}`}
+        className={`md:hidden h-[60vh] w-full flex flex-col justify-center primary-b-border fixed left-0 transition-all duration-300 ease-linear ${menuOpen ? "top-[10vh]" : "top-[-70vh]"} ${theme === "light" ? "light-bg" : "dark-bg"}`}
       >
         <div className="w-full h-[60%] flex justify-center items-center">
           <ul className="flex flex-col justify-center items-center gap-5">
