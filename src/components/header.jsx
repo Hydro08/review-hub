@@ -1,14 +1,35 @@
 import lightModeSvg from "../assets/light-mode.svg";
 import darkModeSvg from "../assets/dark-mode.svg";
+import { cn } from "../lib/cn";
+import { useNavigate } from "react-router-dom";
 function HeaderNav({ open, setOpen, theme, setTheme }) {
+  const navigate = useNavigate();
+
+  const scrollToSection = (id) => {
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+  };
+
+  const liBase =
+    "primary-border cursor-pointer rounded-xl px-3 py-2 text-base font-semibold transition-all duration-300 ease-in md:text-sm lg:text-lg hover:shadow-md hover:shadow-white";
+
+  const authBase =
+    "primary-border rounded-xl px-3 py-1.5 lg:py-2.5 font-bold transition-all duration-300 ease-in hover:shadow-md hover:shadow-white cursor-pointer";
+
+  const shadowTheme =
+    theme === "light" ? "hover:shadow-black" : "hover:shadow-white";
+
   const handleClick = () => {
     setOpen(!open);
   };
+
   return (
     <div
-      className={`primary-b-border sticky top-0 left-0 z-10 flex h-[10vh] w-full items-center justify-between p-4 transition-all duration-300 ease-linear ${theme === "light" ? "light-bg" : "dark-bg"}`}
+      className={cn(
+        "primary-b-border sticky top-0 left-0 z-10 flex h-[10vh] w-full items-center justify-between px-2 transition-all duration-300 ease-in",
+        theme === "light" ? "light-bg" : "dark-bg",
+      )}
     >
-      <div className="w-[60%]">
+      <div>
         <h1 className="text-2xl font-bold tracking-tight">Review Hub</h1>
       </div>
 
@@ -19,36 +40,66 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
         {open ? "X" : "≡"}
       </button>
 
-      <div className="hidden items-center justify-center gap-5 md:flex">
+      <div className="hidden items-center justify-center gap-1 md:flex">
         <button
           onClick={() => {
             setTheme(theme === "light" ? "dark" : "light");
           }}
-          className="primary-border flex h-10 w-23 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold"
+          className={cn(
+            "primary-border flex h-10 w-14 cursor-pointer items-center justify-center gap-1 rounded-xl py-1 font-semibold transition-all duration-300 ease-in hover:shadow-md md:text-sm lg:py-5.5",
+            shadowTheme,
+          )}
         >
           <img
             src={theme === "light" ? lightModeSvg : darkModeSvg}
             alt="light-mode"
           />
-          {theme === "light" ? "light" : "dark"}
+          {theme === "light" ? "☀️" : "🌙"}
         </button>
-        <ul className="flex items-center justify-center gap-5">
-          <li className="primary-border cursor-pointer rounded-xl px-3 py-2 font-semibold">
+        <ul className="flex items-center justify-center gap-1">
+          <li
+            onClick={() => {
+              scrollToSection("homeSect");
+            }}
+            className={cn(liBase, shadowTheme)}
+          >
             Home
           </li>
-          <li className="primary-border cursor-pointer rounded-xl px-3 py-2 font-semibold">
+          <li
+            onClick={() => {
+              scrollToSection("aboutSect");
+            }}
+            className={cn(liBase, shadowTheme)}
+          >
             About
           </li>
-          <li className="primary-border cursor-pointer rounded-xl px-3 py-2 font-semibold">
+          <li
+            onClick={() => {
+              scrollToSection("dashboardSect");
+            }}
+            className={cn(liBase, shadowTheme)}
+          >
             Dashboard
           </li>
-          <li className="primary-border cursor-pointer rounded-xl px-3 py-2 font-semibold">
+          <li
+            onClick={() => {
+              scrollToSection("contactSect");
+            }}
+            className={cn(liBase, shadowTheme)}
+          >
             Contact
           </li>
         </ul>
-        <div className="">
-          <button>Log In</button>
-          <button>Sign Up</button>
+        <div className="flex items-center justify-center gap-1">
+          <button
+            onClick={() => {
+              navigate("/login");
+            }}
+            className={cn(authBase, shadowTheme)}
+          >
+            Log In
+          </button>
+          <button className={cn(authBase, shadowTheme)}>Sign Up</button>
         </div>
       </div>
     </div>

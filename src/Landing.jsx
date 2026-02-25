@@ -3,18 +3,21 @@ import { motion } from "framer-motion";
 import { cn } from "./lib/cn";
 import { HeaderNav } from "./components/header";
 import { MobileMenu } from "./components/MobileMenu";
+import { useTheme } from "./context/ThemeContext";
+
 import "./App.css";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "light";
-  });
+  const { theme, setTheme } = useTheme();
+
   const testClick = () => {
     alert("test");
   };
+
   const buttonBase =
-    "h-12 w-40 rounded-lg font-bold transition-all duration-300 ease-linear sm:w-60 md:w-40 md:cursor-pointer";
+    "h-12 w-40 rounded-lg font-bold transition-all duration-300 ease-in sm:w-60 md:w-40 md:cursor-pointer";
+
   const sectionVariants = {
     hidden: { opacity: 0, x: -300 },
     show: { opacity: 1, x: 0 },
@@ -35,7 +38,10 @@ function App() {
 
   return (
     <div
-      className={`relative flex min-h-screen w-full flex-col items-center justify-center ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"} `}
+      className={cn(
+        "relative flex min-h-screen w-full flex-col items-center justify-center",
+        theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
+      )}
     >
       <HeaderNav
         open={menuOpen}
@@ -45,12 +51,18 @@ function App() {
       />
 
       <section
+        id="homeSect"
         className={cn(
-          "relative flex h-[90vh] w-full flex-col items-center justify-center gap-2 px-2 text-center transition-all duration-200 ease-linear md:px-10",
+          "relative flex h-[90vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-2 px-2 text-center transition-all duration-200 ease-in md:px-10",
           theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
         )}
       >
-        <MobileMenu menuOpen={menuOpen} theme={theme} setTheme={setTheme} />
+        <MobileMenu
+          menuOpen={menuOpen}
+          setOpen={setMenuOpen}
+          theme={theme}
+          setTheme={setTheme}
+        />
 
         <motion.h1
           variants={sectionVariants}
@@ -121,7 +133,11 @@ function App() {
             transition={{ duration: 0.2 }}
             onClick={testClick}
             aria-label="Demo with Review Hub"
-            className={cn(buttonBase, "primary-border opacity-80")}
+            className={cn(
+              buttonBase,
+              "primary-border opacity-80",
+              menuOpen ? "pointer-events-none" : "pointer-events-auto",
+            )}
           >
             Try Demo
           </motion.button>
@@ -138,9 +154,22 @@ function App() {
         </motion.p>
       </section>
       <section
-        className={`flex h-[90vh] w-full transition-all duration-300 ease-linear ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"}`}
+        id="aboutSect"
+        className={`flex h-[90vh] w-full scroll-mt-[10vh] transition-all duration-300 ease-in ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"}`}
       >
         <h1>Test Two</h1>
+      </section>
+      <section
+        id="dashboardSect"
+        className={`flex h-[90vh] w-full scroll-mt-[10vh] transition-all duration-300 ease-in ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"}`}
+      >
+        <h1>Test Three</h1>
+      </section>
+      <section
+        id="contactSect"
+        className={`flex h-[90vh] w-full scroll-mt-[10vh] transition-all duration-300 ease-in ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"}`}
+      >
+        <h1>Test Four</h1>
       </section>
     </div>
   );
