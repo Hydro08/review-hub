@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./Landing";
 import LoginPage from "./pages/Login";
+
 import "./index.css";
 import { ThemeProvider } from "./context/ThemeContext";
 
