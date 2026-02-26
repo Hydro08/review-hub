@@ -37,7 +37,7 @@ function App() {
   }, [menuOpen]);
 
   return (
-    <div
+    <main
       className={cn(
         "relative flex min-h-screen w-full flex-col items-center justify-center",
         theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
@@ -50,67 +50,70 @@ function App() {
         setTheme={setTheme}
       />
 
+      <MobileMenu
+        menuOpen={menuOpen}
+        setOpen={setMenuOpen}
+        theme={theme}
+        setTheme={setTheme}
+      />
       <section
         id="homeSect"
         className={cn(
-          "relative flex h-[90vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-2 px-2 text-center transition-all duration-200 ease-in md:px-10",
+          "relative flex h-[100vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-2 text-center transition-all duration-200 ease-in",
           theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
         )}
       >
-        <MobileMenu
-          menuOpen={menuOpen}
-          setOpen={setMenuOpen}
-          theme={theme}
-          setTheme={setTheme}
-        />
+        <div className="flex h-[10%] w-full items-center justify-center">
+          <motion.h1
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className="text-3xl font-bold tracking-tight md:text-6xl"
+          >
+            Learn It. Keep It.
+          </motion.h1>
+        </div>
 
-        <motion.h1
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="show"
-          transition={{ duration: 0.5 }}
-          className="mb-5 text-3xl font-bold tracking-tight md:text-6xl"
-        >
-          Learn It. Keep It.
-        </motion.h1>
+        <div className="flex h-[40%] w-full flex-col items-center justify-center gap-2">
+          <motion.p
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className="text-sm font-bold"
+          >
+            Stop re-reading and wasting hours on notes that never stick. With
+            interactive flashcards designed for active recall and spaced
+            repetition, learning becomes faster, easier, and more effective.
+          </motion.p>
 
-        <motion.p
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="show"
-          transition={{ duration: 0.5 }}
-          className="font-bold"
-        >
-          Stop re-reading and wasting hours on notes that never stick. With
-          interactive flashcards designed for active recall and spaced
-          repetition, learning becomes faster, easier, and more effective.
-        </motion.p>
+          <motion.p
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className="text-sm font-bold"
+          >
+            Turn your lessons into bite-sized cards that challenge your memory,
+            not your patience. Review smarter, track your progress, and actually
+            remember what you study—whether it's for exams, skills, or daily
+            learning.
+          </motion.p>
 
-        <motion.p
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="show"
-          transition={{ duration: 0.5 }}
-          className="font-bold"
-        >
-          Turn your lessons into bite-sized cards that challenge your memory,
-          not your patience. Review smarter, track your progress, and actually
-          remember what you study—whether it's for exams, skills, or daily
-          learning.
-        </motion.p>
+          <motion.p
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className="text-sm font-bold"
+          >
+            Study less. Retain more. Because learning shouldn't feel like
+            starting from zero every time.
+          </motion.p>
+        </div>
 
-        <motion.p
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="show"
-          transition={{ duration: 0.5 }}
-          className="font-bold"
-        >
-          Study less. Retain more. Because learning shouldn't feel like starting
-          from zero every time.
-        </motion.p>
-
-        <div className="flex h-[17vh] w-full flex-col items-center justify-center gap-2 md:flex-row">
+        <div className="flex h-[30%] w-full flex-col items-center justify-center gap-2 md:flex-row">
           <motion.button
             variants={btnVariants}
             initial="popOut"
@@ -143,15 +146,17 @@ function App() {
           </motion.button>
         </div>
 
-        <motion.p
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="show"
-          transition={{ duration: 0.5 }}
-          className="text-sm font-bold"
-        >
-          No credit card required. Learn at your own pace.
-        </motion.p>
+        <div className="h-[20%] w-full">
+          <motion.p
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className="text-sm font-bold"
+          >
+            No credit card required. Learn at your own pace.
+          </motion.p>
+        </div>
       </section>
       <section
         id="aboutSect"
@@ -171,7 +176,7 @@ function App() {
       >
         <h1>Test Four</h1>
       </section>
-    </div>
+    </main>
   );
 }
 

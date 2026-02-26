@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { cn } from "../lib/cn";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
   const { theme } = useTheme();
   const themeBg =
     theme === "light" ? "light-bg text-black" : "dark-bg text-white";
@@ -28,7 +31,7 @@ function LoginPage() {
         <form className="flex h-full w-full flex-col items-center justify-center">
           <div className="flex h-[10%] w-full flex-col items-center justify-center">
             <h2 className="text-3xl font-bold">Log In</h2>
-            <p className="text-center">
+            <p className="text-center font-semibold">
               Welcome back! Please sign in to continue.
             </p>
           </div>
@@ -52,17 +55,21 @@ function LoginPage() {
             </label>
             <div className="flex items-center gap-2">
               <input
+                onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
                 placeholder="Input Password"
                 className="primary-border w-[85%] rounded-xl p-2 font-bold lg:w-[95%]"
               />
               <button
+                onClick={() => setShowPassword(!showPassword)}
                 type="button"
                 className="primary-border h-10 w-10 rounded-lg"
+                aria-label={showPassword ? "Hide Password" : "Show Password"}
               >
-                Eye
+                {showPassword ? "closeeye" : "eye"}
               </button>
             </div>
           </fieldset>

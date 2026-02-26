@@ -16,7 +16,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
   return (
     <>
       <div
-        className={`primary-b-b order fixed left-0 z-10 flex h-[60vh] w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden ${menuOpen ? "top-[10vh]" : "top-[-70vh]"} ${theme === "light" ? "light-bg" : "dark-bg"}`}
+        className={`primary-b-border fixed left-0 z-10 flex h-[60vh] w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden ${menuOpen ? "top-[10vh]" : "top-[-70vh]"} ${theme === "light" ? "light-bg" : "dark-bg"}`}
       >
         <div className="flex h-[60%] w-full items-center justify-center">
           <ul className="flex flex-col items-center justify-center gap-5">
@@ -72,7 +72,10 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
         </div>
         <div className="flex h-[20%] w-full items-center justify-center gap-10">
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => {
+              navigate("/login");
+              setOpenHandle();
+            }}
             className="primary-border h-15 w-30 rounded-xl font-bold"
           >
             Log In
