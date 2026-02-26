@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "./lib/cn";
-import { HeaderNav } from "./components/header";
+import { HeaderNav } from "./components/Header";
 import { MobileMenu } from "./components/MobileMenu";
 import { useTheme } from "./context/ThemeContext";
 
