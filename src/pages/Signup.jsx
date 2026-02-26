@@ -3,85 +3,67 @@ import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { cn } from "../lib/cn";
 
-import lightModeSvg from "../assets/light-mode.svg";
-import darkModeSvg from "../assets/dark-mode.svg";
 import lightVisiSvg from "../assets/light-visi.svg";
 import darkVisiSvg from "../assets/dark-visi.svg";
 import lightVisiHideSvg from "../assets/light-visi-hide.svg";
 import darkVisiHideSvg from "../assets/dark-visi-hide.svg";
 
-function LoginPage() {
+function SignupPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfPass, setShowConfPass] = useState(false);
   const [password, setPassword] = useState("");
-  const { theme, setTheme } = useTheme();
+  const [confPassword, setConfPassword] = useState("");
+  const { theme } = useTheme();
   const themeBg =
     theme === "light" ? "light-bg text-black" : "dark-bg text-white";
 
-  const loginClick = () => {
-    alert("Under Development pa bro!!!");
+  const signupClick = () => {
+    alert("Under Development Pa bro!!!");
   };
 
   return (
-    <main
-      className={cn(
-        "flex h-screen w-screen flex-col items-center justify-center",
-        themeBg,
-      )}
-    >
+    <main className={cn("min-h-screen w-full", themeBg)}>
       <header className="primary-b-border flex h-[10vh] w-full items-center justify-center">
-        <div className="flex h-full w-[60%] items-center justify-center">
-          <h1
-            onClick={() => navigate("/")}
-            className="cursor-pointer text-3xl font-bold tracking-wide"
-          >
-            Review Hub
-          </h1>
-        </div>
-        <div className="flex h-full w-[40%] items-center justify-end gap-10 px-6">
-          <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className={cn(
-              "primary-border flex h-10 w-16 items-center justify-center gap-1 rounded-lg font-bold",
-              "cursor-auto md:cursor-pointer",
-            )}
-          >
-            <img
-              src={theme === "light" ? lightModeSvg : darkModeSvg}
-              alt="light-mode"
-            />
-            {theme === "light" ? "☀️" : "🌙"}
-          </button>
-
-          <button
-            onClick={() => navigate("/")}
-            className={cn(
-              "primary-border h-10 w-10 rounded-lg bg-red-700 font-bold",
-            )}
-          >
-            X
-          </button>
-        </div>
+        <h1
+          onClick={() => navigate("/")}
+          className="cursor-pointer text-3xl font-bold tracking-wide"
+        >
+          Review Hub
+        </h1>
       </header>
-
-      <section className="primary-b-border flex h-[80vh] w-full items-center justify-center p-4">
+      <section className="primary-b-border flex h-[100vh] w-full items-center justify-center p-4">
         <form className="flex h-full w-full flex-col items-center justify-center">
           <div className="flex h-[10%] w-full flex-col items-center justify-center">
-            <h2 className="text-3xl font-bold">Log In</h2>
+            <h2 className="text-3xl font-bold">Sign Up</h2>
             <p className="text-center font-semibold">
-              Welcome back! Please sign in to continue.
+              Join us today and start your journey
             </p>
           </div>
 
           <fieldset className="flex h-[25%] w-full flex-col justify-center gap-2 border-none">
             <label htmlFor="username" className="text-lg font-bold">
-              Username / Email
+              Username
             </label>
             <input
               id="username"
               name="username"
               type="text"
-              placeholder="Input Username or Email"
+              placeholder="Input Username"
+              className="primary-border w-[90%] rounded-xl p-2 font-bold lg:w-full"
+              required
+            />
+          </fieldset>
+
+          <fieldset className="flex h-[25%] w-full flex-col justify-center gap-2 border-none">
+            <label htmlFor="email" className="text-lg font-bold">
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Input Email"
               className="primary-border w-[90%] rounded-xl p-2 font-bold lg:w-full"
               required
             />
@@ -121,47 +103,69 @@ function LoginPage() {
                         ? lightVisiSvg
                         : lightVisiHideSvg
                   }
-                  alt=""
+                  alt={showPassword ? "Hide password" : "Show password"}
                 />
               </button>
             </div>
           </fieldset>
 
-          <div
-            className={cn(
-              "mb-5 flex h-[10%] w-full items-center justify-start gap-2",
-            )}
-          >
-            <input
-              id="remember"
-              type="checkbox"
-              name="remember"
-              className={cn("h-5 w-5", "cursor-auto md:cursor-pointer")}
-              required
-            />
-            <label
-              htmlFor="remember"
-              className={cn("font-bold", "cursor-auto md:cursor-pointer")}
-            >
-              Remember Me
+          <fieldset className="flex h-[25%] w-full flex-col justify-center gap-2 border-none">
+            <label htmlFor="confirm-password" className="text-lg font-bold">
+              Confirm Password
             </label>
-          </div>
+            <div className="flex items-center gap-2">
+              <input
+                onChange={(e) => setConfPassword(e.target.value)}
+                id="confirm-password"
+                name="confirm-password"
+                type={showConfPass ? "text" : "password"}
+                value={confPassword}
+                placeholder="Confirm Password"
+                className="primary-border w-[85%] rounded-xl p-2 font-bold lg:w-[95%]"
+                required
+              />
+              <button
+                onClick={() => setShowConfPass(!showConfPass)}
+                type="button"
+                className={cn(
+                  "primary-border flex h-10 w-10 items-center justify-center rounded-lg",
+                  "cursor-auto md:cursor-pointer",
+                )}
+                aria-label={
+                  showPassword
+                    ? "Hide Confirm Password"
+                    : "Show Confirm Password"
+                }
+              >
+                <img
+                  src={
+                    theme === "dark"
+                      ? !showConfPass
+                        ? darkVisiSvg
+                        : darkVisiHideSvg
+                      : !showConfPass
+                        ? lightVisiSvg
+                        : lightVisiHideSvg
+                  }
+                  alt={
+                    showConfPass
+                      ? "Hide confirm password"
+                      : "Show confirm password"
+                  }
+                />
+              </button>
+            </div>
+          </fieldset>
 
           <div className="flex h-[10%] items-center justify-center">
-            <a href="/forgot-password" className="text-lg font-bold underline">
-              Forgot Password
-            </a>
-          </div>
-
-          <div className="flex h-[10%] items-center justify-center">
-            <a href="/signup" className="text-lg font-bold underline">
-              Don't have an account?
+            <a href="/login" className="text-lg font-bold underline">
+              Already have an account?
             </a>
           </div>
 
           <div className="flex h-[10%] items-center justify-center">
             <button
-              onClick={() => loginClick()}
+              onClick={() => signupClick()}
               type="submit"
               className={cn(
                 "primary-border w-30 rounded-lg p-2 font-bold",
@@ -169,12 +173,11 @@ function LoginPage() {
                 "md:w-50",
               )}
             >
-              Log In
+              Sign Up
             </button>
           </div>
         </form>
       </section>
-
       <footer className="flex h-[10vh] w-full items-center justify-center font-bold">
         <p>
           &copy; {new Date().getFullYear()} Review Hub. All rights reserved.
@@ -184,4 +187,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignupPage;

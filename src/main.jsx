@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./Landing";
 import LoginPage from "./pages/Login";
+import SignupPage from "./pages/Signup";
 
 import "./index.css";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")).render(
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

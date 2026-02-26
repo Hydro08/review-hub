@@ -80,7 +80,13 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
           >
             Log In
           </button>
-          <button className="primary-border h-15 w-30 rounded-xl font-bold">
+          <button
+            onClick={() => {
+              navigate("./signup");
+              setOpenHandle();
+            }}
+            className="primary-border h-15 w-30 rounded-xl font-bold"
+          >
             Sign Up
           </button>
         </div>
