@@ -3,6 +3,11 @@ import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { cn } from "../lib/cn";
 
+import lightVisiSvg from "../assets/light-visi.svg";
+import darkVisiSvg from "../assets/dark-visi.svg";
+import lightVisiHideSvg from "../assets/light-visi-hide.svg";
+import darkVisiHideSvg from "../assets/dark-visi-hide.svg";
+
 function LoginPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +49,7 @@ function LoginPage() {
               id="username"
               name="username"
               type="text"
-              placeholder="Input Username"
+              placeholder="Input Username or Email"
               className="primary-border w-[90%] rounded-xl p-2 font-bold lg:w-full"
             />
           </fieldset>
@@ -66,17 +71,43 @@ function LoginPage() {
               <button
                 onClick={() => setShowPassword(!showPassword)}
                 type="button"
-                className="primary-border h-10 w-10 rounded-lg"
+                className={cn(
+                  "primary-border flex h-10 w-10 items-center justify-center rounded-lg",
+                  "cursor-auto md:cursor-pointer",
+                )}
                 aria-label={showPassword ? "Hide Password" : "Show Password"}
               >
-                {showPassword ? "closeeye" : "eye"}
+                <img
+                  src={
+                    theme === "dark"
+                      ? !showPassword
+                        ? darkVisiSvg
+                        : darkVisiHideSvg
+                      : !showPassword
+                        ? lightVisiSvg
+                        : lightVisiHideSvg
+                  }
+                  alt=""
+                />
               </button>
             </div>
           </fieldset>
 
-          <div className="mb-5 flex h-[10%] w-full items-center justify-start gap-2 md:cursor-pointer">
-            <input id="remember" type="checkbox" name="remember" />
-            <label htmlFor="remember" className="font-bold">
+          <div
+            className={cn(
+              "mb-5 flex h-[10%] w-full items-center justify-start gap-2",
+            )}
+          >
+            <input
+              id="remember"
+              type="checkbox"
+              name="remember"
+              className={cn("h-5 w-5", "cursor-auto md:cursor-pointer")}
+            />
+            <label
+              htmlFor="remember"
+              className={cn("font-bold", "cursor-auto md:cursor-pointer")}
+            >
               Remember Me
             </label>
           </div>
