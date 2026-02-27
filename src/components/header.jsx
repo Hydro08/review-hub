@@ -2,6 +2,7 @@ import lightModeSvg from "../assets/light-mode.svg";
 import darkModeSvg from "../assets/dark-mode.svg";
 import { cn } from "../lib/cn";
 import { useNavigate } from "react-router-dom";
+
 function HeaderNav({ open, setOpen, theme, setTheme }) {
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
   };
 
   return (
-    <div
+    <header
       className={cn(
         "primary-b-border sticky top-0 left-0 z-10 flex h-[10vh] w-full items-center justify-between px-2 transition-all duration-300 ease-in",
         theme === "light" ? "light-bg" : "dark-bg",
@@ -102,7 +103,7 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
           <button className={cn(authBase, shadowTheme)}>Sign Up</button>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 

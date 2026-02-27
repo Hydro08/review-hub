@@ -17,6 +17,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const { theme, setTheme } = useTheme();
   const themeBg =
     theme === "light" ? "light-bg text-black" : "dark-bg text-white";
@@ -48,6 +49,7 @@ function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({
       email: loginEmail,
       password,
+      options: { persistSession: rememberMe },
     });
 
     setIsLoading(false);
@@ -195,6 +197,8 @@ function LoginPage() {
             <input
               id="remember"
               type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
               name="remember"
               className={cn("h-5 w-5", "cursor-auto md:cursor-pointer")}
               required

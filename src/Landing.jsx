@@ -16,7 +16,7 @@ function App() {
   };
 
   const buttonBase =
-    "h-12 w-40 rounded-lg font-bold transition-all duration-300 ease-in sm:w-60 md:w-40 md:cursor-pointer";
+    "h-12 rounded-lg primary-border opacity-80 font-bold transition-all duration-300 ease-in ";
 
   const sectionVariants = {
     hidden: { opacity: 0, x: -300 },
@@ -140,7 +140,7 @@ function App() {
             aria-label="Get Started with Review Hub"
             className={cn(
               buttonBase,
-              theme === "light" ? "dark-bg text-white" : "light-bg",
+              "w-40 sm:w-60 md:w-40 md:cursor-pointer",
               menuOpen ? "pointer-events-none" : "pointer-events-auto",
             )}
           >
@@ -155,7 +155,7 @@ function App() {
             aria-label="Demo with Review Hub"
             className={cn(
               buttonBase,
-              "primary-border opacity-80",
+              "w-40 sm:w-60 md:w-40 md:cursor-pointer",
               menuOpen ? "pointer-events-none" : "pointer-events-auto",
             )}
           >
