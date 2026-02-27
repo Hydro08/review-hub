@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { cn } from "../lib/cn";
 
 import supabase from "../lib/supabase";
@@ -16,6 +16,10 @@ function SignupPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfPass, setShowConfPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [canResend, setCanResend] = useState(true);
+  const [resendError, setResendError] = useState("");
+  const [countDown, setCountDown] = useState(0);
   const { theme, setTheme } = useTheme();
   const themeBg =
     theme === "light" ? "light-bg text-black" : "dark-bg text-white";
@@ -24,27 +28,49 @@ function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const [otpCode, setOtpCode] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
 
   const signupHandle = async (e) => {
     e.preventDefault();
+
+    if (passwordHandle()) return;
+
+    setIsLoading(true);
 
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: {
-          username,
-        },
+        data: { username },
       },
     });
 
     if (error) {
-      console.log(error.message);
+      setIsLoading(false);
+      alert(error.message);
       return;
     }
 
+    const { error: profileError } = await supabase.from("profiles").insert({
+      id: data.user.id,
+      username,
+      email,
+    });
+
+    if (profileError) {
+      console.log("Profile error:", profileError.message);
+    }
+
+    setIsLoading(false);
     setShowOtpModal(true);
+  };
+
+  const passwordHandle = () => {
+    if (password !== confPassword) {
+      alert("Password doesn't match");
+      return true;
+    }
+    return false;
   };
 
   const handleVerify = async () => {
@@ -55,15 +81,50 @@ function SignupPage() {
     });
 
     if (error) {
-      console.log(error.message);
+      alert(error.message);
       return;
     }
 
-    navigate("/home");
+    navigate("/login");
   };
 
-  const signupClick = () => {
-    alert("Under Development Pa bro!!!");
+  const resendOtp = async () => {
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email,
+    });
+
+    if (error) {
+      setResendError("For security purposes, you can only request this after ");
+      setCountDown(60);
+
+      const interval = setInterval(() => {
+        setCountDown((prev) => {
+          if (prev === 1) {
+            clearInterval(interval);
+            setResendError("");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return;
+    }
+
+    setCanResend(false);
+    setResendError("");
+    setCountDown(60);
+
+    const interval = setInterval(() => {
+      setCountDown((prev) => {
+        if (prev === 1) {
+          clearInterval(interval);
+          setCanResend(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
 
   const [showOtpModal, setShowOtpModal] = useState(false);
@@ -264,14 +325,13 @@ function SignupPage() {
           </fieldset>
 
           <div className="flex h-[10%] items-center justify-center">
-            <a href="/login" className="text-lg font-bold underline">
+            <Link to="/login" className="text-lg font-bold underline">
               Already have an account?
-            </a>
+            </Link>
           </div>
 
           <div className="flex h-[10%] items-center justify-center">
             <button
-              onClick={() => signupClick()}
               type="submit"
               className={cn(
                 "primary-border w-30 rounded-lg p-2 font-bold",
@@ -279,22 +339,47 @@ function SignupPage() {
                 "md:w-50",
               )}
             >
-              Sign Up
+              {isLoading ? "Loading..." : "Sign Up"}
             </button>
           </div>
         </form>
         <div>
           {showOtpModal && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Enter OTP"
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value)}
-                />
-                <button>Verify</button>
-              </div>
+            <div
+              className={cn(
+                "primary-border absolute top-[50%] left-[50%] flex h-[50vh] w-[70%] translate-x-[-50%] translate-y-[-50%] flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg",
+                themeBg,
+              )}
+            >
+              <h1 className="text-4xl">OTP</h1>
+              <span className="text-sm">(One Time Pin)</span>
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                value={otpCode}
+                onChange={(e) => setOtpCode(e.target.value)}
+                className="primary-border h-10 w-full rounded-lg p-2 text-center font-bold"
+                aria-label="OTP Input"
+              />
+              <button
+                onClick={resendOtp}
+                disabled={!canResend}
+                className="primary-border rounded-lg p-2 font-bold"
+              >
+                {canResend ? "Resend OTP" : `Resend in ${countDown}s`}
+              </button>
+              {resendError && (
+                <p className="text-sm text-red-500">
+                  {resendError}
+                  {countDown}s.
+                </p>
+              )}
+              <button
+                onClick={handleVerify}
+                className="primary-border rounded-lg p-2 font-bold"
+              >
+                Verify
+              </button>
             </div>
           )}
         </div>

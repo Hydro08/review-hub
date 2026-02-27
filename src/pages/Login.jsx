@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { cn } from "../lib/cn";
+
+import supabase from "../lib/supabase";
 
 import lightModeSvg from "../assets/light-mode.svg";
 import darkModeSvg from "../assets/dark-mode.svg";
@@ -12,14 +14,50 @@ import darkVisiHideSvg from "../assets/dark-visi-hide.svg";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const { theme, setTheme } = useTheme();
   const themeBg =
     theme === "light" ? "light-bg text-black" : "dark-bg text-white";
 
-  const loginClick = () => {
-    alert("Under Development pa bro!!!");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const loginHandle = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    let loginEmail = email;
+
+    if (!email.includes("@")) {
+      const { data, error: fetchError } = await supabase
+        .from("profiles")
+        .select("email")
+        .eq("username", email)
+        .single();
+
+      if (fetchError || !data) {
+        alert("Username not found");
+        setIsLoading(false);
+        return;
+      }
+
+      loginEmail = data.email;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password,
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    navigate("/dashboard");
   };
 
   return (
@@ -33,26 +71,29 @@ function LoginPage() {
         <div
           className={cn(
             "flex h-full items-center justify-center",
-            "w-[60%] md:w-[80%]",
+            "w-[55%] md:w-[80%]",
           )}
         >
           <h1
             onClick={() => navigate("/")}
-            className="cursor-pointer text-3xl font-bold tracking-wide"
+            className={cn(
+              "cursor-pointer font-bold tracking-wide",
+              "text-2xl md:text-3xl lg:text-4xl",
+            )}
           >
             Review Hub
           </h1>
         </div>
         <div
           className={cn(
-            "flex h-full items-center justify-end gap-10 px-6",
-            "w-[40%] md:w-[30%] lg:w-[20%]",
+            "flex h-full items-center justify-end gap-5 px-6",
+            "w-[45%] md:w-[30%] lg:w-[20%]",
           )}
         >
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             className={cn(
-              "primary-border flex h-10 w-16 items-center justify-center gap-1 rounded-lg font-bold",
+              "primary-border flex h-10 w-18 items-center justify-center gap-1 rounded-lg font-bold",
               "cursor-auto md:cursor-pointer",
             )}
           >
@@ -66,7 +107,7 @@ function LoginPage() {
           <button
             onClick={() => navigate("/")}
             className={cn(
-              "primary-border h-10 w-10 rounded-lg font-bold",
+              "primary-border h-10 w-12 rounded-lg font-bold",
               theme === "light" ? "bg-red-400" : "bg-red-600",
             )}
           >
@@ -92,6 +133,8 @@ function LoginPage() {
               id="username"
               name="username"
               type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Input Username or Email"
               className={cn(
                 "primary-border rounded-xl p-2 font-bold",
@@ -166,20 +209,20 @@ function LoginPage() {
           </div>
 
           <div className="flex h-[10%] items-center justify-center">
-            <a href="/forgot-password" className="text-lg font-bold underline">
+            <Link to="/forgotPass" className="text-lg font-bold underline">
               Forgot Password
-            </a>
+            </Link>
           </div>
 
           <div className="flex h-[10%] items-center justify-center">
-            <a href="/signup" className="text-lg font-bold underline">
+            <Link to="/signup" className="text-lg font-bold underline">
               Don't have an account?
-            </a>
+            </Link>
           </div>
 
           <div className="flex h-[10%] items-center justify-center">
             <button
-              onClick={() => loginClick()}
+              onClick={loginHandle}
               type="submit"
               className={cn(
                 "primary-border w-30 rounded-lg p-2 font-bold",
@@ -187,7 +230,7 @@ function LoginPage() {
                 "md:w-50",
               )}
             >
-              Log In
+              {isLoading ? "Loading..." : "Log In"}
             </button>
           </div>
         </form>
