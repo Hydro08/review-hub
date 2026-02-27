@@ -75,7 +75,6 @@ function LoginPage() {
           )}
         >
           <h1
-            onClick={() => navigate("/")}
             className={cn(
               "cursor-pointer font-bold tracking-wide",
               "text-2xl md:text-3xl lg:text-4xl",

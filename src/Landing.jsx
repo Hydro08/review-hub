@@ -169,7 +169,10 @@ function App() {
             initial="hidden"
             whileInView="show"
             transition={{ duration: 0.5 }}
-            className="text-sm font-bold transition-all ease-linear"
+            className={cn(
+              "font-bold transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
           >
             No credit card required. Learn at your own pace.
           </motion.p>

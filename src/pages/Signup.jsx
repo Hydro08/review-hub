@@ -138,10 +138,7 @@ function SignupPage() {
             "w-[60%] md:w-[80%]",
           )}
         >
-          <h1
-            onClick={() => navigate("/")}
-            className="cursor-pointer text-3xl font-bold tracking-wide"
-          >
+          <h1 className="cursor-pointer text-3xl font-bold tracking-wide">
             Review Hub
           </h1>
         </div>
