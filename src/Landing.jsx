@@ -59,7 +59,7 @@ function App() {
       <section
         id="homeSect"
         className={cn(
-          "relative flex h-[100vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-2 text-center transition-all duration-200 ease-in",
+          "relative flex h-[100vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-4 text-center transition-all duration-300 ease-in",
           theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
         )}
       >
@@ -69,19 +69,30 @@ function App() {
             initial="hidden"
             whileInView="show"
             transition={{ duration: 0.5 }}
-            className="text-3xl font-bold tracking-tight md:text-6xl"
+            className={cn(
+              "font-bold tracking-tight transition-all ease-linear",
+              "text-3xl md:text-4xl lg:text-5xl",
+            )}
           >
             Learn It. Keep It.
           </motion.h1>
         </div>
 
-        <div className="flex h-[40%] w-full flex-col items-center justify-center gap-2">
+        <div
+          className={cn(
+            "flex h-[40%] w-full flex-col items-center justify-center",
+            "gap-2 px-4 md:gap-6 md:px-8",
+          )}
+        >
           <motion.p
             variants={sectionVariants}
             initial="hidden"
             whileInView="show"
             transition={{ duration: 0.5 }}
-            className="text-sm font-bold"
+            className={cn(
+              "font-bold transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
           >
             Stop re-reading and wasting hours on notes that never stick. With
             interactive flashcards designed for active recall and spaced
@@ -93,7 +104,10 @@ function App() {
             initial="hidden"
             whileInView="show"
             transition={{ duration: 0.5 }}
-            className="text-sm font-bold"
+            className={cn(
+              "font-bold transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
           >
             Turn your lessons into bite-sized cards that challenge your memory,
             not your patience. Review smarter, track your progress, and actually
@@ -106,7 +120,10 @@ function App() {
             initial="hidden"
             whileInView="show"
             transition={{ duration: 0.5 }}
-            className="text-sm font-bold"
+            className={cn(
+              "font-bold transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
           >
             Study less. Retain more. Because learning shouldn't feel like
             starting from zero every time.
@@ -152,7 +169,7 @@ function App() {
             initial="hidden"
             whileInView="show"
             transition={{ duration: 0.5 }}
-            className="text-sm font-bold"
+            className="text-sm font-bold transition-all ease-linear"
           >
             No credit card required. Learn at your own pace.
           </motion.p>

@@ -25,12 +25,17 @@ function LoginPage() {
   return (
     <main
       className={cn(
-        "flex h-screen w-screen flex-col items-center justify-center",
+        "h-screen w-screen transition-all duration-300 ease-in",
         themeBg,
       )}
     >
-      <header className="primary-b-border flex h-[10vh] w-full items-center justify-center">
-        <div className="flex h-full w-[60%] items-center justify-center">
+      <header className="primary-b-border flex h-[10vh] items-center justify-center transition-all duration-300 ease-in">
+        <div
+          className={cn(
+            "flex h-full items-center justify-center",
+            "w-[60%] md:w-[80%]",
+          )}
+        >
           <h1
             onClick={() => navigate("/")}
             className="cursor-pointer text-3xl font-bold tracking-wide"
@@ -38,7 +43,12 @@ function LoginPage() {
             Review Hub
           </h1>
         </div>
-        <div className="flex h-full w-[40%] items-center justify-end gap-10 px-6">
+        <div
+          className={cn(
+            "flex h-full items-center justify-end gap-10 px-6",
+            "w-[40%] md:w-[30%] lg:w-[20%]",
+          )}
+        >
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             className={cn(
@@ -56,7 +66,8 @@ function LoginPage() {
           <button
             onClick={() => navigate("/")}
             className={cn(
-              "primary-border h-10 w-10 rounded-lg bg-red-700 font-bold",
+              "primary-border h-10 w-10 rounded-lg font-bold",
+              theme === "light" ? "bg-red-400" : "bg-red-600",
             )}
           >
             X
@@ -64,7 +75,7 @@ function LoginPage() {
         </div>
       </header>
 
-      <section className="primary-b-border flex h-[80vh] w-full items-center justify-center p-4">
+      <section className="primary-b-border flex h-[80vh] w-full items-center justify-center p-4 transition-all duration-300 ease-in">
         <form className="flex h-full w-full flex-col items-center justify-center">
           <div className="flex h-[10%] w-full flex-col items-center justify-center">
             <h2 className="text-3xl font-bold">Log In</h2>
@@ -82,7 +93,11 @@ function LoginPage() {
               name="username"
               type="text"
               placeholder="Input Username or Email"
-              className="primary-border w-[90%] rounded-xl p-2 font-bold lg:w-full"
+              className={cn(
+                "primary-border rounded-xl p-2 font-bold",
+                "w-[95%] lg:w-full",
+                theme === "light" ? "placeholder-black" : "placeholder-white",
+              )}
               required
             />
           </fieldset>
@@ -99,7 +114,10 @@ function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 placeholder="Input Password"
-                className="primary-border w-[85%] rounded-xl p-2 font-bold lg:w-[95%]"
+                className={cn(
+                  "primary-border w-[85%] rounded-xl p-2 font-bold lg:w-[95%]",
+                  theme === "light" ? "placeholder-black" : "placeholder-white",
+                )}
                 required
               />
               <button

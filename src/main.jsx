@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./Landing";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
 
 import "./index.css";
 import { ThemeProvider } from "./context/ThemeContext";
