@@ -1,7 +1,12 @@
+import { useNavigate, Link } from "react-router-dom";
+import { cn } from "../lib/cn";
+
+import supabase from "../lib/supabase";
+
 import lightModeSvg from "../assets/light-mode.svg";
 import darkModeSvg from "../assets/dark-mode.svg";
-import { useNavigate } from "react-router-dom";
-import { cn } from "../lib/cn";
+import { useEffect, useState } from "react";
+
 function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
   const navigate = useNavigate();
 
@@ -13,16 +18,42 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
     setOpen(!menuOpen);
   };
 
+  const [user, setUser] = useState(null);
+
+  const ud = () => {
+    alert("under development!!!");
+  };
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <>
       <div
         className={cn(
-          "primary-b-border fixed left-0 z-10 flex h-[60vh] w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden",
-          menuOpen ? "top-[10vh]" : "top-[-70vh]",
+          "primary-b-border fixed left-0 z-10 flex w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden",
+          menuOpen ? "top-[10vh]" : "top-[-80vh]",
           theme === "light" ? "light-bg" : "dark-bg",
+          user ? "h-[70vh]" : "h-[60vh]",
         )}
       >
-        <div className="flex h-[60%] w-full items-center justify-center">
+        <div
+          className={cn(
+            "flex w-full items-center justify-center",
+            user ? "h-[50%]" : "h-[60%]",
+          )}
+        >
           <ul className="flex flex-col items-center justify-center gap-5">
             <li
               onClick={() => {
@@ -44,7 +75,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
             </li>
             <li
               onClick={() => {
-                scrollToSection("dashboardSect");
+                navigate("/dashboard");
                 setOpenHandle();
               }}
               className="primary-border rounded-lg px-4 py-2 font-bold"
@@ -62,10 +93,10 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
             </li>
           </ul>
         </div>
-        <div className="flex h-[20%] w-full items-center justify-center">
+        <div className="flex h-[15%] w-full items-center justify-center">
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className="primary-border flex h-15 w-30 items-center justify-center gap-1 rounded-xl font-bold"
+            className="primary-border flex w-30 items-center justify-center gap-1 rounded-xl p-3 font-bold"
           >
             <img
               src={theme === "light" ? lightModeSvg : darkModeSvg}
@@ -74,25 +105,74 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
             {theme === "light" ? "☀️" : "🌙"}
           </button>
         </div>
-        <div className="flex h-[20%] w-full items-center justify-center gap-10">
-          <button
-            onClick={() => {
-              navigate("/login");
-              setOpenHandle();
-            }}
-            className="primary-border h-15 w-30 rounded-xl font-bold"
-          >
-            Log In
-          </button>
-          <button
-            onClick={() => {
-              navigate("./signup");
-              setOpenHandle();
-            }}
-            className="primary-border h-15 w-30 rounded-xl font-bold"
-          >
-            Sign Up
-          </button>
+        <div
+          className={cn(
+            "flex w-full items-center justify-center",
+            user ? "h-[35%]" : "h-[25%]",
+          )}
+        >
+          {user ? (
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Link
+                to="/settings"
+                className="flex items-center justify-center gap-2"
+              >
+                <button
+                  className={cn(
+                    "h-12 w-12 rounded-[50%]",
+                    theme === "light"
+                      ? "dark-bg text-white"
+                      : "light-bg text-black",
+                  )}
+                >
+                  Prof
+                </button>
+                <p className="underline">{user.user_metadata.username}</p>
+              </Link>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <button
+                  onClick={() => ud()}
+                  className="primary-border w-24 rounded-lg p-2"
+                >
+                  Settings
+                </button>
+                <button
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    navigate("/");
+                    setOpenHandle();
+                  }}
+                  className={cn(
+                    "w-24 rounded-lg p-2",
+                    theme === "light" ? "bg-red-400" : "bg-red-600",
+                  )}
+                >
+                  Log Out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap-10">
+              <button
+                onClick={() => {
+                  navigate("/login");
+                  setOpenHandle();
+                }}
+                className="primary-border h-15 w-30 rounded-xl font-bold"
+              >
+                Log In
+              </button>
+              <button
+                onClick={() => {
+                  navigate("./signup");
+                  setOpenHandle();
+                }}
+                className="primary-border h-15 w-30 rounded-xl font-bold"
+              >
+                Sign Up
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

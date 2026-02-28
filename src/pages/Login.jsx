@@ -59,7 +59,7 @@ function LoginPage() {
       return;
     }
 
-    navigate("/dashboard");
+    navigate("/");
   };
 
   return (
@@ -69,7 +69,7 @@ function LoginPage() {
         themeBg,
       )}
     >
-      <header className="primary-b-border flex h-[10vh] items-center justify-center transition-all duration-300 ease-in">
+      <header className="primary-b-border flex h-[10vh] items-center justify-center">
         <div
           className={cn(
             "flex h-full items-center justify-center",
@@ -88,7 +88,7 @@ function LoginPage() {
         <div
           className={cn(
             "flex h-full items-center justify-end gap-5 px-6",
-            "w-[45%] md:w-[30%] lg:w-[20%]",
+            "w-[40%] md:w-[30%] lg:w-[20%]",
           )}
         >
           <button
@@ -108,7 +108,7 @@ function LoginPage() {
           <button
             onClick={() => navigate("/")}
             className={cn(
-              "primary-border h-10 w-12 rounded-lg font-bold",
+              "primary-border h-10 w-10 rounded-lg font-bold",
               theme === "light" ? "bg-red-400" : "bg-red-600",
             )}
           >
@@ -117,7 +117,7 @@ function LoginPage() {
         </div>
       </header>
 
-      <section className="primary-b-border flex h-[80vh] w-full items-center justify-center p-4 transition-all duration-300 ease-in">
+      <section className="primary-b-border flex h-[80vh] w-full items-center justify-center p-4">
         <form className="flex h-full w-full flex-col items-center justify-center">
           <div className="flex h-[10%] w-full flex-col items-center justify-center">
             <h2 className="text-3xl font-bold">Log In</h2>

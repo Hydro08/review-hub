@@ -185,17 +185,17 @@ function App() {
         <h1>Test Two</h1>
       </section>
       <section
-        id="dashboardSect"
+        id="contactSect"
         className={`flex h-[90vh] w-full scroll-mt-[10vh] transition-all duration-300 ease-in ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"}`}
       >
         <h1>Test Three</h1>
       </section>
-      <section
-        id="contactSect"
-        className={`flex h-[90vh] w-full scroll-mt-[10vh] transition-all duration-300 ease-in ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"}`}
-      >
-        <h1>Test Four</h1>
-      </section>
+
+      <footer className="flex h-[10vh] w-full items-center justify-center font-bold">
+        <p>
+          &copy; {new Date().getFullYear()} Review Hub. All rights reserved.
+        </p>
+      </footer>
     </main>
   );
 }

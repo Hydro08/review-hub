@@ -8,6 +8,8 @@
 ## 🔄 IN PROGRESS
 
 - [ ] Forgot Password
+- [ ] Landpage
+- [ ] Dashboard
 
 ## 📋 TODO
 

@@ -130,28 +130,38 @@ function SignupPage() {
   const [showOtpModal, setShowOtpModal] = useState(false);
 
   return (
-    <main className={cn("min-h-screen w-full", themeBg)}>
+    <main
+      className={cn(
+        "min-h-screen w-full transition-all duration-300 ease-linear",
+        themeBg,
+      )}
+    >
       <header className="primary-b-border flex h-[10vh] items-center justify-center">
         <div
           className={cn(
             "flex h-full items-center justify-center",
-            "w-[60%] md:w-[80%]",
+            "w-[55%] md:w-[80%]",
           )}
         >
-          <h1 className="cursor-pointer text-3xl font-bold tracking-wide">
+          <h1
+            className={cn(
+              "cursor-pointer font-bold tracking-wide",
+              "text-2xl md:text-3xl lg:text-4xl",
+            )}
+          >
             Review Hub
           </h1>
         </div>
         <div
           className={cn(
-            "flex h-full items-center justify-end gap-10 px-6",
+            "flex h-full items-center justify-end gap-5 px-6",
             "w-[40%] md:w-[30%] lg:w-[20%]",
           )}
         >
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             className={cn(
-              "primary-border flex h-10 w-16 items-center justify-center gap-1 rounded-lg font-bold",
+              "primary-border flex h-10 w-18 items-center justify-center gap-1 rounded-lg font-bold",
               "cursor-auto md:cursor-pointer",
             )}
           >
@@ -173,6 +183,7 @@ function SignupPage() {
           </button>
         </div>
       </header>
+
       <section className="primary-b-border relative flex h-[100vh] w-full items-center justify-center p-4">
         <form
           onSubmit={signupHandle}

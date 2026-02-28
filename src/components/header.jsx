@@ -3,6 +3,10 @@ import darkModeSvg from "../assets/dark-mode.svg";
 import { cn } from "../lib/cn";
 import { useNavigate } from "react-router-dom";
 
+import supabase from "../lib/supabase";
+
+import { useEffect, useState } from "react";
+
 function HeaderNav({ open, setOpen, theme, setTheme }) {
   const navigate = useNavigate();
 
@@ -22,6 +26,22 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
   const handleClick = () => {
     setOpen(!open);
   };
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <header
@@ -91,16 +111,25 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
             Contact
           </li>
         </ul>
-        <div className="flex items-center justify-center gap-1">
-          <button
-            onClick={() => {
-              navigate("/login");
-            }}
-            className={cn(authBase, shadowTheme)}
-          >
-            Log In
-          </button>
-          <button className={cn(authBase, shadowTheme)}>Sign Up</button>
+        <div>
+          {user ? (
+            <div className="ml-2 flex items-center justify-center gap-2">
+              <button className="h-12 w-12 rounded-[50%] bg-black">Prof</button>
+              <p>{user.user_metadata.username}</p>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap-1">
+              <button
+                onClick={() => {
+                  navigate("/login");
+                }}
+                className={cn(authBase, shadowTheme)}
+              >
+                Log In
+              </button>
+              <button className={cn(authBase, shadowTheme)}>Sign Up</button>
+            </div>
+          )}
         </div>
       </div>
     </header>
