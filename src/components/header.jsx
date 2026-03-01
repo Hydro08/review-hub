@@ -1,13 +1,23 @@
-import lightModeSvg from "../assets/light-mode.svg";
-import darkModeSvg from "../assets/dark-mode.svg";
 import { cn } from "../lib/cn";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import supabase from "../lib/supabase";
 
 import { useEffect, useState } from "react";
 
-function HeaderNav({ open, setOpen, theme, setTheme }) {
+import lightModeSvg from "../assets/light-mode.svg";
+import darkModeSvg from "../assets/dark-mode.svg";
+import lightSettingSvg from "../assets/light-settings.svg";
+import darkSettingSvg from "../assets/dark-settings.svg";
+
+function HeaderNav({
+  open,
+  setOpen,
+  theme,
+  setTheme,
+  settingOpen,
+  setSettingOpen,
+}) {
   const navigate = useNavigate();
 
   const scrollToSection = (id) => {
@@ -25,6 +35,10 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
 
   const handleClick = () => {
     setOpen(!open);
+  };
+
+  const handleSettingClick = () => {
+    setSettingOpen(!settingOpen);
   };
 
   const [user, setUser] = useState(null);
@@ -69,6 +83,7 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
           className={cn(
             "primary-border flex h-10 w-14 cursor-pointer items-center justify-center gap-1 rounded-xl py-1 font-semibold transition-all duration-300 ease-in hover:shadow-md md:text-sm lg:py-5.5",
             shadowTheme,
+            user ? "hidden" : "flex",
           )}
         >
           <img
@@ -113,10 +128,17 @@ function HeaderNav({ open, setOpen, theme, setTheme }) {
         </ul>
         <div>
           {user ? (
-            <div className="ml-2 flex items-center justify-center gap-2">
+            <Link className="ml-2 flex items-center justify-center gap-2">
               <button className="h-12 w-12 rounded-[50%] bg-black">Prof</button>
-              <p>{user.user_metadata.username}</p>
-            </div>
+              <p className="underline">{user.user_metadata.username}</p>
+              <button onClick={handleSettingClick}>
+                <img
+                  src={theme === "light" ? lightSettingSvg : darkSettingSvg}
+                  alt="Settings"
+                  className="primary-border rounded-lg p-2"
+                />
+              </button>
+            </Link>
           ) : (
             <div className="flex items-center justify-center gap-1">
               <button

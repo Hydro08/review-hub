@@ -1,15 +1,25 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "./lib/cn";
+
 import { HeaderNav } from "./components/Header";
 import { MobileMenu } from "./components/MobileMenu";
+import { SettingMenu } from "./components/SettingMenu";
+
 import { useTheme } from "./context/ThemeContext";
+
+import supabase from "./lib/supabase";
 
 import "./App.css";
 
 function App() {
+  const navigate = useNavigate();
+
   const [menuOpen, setMenuOpen] = useState(false);
+  const [settingOpen, setSettingOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [user, setUser] = useState(null);
 
   const testClick = () => {
     alert("test");
@@ -27,6 +37,20 @@ function App() {
     popOut: { opacity: 0, scale: 0.5 },
     popIn: { opacity: 1, scale: 1 },
   };
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
@@ -48,6 +72,8 @@ function App() {
         setOpen={setMenuOpen}
         theme={theme}
         setTheme={setTheme}
+        settingOpen={settingOpen}
+        setSettingOpen={setSettingOpen}
       />
 
       <MobileMenu
@@ -56,6 +82,9 @@ function App() {
         theme={theme}
         setTheme={setTheme}
       />
+
+      <SettingMenu settingOpen={settingOpen} setSettingOpen={setSettingOpen} />
+
       <section
         id="homeSect"
         className={cn(
@@ -136,7 +165,14 @@ function App() {
             initial="popOut"
             whileInView="popIn"
             transition={{ duration: 0.2 }}
-            onClick={testClick}
+            onClick={() => {
+              if (user) {
+                navigate("/dashboard");
+              } else {
+                alert("Log in or Sign up first.");
+                navigate("/login");
+              }
+            }}
             aria-label="Get Started with Review Hub"
             className={cn(
               buttonBase,

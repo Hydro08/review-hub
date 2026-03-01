@@ -19,6 +19,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
   };
 
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const ud = () => {
     alert("under development!!!");
@@ -132,22 +133,24 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
               <div className="flex flex-col items-center justify-center gap-2">
                 <button
                   onClick={() => ud()}
-                  className="primary-border w-24 rounded-lg p-2"
+                  className="primary-border w-28 rounded-lg p-2"
                 >
                   Settings
                 </button>
                 <button
                   onClick={async () => {
+                    setIsLoading(true);
                     await supabase.auth.signOut();
+                    setIsLoading(false);
                     navigate("/");
                     setOpenHandle();
                   }}
                   className={cn(
-                    "w-24 rounded-lg p-2",
+                    "w-28 rounded-lg p-2",
                     theme === "light" ? "bg-red-400" : "bg-red-600",
                   )}
                 >
-                  Log Out
+                  {isLoading ? "Loading..." : "Log Out"}
                 </button>
               </div>
             </div>
