@@ -20,15 +20,19 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
     setSettingOpen(!settingOpen);
   };
 
+  const buttonSettings =
+    "primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1 font-bold";
+
   const ud = () => {
-    alert("Under Development!!!");
+    alert("Under Development :D");
   };
 
   return (
     <>
       <div
         className={cn(
-          "primary-border fixed top-[10vh] right-0 z-10 flex h-[30vh] w-[10vw] flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in",
+          "primary-border fixed top-[10vh] right-0 z-10 flex h-[30vh] flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in",
+          "md:w-[20%] lg:w-[15%]",
           settingOpen
             ? "pointer-events-none md:pointer-events-auto md:opacity-100"
             : "md:pointer-events-none md:opacity-0",
@@ -45,10 +49,7 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
           {theme === "light" ? "☀️" : "🌙"}
         </button>
 
-        <button
-          onClick={() => ud()}
-          className="primary-border flex cursor-pointer items-center justify-center gap-1 rounded-lg p-1 font-bold"
-        >
+        <button onClick={() => ud()} className={cn(buttonSettings)}>
           <img
             src={theme === "light" ? lightSettingSvg : darkSettingSvg}
             alt={theme === "light" ? "Light Setting" : "Dark Setting"}
@@ -65,7 +66,7 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
             setSettingHandle();
           }}
           className={cn(
-            "primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1 font-bold",
+            buttonSettings,
             theme === "light" ? "bg-red-400" : "bg-red-600",
           )}
         >

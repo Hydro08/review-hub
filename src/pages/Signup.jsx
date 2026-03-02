@@ -175,7 +175,7 @@ function SignupPage() {
           <button
             onClick={() => navigate("/")}
             className={cn(
-              "primary-border h-10 w-10 rounded-lg font-bold",
+              "primary-border h-10 w-10 cursor-pointer rounded-lg font-bold",
               theme === "light" ? "bg-red-400" : "bg-red-600",
             )}
           >

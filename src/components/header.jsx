@@ -25,13 +25,18 @@ function HeaderNav({
   };
 
   const liBase =
-    "primary-border cursor-pointer rounded-xl px-3 py-2 text-base font-semibold transition-all duration-300 ease-in md:text-sm lg:text-lg hover:shadow-md hover:shadow-white";
-
-  const authBase =
-    "primary-border rounded-xl px-3 py-1.5 lg:py-2.5 font-bold transition-all duration-300 ease-in hover:shadow-md hover:shadow-white cursor-pointer";
-
+    "primary-border cursor-pointer rounded-xl px-3 py-2 text-base font-semibold";
+  const liTxtSize = "md:text-sm lg:text-lg";
+  const authButton =
+    "primary-border rounded-xl px-3 py-1.5 lg:py-2.5 font-bold cursor-pointer";
+  const hoverSet = "hover:shadow-md";
+  const primaryTransition = "transition-all duration-300 ease-in";
   const shadowTheme =
     theme === "light" ? "hover:shadow-black" : "hover:shadow-white";
+
+  const ud = () => {
+    alert("Under Development :D");
+  };
 
   const handleClick = () => {
     setOpen(!open);
@@ -60,7 +65,8 @@ function HeaderNav({
   return (
     <header
       className={cn(
-        "primary-b-border sticky top-0 left-0 z-10 flex h-[10vh] w-full items-center justify-between px-2 transition-all duration-300 ease-in",
+        "primary-b-border sticky top-0 left-0 z-10 flex h-[10vh] w-full items-center justify-between px-2",
+        primaryTransition,
         theme === "light" ? "light-bg" : "dark-bg",
       )}
     >
@@ -81,7 +87,10 @@ function HeaderNav({
             setTheme(theme === "light" ? "dark" : "light");
           }}
           className={cn(
-            "primary-border flex h-10 w-14 cursor-pointer items-center justify-center gap-1 rounded-xl py-1 font-semibold transition-all duration-300 ease-in hover:shadow-md md:text-sm lg:py-5.5",
+            "primary-border flex h-10 w-14 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold",
+            "py-1 lg:py-5.5",
+            primaryTransition,
+            hoverSet,
             shadowTheme,
             user ? "hidden" : "flex",
           )}
@@ -97,7 +106,13 @@ function HeaderNav({
             onClick={() => {
               scrollToSection("homeSect");
             }}
-            className={cn(liBase, shadowTheme)}
+            className={cn(
+              liBase,
+              liTxtSize,
+              hoverSet,
+              primaryTransition,
+              shadowTheme,
+            )}
           >
             Home
           </li>
@@ -105,7 +120,13 @@ function HeaderNav({
             onClick={() => {
               scrollToSection("aboutSect");
             }}
-            className={cn(liBase, shadowTheme)}
+            className={cn(
+              liBase,
+              liTxtSize,
+              hoverSet,
+              primaryTransition,
+              shadowTheme,
+            )}
           >
             About
           </li>
@@ -113,7 +134,13 @@ function HeaderNav({
             onClick={() => {
               scrollToSection("dashboardSect");
             }}
-            className={cn(liBase, shadowTheme)}
+            className={cn(
+              liBase,
+              liTxtSize,
+              hoverSet,
+              primaryTransition,
+              shadowTheme,
+            )}
           >
             Dashboard
           </li>
@@ -121,23 +148,63 @@ function HeaderNav({
             onClick={() => {
               scrollToSection("contactSect");
             }}
-            className={cn(liBase, shadowTheme)}
+            className={cn(
+              liBase,
+              liTxtSize,
+              hoverSet,
+              primaryTransition,
+              shadowTheme,
+            )}
           >
             Contact
           </li>
         </ul>
         <div>
           {user ? (
-            <Link className="ml-2 flex items-center justify-center gap-2">
-              <button className="h-12 w-12 rounded-[50%] bg-black">Prof</button>
-              <p className="capitalize underline">
+            <Link
+              className={cn(
+                "ml-2 flex items-center justify-center gap-2",
+                primaryTransition,
+              )}
+            >
+              <button
+                onClick={() => {
+                  ud();
+                }}
+                className={cn(
+                  "h-12 w-12 cursor-pointer rounded-[50%]",
+                  theme === "light"
+                    ? "dark-bg text-white"
+                    : "light-bg text-black",
+                  hoverSet,
+                  shadowTheme,
+                )}
+              >
+                Prof
+              </button>
+              <p
+                onClick={() => {
+                  ud();
+                }}
+                className={cn(
+                  "primary-border rounded-lg p-1 capitalize underline",
+                  theme === "light" ? "text-black" : "text-white",
+                )}
+              >
                 {user.user_metadata.username}
               </p>
-              <button onClick={handleSettingClick}>
+              <button
+                onClick={handleSettingClick}
+                className={cn(
+                  "primary-border cursor-pointer rounded-lg p-2",
+                  primaryTransition,
+                  hoverSet,
+                  shadowTheme,
+                )}
+              >
                 <img
                   src={theme === "light" ? lightSettingSvg : darkSettingSvg}
                   alt="Settings"
-                  className="primary-border rounded-lg p-2"
                 />
               </button>
             </Link>
@@ -147,11 +214,28 @@ function HeaderNav({
                 onClick={() => {
                   navigate("/login");
                 }}
-                className={cn(authBase, shadowTheme)}
+                className={cn(
+                  authButton,
+                  primaryTransition,
+                  hoverSet,
+                  shadowTheme,
+                )}
               >
                 Log In
               </button>
-              <button className={cn(authBase, shadowTheme)}>Sign Up</button>
+              <button
+                onClick={() => {
+                  navigate("/signup");
+                }}
+                className={cn(
+                  authButton,
+                  primaryTransition,
+                  hoverSet,
+                  shadowTheme,
+                )}
+              >
+                Sign Up
+              </button>
             </div>
           )}
         </div>

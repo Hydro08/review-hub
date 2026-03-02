@@ -28,7 +28,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const ud = () => {
-    alert("under development!!!");
+    alert("under development :D");
   };
 
   useEffect(() => {
@@ -121,10 +121,11 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
           {user ? (
             <div className="flex flex-col items-center justify-center gap-2">
               <Link
-                to="/profile"
+                // to="/profile"
                 className="flex items-center justify-center gap-2"
               >
                 <button
+                  onClick={() => ud()}
                   className={cn(
                     "h-12 w-12 rounded-[50%]",
                     theme === "light"
@@ -134,7 +135,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 >
                   Prof
                 </button>
-                <p className="capitalize underline">
+                <p onClick={() => ud()} className="capitalize underline">
                   {user.user_metadata.username}
                 </p>
               </Link>

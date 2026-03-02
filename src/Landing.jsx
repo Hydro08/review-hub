@@ -25,8 +25,11 @@ function App() {
     alert("test");
   };
 
-  const buttonBase =
-    "h-12 rounded-lg primary-border opacity-80 font-bold transition-all duration-300 ease-in ";
+  const buttonBase = "h-12 rounded-lg primary-border opacity-80 font-bold";
+
+  const primaryTransition = "transition-all duration-300 ease-in";
+  const hoverSet = "hover:shadow-md";
+  const shadowTheme = theme === "light" ? "shadow-black" : "shadow-white";
 
   const sectionVariants = {
     hidden: { opacity: 0, x: -300 },
@@ -37,6 +40,21 @@ function App() {
     popOut: { opacity: 0, scale: 0.5 },
     popIn: { opacity: 1, scale: 1 },
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMenuOpen(false);
+        document.body.style.overflow = "unset";
+      } else if (window.innerWidth <= 768) {
+        setSettingOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -88,7 +106,8 @@ function App() {
       <section
         id="homeSect"
         className={cn(
-          "relative flex h-[100vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-4 text-center transition-all duration-300 ease-in",
+          "relative flex h-[100vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-4 text-center",
+          primaryTransition,
           theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
         )}
       >
@@ -178,6 +197,8 @@ function App() {
               buttonBase,
               "w-40 sm:w-60 md:w-40 md:cursor-pointer",
               menuOpen ? "pointer-events-none" : "pointer-events-auto",
+              hoverSet,
+              shadowTheme,
             )}
           >
             Get Started
@@ -193,6 +214,8 @@ function App() {
               buttonBase,
               "w-40 sm:w-60 md:w-40 md:cursor-pointer",
               menuOpen ? "pointer-events-none" : "pointer-events-auto",
+              hoverSet,
+              shadowTheme,
             )}
           >
             Try Demo
@@ -216,15 +239,23 @@ function App() {
       </section>
       <section
         id="aboutSect"
-        className={`flex h-[90vh] w-full scroll-mt-[10vh] transition-all duration-300 ease-in ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"}`}
+        className={cn(
+          "flex h-[90vh] w-full scroll-mt-[10vh]",
+          primaryTransition,
+          theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
+        )}
       >
-        <h1>Test Two</h1>
+        <h1>Working</h1>
       </section>
       <section
         id="contactSect"
-        className={`flex h-[90vh] w-full scroll-mt-[10vh] transition-all duration-300 ease-in ${theme === "dark" ? "dark-bg text-white" : "light-bg text-black"}`}
+        className={cn(
+          "flex h-[90vh] w-full scroll-mt-[10vh]",
+          primaryTransition,
+          theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
+        )}
       >
-        <h1>Test Three</h1>
+        <h1>Working</h1>
       </section>
 
       <footer className="flex h-[10vh] w-full items-center justify-center font-bold">
