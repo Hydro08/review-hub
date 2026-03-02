@@ -197,6 +197,7 @@ function App() {
               buttonBase,
               "w-40 sm:w-60 md:w-40 md:cursor-pointer",
               menuOpen ? "pointer-events-none" : "pointer-events-auto",
+              primaryTransition,
               hoverSet,
               shadowTheme,
             )}
@@ -214,6 +215,7 @@ function App() {
               buttonBase,
               "w-40 sm:w-60 md:w-40 md:cursor-pointer",
               menuOpen ? "pointer-events-none" : "pointer-events-auto",
+              primaryTransition,
               hoverSet,
               shadowTheme,
             )}
@@ -237,16 +239,145 @@ function App() {
           </motion.p>
         </div>
       </section>
+
       <section
         id="aboutSect"
         className={cn(
-          "flex h-[90vh] w-full scroll-mt-[10vh]",
+          "flex h-[90vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-4 text-center",
           primaryTransition,
           theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
         )}
       >
-        <h1>Working</h1>
+        <motion.h1
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="show"
+          transition={{ duration: 0.5 }}
+          className={cn(
+            "font-bold tracking-tight transition-all ease-linear",
+            "text-2xl md:text-4xl lg:text-5xl",
+          )}
+        >
+          Organize, Share, Collaborate
+        </motion.h1>
+        <motion.p
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="show"
+          transition={{ duration: 0.5 }}
+          className={cn(
+            "font-medium transition-all ease-linear",
+            "text-sm md:text-lg lg:text-xl",
+          )}
+        >
+          Review-Hub is a platform designed to help users create, manage, and
+          share their content effortlessly. Whether you’re reviewing, studying,
+          or collaborating, Review-Hub makes it simple and interactive.
+        </motion.p>
+        <motion.ul
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="show"
+          transition={{ duration: 0.5 }}
+          className={cn(
+            "flex list-inside flex-col gap-2 p-2 font-bold tracking-tight transition-all ease-linear",
+            "text-2xl md:text-4xl lg:text-5xl",
+          )}
+        >
+          Features:
+          <motion.li
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className={cn(
+              "list-disc text-left font-medium transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
+          >
+            <strong>Decks & Flashcards</strong> — Create and organize decks with
+            text or image flashcards.
+          </motion.li>
+          <motion.li
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className={cn(
+              "list-disc text-left font-medium transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
+          >
+            <strong> Edit / Delete Decks & Flashcards</strong> — Update or
+            remove entire decks or individual flashcards anytime.
+          </motion.li>
+          <motion.li
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className={cn(
+              "list-disc text-left font-medium transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
+          >
+            <strong> Search / Filter Decks </strong>— Quickly find the deck you
+            need.
+          </motion.li>
+          <motion.li
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className={cn(
+              "list-disc text-left font-medium transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
+          >
+            <strong> Progress Tracking / Stats</strong> — Keep track of reviewed
+            flashcards and your activity.
+          </motion.li>
+          <motion.li
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className={cn(
+              "list-disc text-left font-medium transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
+          >
+            <strong>Chat Feature (Coming Soon)</strong> — Collaborate and
+            discuss with other users in real-time.
+          </motion.li>
+        </motion.ul>
+        <motion.h1
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="show"
+          transition={{ duration: 0.5 }}
+          className={cn(
+            "font-bold tracking-tight transition-all ease-linear",
+            "text-2xl md:text-4xl lg:text-5xl",
+          )}
+        >
+          Goal:
+        </motion.h1>
+        <motion.p
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="show"
+          transition={{ duration: 0.5 }}
+          className={cn(
+            "font-semibold transition-all ease-linear",
+            "text-sm md:text-lg lg:text-xl",
+          )}
+        >
+          Our goal is to provide a user-friendly space where managing, sharing,
+          and collaborating on content is simple and fun.
+        </motion.p>
       </section>
+
       <section
         id="contactSect"
         className={cn(

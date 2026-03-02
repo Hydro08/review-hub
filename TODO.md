@@ -4,6 +4,7 @@
 
 - [x] Login
 - [x] Signup
+- [x] dark / light mode
 - [x] Protected Route
 
 ## 🔄 IN PROGRESS
@@ -12,6 +13,9 @@
 - [ ] Landpage
 - [ ] Dashboard
 - [ ] Icon
+- [ ] About Section
+- [ ] Contact Section
+- [ ] Responsive Design
 
 ## 📋 TODO
 
@@ -20,4 +24,3 @@
 - [ ] Create Profile
 - [ ] Edit And Delete Dashboard
 - [ ] Edit And Delete Flashcard
-- [ ]
