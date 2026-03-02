@@ -4,7 +4,13 @@ import { cn } from "../lib/cn";
 import supabase from "../lib/supabase";
 
 import lightModeSvg from "../assets/light-mode.svg";
+import lightSettingSvg from "../assets/light-settings.svg";
+import lightLogoutSvg from "../assets/light-logout.svg";
+
 import darkModeSvg from "../assets/dark-mode.svg";
+import darkSettingSvg from "../assets/dark-settings.svg";
+import darkLogoutSvg from "../assets/dark-logout.svg";
+
 import { useEffect, useState } from "react";
 
 function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
@@ -115,7 +121,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
           {user ? (
             <div className="flex flex-col items-center justify-center gap-2">
               <Link
-                to="/settings"
+                to="/profile"
                 className="flex items-center justify-center gap-2"
               >
                 <button
@@ -128,13 +134,19 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 >
                   Prof
                 </button>
-                <p className="underline">{user.user_metadata.username}</p>
+                <p className="capitalize underline">
+                  {user.user_metadata.username}
+                </p>
               </Link>
               <div className="flex flex-col items-center justify-center gap-2">
                 <button
                   onClick={() => ud()}
-                  className="primary-border w-28 rounded-lg p-2"
+                  className="primary-border flex w-30 items-center justify-center gap-2 rounded-lg p-2 font-bold"
                 >
+                  <img
+                    src={theme === "light" ? lightSettingSvg : darkSettingSvg}
+                    alt={theme === "light" ? "Light Setting" : "Dark Setting"}
+                  />
                   Settings
                 </button>
                 <button
@@ -146,10 +158,15 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                     setOpenHandle();
                   }}
                   className={cn(
-                    "w-28 rounded-lg p-2",
+                    "primary-border flex items-center justify-center gap-2 rounded-lg p-2 font-bold",
                     theme === "light" ? "bg-red-400" : "bg-red-600",
+                    isLoading ? "w-34" : "w-30",
                   )}
                 >
+                  <img
+                    src={theme === "light" ? lightLogoutSvg : darkLogoutSvg}
+                    alt={theme === "light" ? "Light Logout" : "Dark Logout"}
+                  />
                   {isLoading ? "Loading..." : "Log Out"}
                 </button>
               </div>

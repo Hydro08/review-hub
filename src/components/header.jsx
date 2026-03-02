@@ -130,7 +130,9 @@ function HeaderNav({
           {user ? (
             <Link className="ml-2 flex items-center justify-center gap-2">
               <button className="h-12 w-12 rounded-[50%] bg-black">Prof</button>
-              <p className="underline">{user.user_metadata.username}</p>
+              <p className="capitalize underline">
+                {user.user_metadata.username}
+              </p>
               <button onClick={handleSettingClick}>
                 <img
                   src={theme === "light" ? lightSettingSvg : darkSettingSvg}
