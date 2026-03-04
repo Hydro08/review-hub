@@ -23,3 +23,4 @@
 
 - Working on hover effects and interactions
 - Improved overall UI polish
+- added Contact page
