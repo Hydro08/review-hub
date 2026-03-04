@@ -21,6 +21,9 @@
 
 ## Day 4 — March 4, 2026
 
-- Working on hover effects and interactions
+- Added hover effects and interactions (Send button, social links)
 - Improved overall UI polish
-- added Contact page
+- Added motion animations to Contact section and Footer
+- Built Contact form with EmailJS integration
+- Added toast notification for form feedback
+- Stored EmailJS credentials in .env
