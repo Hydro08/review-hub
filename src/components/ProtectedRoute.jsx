@@ -9,7 +9,6 @@ function ProtectedRoute({ children }) {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        alert("Login first.");
         navigate("/");
       } else {
         setUser(session.user);

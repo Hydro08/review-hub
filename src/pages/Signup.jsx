@@ -362,17 +362,25 @@ function SignupPage() {
               <h1 className="text-4xl">OTP</h1>
               <span className="text-sm">(One Time Pin)</span>
               <input
-                type="text"
+                type="tel"
+                inputMode="numeric"
                 placeholder="Enter OTP"
                 value={otpCode}
-                onChange={(e) => setOtpCode(e.target.value)}
-                className="primary-border h-10 w-full rounded-lg p-2 text-center font-bold"
+                maxLength={8}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, "");
+                  setOtpCode(val);
+                }}
+                className={cn(
+                  "primary-border primary-shadow h-10 w-[90%] rounded-lg p-2 text-center font-bold tracking-widest",
+                  theme === "light" ? "placeholder-black" : "placeholder-white",
+                )}
                 aria-label="OTP Input"
               />
               <button
                 onClick={resendOtp}
                 disabled={!canResend}
-                className="primary-border rounded-lg p-2 font-bold"
+                className="primary-b-border cursor-pointer p-2 font-bold"
               >
                 {canResend ? "Resend OTP" : `Resend in ${countDown}s`}
               </button>
@@ -384,7 +392,7 @@ function SignupPage() {
               )}
               <button
                 onClick={handleVerify}
-                className="primary-border rounded-lg p-2 font-bold"
+                className="primary-border cursor-pointer rounded-lg p-2 font-bold"
               >
                 Verify
               </button>

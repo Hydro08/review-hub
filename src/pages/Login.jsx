@@ -189,28 +189,6 @@ function LoginPage() {
             </div>
           </fieldset>
 
-          <div
-            className={cn(
-              "mb-5 flex h-[10%] w-full items-center justify-start gap-2",
-            )}
-          >
-            <input
-              id="remember"
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              name="remember"
-              className={cn("h-5 w-5", "cursor-auto md:cursor-pointer")}
-              required
-            />
-            <label
-              htmlFor="remember"
-              className={cn("font-bold", "cursor-auto md:cursor-pointer")}
-            >
-              Remember Me
-            </label>
-          </div>
-
           <div className="flex h-[10%] items-center justify-center">
             <Link to="/forgotPass" className="text-lg font-bold underline">
               Forgot Password

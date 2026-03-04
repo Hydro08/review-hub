@@ -24,8 +24,7 @@ function HeaderNav({
     document.getElementById(id).scrollIntoView({ behavior: "smooth" });
   };
 
-  const liBase =
-    "primary-border cursor-pointer rounded-xl px-3 py-2 text-base font-semibold";
+  const liBase = "primary-border  rounded-xl px-3 py-2 text-base font-semibold";
   const liTxtSize = "md:text-sm lg:text-lg";
   const authButton =
     "primary-border rounded-xl px-3 py-1.5 lg:py-2.5 font-bold cursor-pointer";
@@ -107,6 +106,7 @@ function HeaderNav({
               scrollToSection("homeSect");
             }}
             className={cn(
+              "cursor-pointer",
               liBase,
               liTxtSize,
               hoverSet,
@@ -121,6 +121,7 @@ function HeaderNav({
               scrollToSection("aboutSect");
             }}
             className={cn(
+              "cursor-pointer",
               liBase,
               liTxtSize,
               hoverSet,
@@ -131,10 +132,12 @@ function HeaderNav({
             About
           </li>
           <li
+            title={user ? "Go To Dashboard" : "Login First."}
             onClick={() => {
-              scrollToSection("dashboardSect");
+              navigate("/dashboard");
             }}
             className={cn(
+              user ? "cursor-pointer" : "cursor-not-allowed",
               liBase,
               liTxtSize,
               hoverSet,
@@ -149,6 +152,7 @@ function HeaderNav({
               scrollToSection("contactSect");
             }}
             className={cn(
+              "cursor-pointer",
               liBase,
               liTxtSize,
               hoverSet,
@@ -159,7 +163,7 @@ function HeaderNav({
             Contact
           </li>
         </ul>
-        <div>
+        <div className="hidden md:flex">
           {user ? (
             <Link
               className={cn(
@@ -177,6 +181,7 @@ function HeaderNav({
                     ? "dark-bg text-white"
                     : "light-bg text-black",
                   hoverSet,
+                  primaryTransition,
                   shadowTheme,
                 )}
               >

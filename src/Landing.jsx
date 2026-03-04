@@ -243,7 +243,7 @@ function App() {
       <section
         id="aboutSect"
         className={cn(
-          "flex h-[90vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-4 text-center",
+          "flex min-h-[90vh] w-full scroll-mt-[10vh] flex-col items-center justify-center gap-2 p-2 text-center",
           primaryTransition,
           theme === "dark" ? "dark-bg text-white" : "light-bg text-black",
         )}
@@ -255,7 +255,7 @@ function App() {
           transition={{ duration: 0.5 }}
           className={cn(
             "font-bold tracking-tight transition-all ease-linear",
-            "text-2xl md:text-4xl lg:text-5xl",
+            "text-3xl md:text-4xl lg:text-5xl",
           )}
         >
           Organize, Share, Collaborate
@@ -281,7 +281,7 @@ function App() {
           transition={{ duration: 0.5 }}
           className={cn(
             "flex list-inside flex-col gap-2 p-2 font-bold tracking-tight transition-all ease-linear",
-            "text-2xl md:text-4xl lg:text-5xl",
+            "text-3xl md:text-4xl lg:text-5xl",
           )}
         >
           Features:
@@ -347,6 +347,32 @@ function App() {
               "text-sm md:text-lg lg:text-xl",
             )}
           >
+            <strong>Image & Text Support</strong> - Flashcards Users can add
+            either text or images for more interactive and visual flashcards.
+          </motion.li>
+          <motion.li
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className={cn(
+              "list-disc text-left font-medium transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
+          >
+            <strong>Favorites / Bookmark Decks</strong> - You can mark important
+            flashcards or decks for quick access later.
+          </motion.li>
+          <motion.li
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            transition={{ duration: 0.5 }}
+            className={cn(
+              "list-disc text-left font-medium transition-all ease-linear",
+              "text-sm md:text-lg lg:text-xl",
+            )}
+          >
             <strong>Chat Feature (Coming Soon)</strong> — Collaborate and
             discuss with other users in real-time.
           </motion.li>
@@ -358,10 +384,10 @@ function App() {
           transition={{ duration: 0.5 }}
           className={cn(
             "font-bold tracking-tight transition-all ease-linear",
-            "text-2xl md:text-4xl lg:text-5xl",
+            "text-3xl md:text-4xl lg:text-5xl",
           )}
         >
-          Goal:
+          Our Goal
         </motion.h1>
         <motion.p
           variants={sectionVariants}
@@ -373,8 +399,9 @@ function App() {
             "text-sm md:text-lg lg:text-xl",
           )}
         >
-          Our goal is to provide a user-friendly space where managing, sharing,
-          and collaborating on content is simple and fun.
+          Our goal is to provide a user-friendly space where organizing,
+          sharing, and collaborating on content is simple, efficient, and
+          enjoyable.
         </motion.p>
       </section>
 
