@@ -9,6 +9,16 @@ import lightModeSvg from "../assets/light-mode.svg";
 import darkModeSvg from "../assets/dark-mode.svg";
 import lightSettingSvg from "../assets/light-settings.svg";
 import darkSettingSvg from "../assets/dark-settings.svg";
+import LightHomeSvg from "../assets/light-home.svg";
+import DarkHomeSvg from "../assets/dark-home.svg";
+import LightAboutSvg from "../assets/light-about.svg";
+import DarkAboutSvg from "../assets/dark-about.svg";
+import LightDashboardSvg from "../assets/light-dashboard.svg";
+import DarkDashboardSvg from "../assets/dark-dashboard.svg";
+import LightContactSvg from "../assets/light-contact.svg";
+import DarkContactSvg from "../assets/dark-contact.svg";
+import LightAuthSettingsSvg from "../assets/light-auth-setting.svg";
+import DarkAuthSettingsSvg from "../assets/dark-auth-setting.svg";
 
 function HeaderNav({
   open,
@@ -24,10 +34,10 @@ function HeaderNav({
     document.getElementById(id).scrollIntoView({ behavior: "smooth" });
   };
 
-  const liBase = "primary-border  rounded-xl px-3 py-2 text-base font-semibold";
-  const liTxtSize = "md:text-sm lg:text-lg";
+  const liBase =
+    "primary-border rounded-xl text-lg px-3 py-2 text-base font-semibold";
   const authButton =
-    "primary-border rounded-xl px-3 py-1.5 lg:py-2.5 font-bold cursor-pointer";
+    "primary-border rounded-xl px-3 py-2 font-bold cursor-pointer w-26 h-11 flex justify-center items-center";
   const hoverSet = "hover:shadow-md";
   const primaryTransition = "transition-all duration-300 ease-in";
   const shadowTheme =
@@ -91,7 +101,7 @@ function HeaderNav({
             primaryTransition,
             hoverSet,
             shadowTheme,
-            user ? "hidden" : "flex",
+            user ? "hidden" : "md:hidden lg:flex",
           )}
         >
           <img
@@ -106,14 +116,17 @@ function HeaderNav({
               scrollToSection("homeSect");
             }}
             className={cn(
-              "cursor-pointer",
+              "flex cursor-pointer items-center justify-center gap-2",
               liBase,
-              liTxtSize,
               hoverSet,
               primaryTransition,
               shadowTheme,
             )}
           >
+            <img
+              src={theme === "light" ? LightHomeSvg : DarkHomeSvg}
+              alt={theme === "light" ? "Light Home Icon" : "Dark Home Icon"}
+            />
             Home
           </li>
           <li
@@ -121,14 +134,17 @@ function HeaderNav({
               scrollToSection("aboutSect");
             }}
             className={cn(
-              "cursor-pointer",
+              "flex cursor-pointer items-center justify-center gap-2",
               liBase,
-              liTxtSize,
               hoverSet,
               primaryTransition,
               shadowTheme,
             )}
           >
+            <img
+              src={theme === "light" ? LightAboutSvg : DarkAboutSvg}
+              alt={theme === "light" ? "Light About Icon" : "Dark About Icon"}
+            />
             About
           </li>
           <li
@@ -137,14 +153,22 @@ function HeaderNav({
               navigate("/dashboard");
             }}
             className={cn(
+              "flex items-center justify-center gap-2",
               user ? "cursor-pointer" : "cursor-not-allowed",
               liBase,
-              liTxtSize,
               hoverSet,
               primaryTransition,
               shadowTheme,
             )}
           >
+            <img
+              src={theme === "light" ? LightDashboardSvg : DarkDashboardSvg}
+              alt={
+                theme === "light"
+                  ? "Light Dashboard Icon"
+                  : "Dark Dashboard Icon"
+              }
+            />
             Dashboard
           </li>
           <li
@@ -152,14 +176,19 @@ function HeaderNav({
               scrollToSection("contactSect");
             }}
             className={cn(
-              "cursor-pointer",
+              "flex cursor-pointer items-center justify-center gap-2",
               liBase,
-              liTxtSize,
               hoverSet,
               primaryTransition,
               shadowTheme,
             )}
           >
+            <img
+              src={theme === "light" ? LightContactSvg : DarkContactSvg}
+              alt={
+                theme === "light" ? "Light Contact Icon" : "Dark Contact Icon"
+              }
+            />
             Contact
           </li>
         </ul>
@@ -176,7 +205,7 @@ function HeaderNav({
                   ud();
                 }}
                 className={cn(
-                  "h-12 w-12 cursor-pointer rounded-[50%]",
+                  "h-12 w-12 cursor-pointer rounded-[50%] md:hidden lg:block",
                   theme === "light"
                     ? "dark-bg text-white"
                     : "light-bg text-black",
@@ -192,7 +221,7 @@ function HeaderNav({
                   ud();
                 }}
                 className={cn(
-                  "primary-border rounded-lg p-1 capitalize underline",
+                  "primary-border rounded-lg p-1 capitalize underline md:hidden lg:block",
                   theme === "light" ? "text-black" : "text-white",
                 )}
               >
@@ -216,10 +245,24 @@ function HeaderNav({
           ) : (
             <div className="flex items-center justify-center gap-1">
               <button
+                onClick={handleSettingClick}
+                className={cn("md:flex lg:hidden", authButton)}
+              >
+                <img
+                  src={
+                    theme === "light"
+                      ? LightAuthSettingsSvg
+                      : DarkAuthSettingsSvg
+                  }
+                  alt=""
+                />
+              </button>
+              <button
                 onClick={() => {
                   navigate("/login");
                 }}
                 className={cn(
+                  "md:hidden lg:block",
                   authButton,
                   primaryTransition,
                   hoverSet,
@@ -233,6 +276,7 @@ function HeaderNav({
                   navigate("/signup");
                 }}
                 className={cn(
+                  "md:hidden lg:block",
                   authButton,
                   primaryTransition,
                   hoverSet,

@@ -27,3 +27,11 @@
 - Built Contact form with EmailJS integration
 - Added toast notification for form feedback
 - Stored EmailJS credentials in .env
+
+## Day 5 — March 5, 2026
+
+- Rest 8am to 4pm
+- Fixed contact section height issue
+- Improved Login and Sign Up page (toast notifications, OTP boxes)
+- Improved Header in tablet and desktop
+- Added icons to the list items and auth buttons

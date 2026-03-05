@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate, Link } from "react-router-dom";
 import { cn } from "../lib/cn";
+import { motion } from "framer-motion";
 
 import supabase from "../lib/supabase";
 
@@ -17,12 +18,18 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+
   const { theme, setTheme } = useTheme();
   const themeBg =
     theme === "light" ? "light-bg text-black" : "dark-bg text-white";
 
   const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState({ show: false, success: true });
+
+  const showToast = (success) => {
+    setToast({ show: true, success });
+    setTimeout(() => setToast({ show: false, success: true }), 3000);
+  };
 
   const loginHandle = async (e) => {
     e.preventDefault();
@@ -38,7 +45,7 @@ function LoginPage() {
         .single();
 
       if (fetchError || !data) {
-        alert("Username not found");
+        showToast(false);
         setIsLoading(false);
         return;
       }
@@ -49,17 +56,19 @@ function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({
       email: loginEmail,
       password,
-      options: { persistSession: rememberMe },
     });
 
-    setIsLoading(false);
-
     if (error) {
-      alert(error.message);
+      setIsLoading(false);
+      showToast(false);
       return;
     }
 
-    navigate("/");
+    showToast(true);
+
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
   };
 
   return (
@@ -215,6 +224,21 @@ function LoginPage() {
             </button>
           </div>
         </form>
+        {toast.show && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={cn(
+              "fixed top-20 right-4 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
+              toast.success ? "bg-green-500" : "bg-red-500",
+            )}
+          >
+            {toast.success
+              ? "✅ Successfully Login."
+              : "❌ Invalid Credentials."}
+          </motion.div>
+        )}
       </section>
 
       <footer className="flex h-[10vh] w-full items-center justify-center font-bold">

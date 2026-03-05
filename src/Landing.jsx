@@ -37,10 +37,9 @@ function App() {
     email: "",
     message: "",
   });
+
   const [sending, setSending] = useState(false);
   const [toast, setToast] = useState({ show: false, success: true });
-
-  const testClick = () => alert("test");
 
   const primaryTransition = "transition-all duration-300 ease-in";
   const themeBg =
@@ -235,7 +234,6 @@ function App() {
             initial="popOut"
             whileInView="popIn"
             transition={{ duration: 0.2 }}
-            onClick={testClick}
             aria-label="Demo with Review Hub"
             className={cn(
               buttonBase,
@@ -370,12 +368,11 @@ function App() {
       <section
         id="contactSect"
         className={cn(
-          "flex h-[90vh] w-full scroll-mt-[10vh] items-center justify-center",
+          "flex min-h-[100vh] w-full scroll-mt-[10vh] items-center justify-center",
           primaryTransition,
           themeBg,
         )}
       >
-        {/* Toast */}
         {toast.show && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -413,12 +410,12 @@ function App() {
           <div className="flex flex-col gap-3">
             {[
               {
-                href: "mailto:darwinsumait38@gmail.com",
+                href: "https://mail.google.com/mail/?view=cm&to=darwinsumait38@gmail.com",
                 lightSrc: LightEmailSvg,
                 darkSrc: DarkEmailSvg,
                 alt: "email-logo",
                 label: "darwinsumait38@gmail.com",
-                target: undefined,
+                target: "_blank",
               },
               {
                 href: "https://github.com/hydro08",

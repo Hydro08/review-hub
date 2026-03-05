@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate, Link } from "react-router-dom";
 import { cn } from "../lib/cn";
+import { motion } from "framer-motion";
 
 import supabase from "../lib/supabase";
 
@@ -30,6 +31,13 @@ function SignupPage() {
   const [confPassword, setConfPassword] = useState("");
   const [otpCode, setOtpCode] = useState("");
 
+  const [toast, setToast] = useState({ show: false, success: true });
+
+  const showToast = (success) => {
+    setToast({ show: true, success });
+    setTimeout(() => setToast({ show: false, success: true }), 3000);
+  };
+
   const signupHandle = async (e) => {
     e.preventDefault();
 
@@ -48,8 +56,11 @@ function SignupPage() {
     if (error) {
       setIsLoading(false);
       alert(error.message);
+      showToast(false);
       return;
     }
+
+    showToast(true);
 
     const { error: profileError } = await supabase.from("profiles").insert({
       id: data.user.id,
@@ -399,6 +410,21 @@ function SignupPage() {
             </div>
           )}
         </div>
+        {toast.show && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={cn(
+              "fixed top-20 right-4 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
+              toast.success ? "bg-green-500" : "bg-red-500",
+            )}
+          >
+            {toast.success
+              ? "✅ Account created! Check your email for OTP."
+              : "❌ Something went wrong. Please try again."}
+          </motion.div>
+        )}
       </section>
       <footer className="flex h-[10vh] w-full items-center justify-center font-bold">
         <p>
