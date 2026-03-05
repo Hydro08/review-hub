@@ -48,82 +48,124 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
 
   return (
     <>
-      <div
-        className={cn(
-          "primary-border fixed top-[10vh] right-0 z-10 flex flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in",
-          "md:w-[25%] lg:w-[15%]",
-          "md:h-[45vh] lg:h-[30vh]",
-          settingOpen
-            ? "pointer-events-none md:pointer-events-auto md:opacity-100"
-            : "md:pointer-events-none md:opacity-0",
-          theme === "light" ? "light-bg" : "dark-bg",
-        )}
-      >
-        <div className="flex items-center justify-center gap-2">
-          <button
-            onClick={() => {
-              ud();
-            }}
-            className={cn(
-              "h-12 w-12 cursor-pointer rounded-[50%] md:block lg:hidden",
-              theme === "light" ? "dark-bg text-white" : "light-bg text-black",
-              hoverSet,
-              primaryTransition,
-              shadowTheme,
-            )}
-          >
-            Prof
-          </button>
-          <p
-            onClick={() => {
-              ud();
-            }}
-            className={cn(
-              "primary-border rounded-lg p-1 capitalize underline md:block lg:hidden",
-              theme === "light" ? "text-black" : "text-white",
-            )}
-          >
-            {user?.user_metadata?.username}
-          </p>
-        </div>
-        <button
-          onClick={() => {
-            setTheme(theme === "light" ? "dark" : "light");
-          }}
-          className="primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1"
-        >
-          <img src={theme === "light" ? lightModeSvg : darkModeSvg} alt="" />
-          {theme === "light" ? "☀️" : "🌙"}
-        </button>
-
-        <button onClick={() => ud()} className={cn(buttonSettings)}>
-          <img
-            src={theme === "light" ? lightSettingSvg : darkSettingSvg}
-            alt={theme === "light" ? "Light Setting" : "Dark Setting"}
-          />
-          Settings
-        </button>
-
-        <button
-          onClick={async () => {
-            setIsLoading(true);
-            await supabase.auth.signOut();
-            setIsLoading(false);
-            navigate("/");
-            setSettingHandle();
-          }}
+      {user ? (
+        <div
           className={cn(
-            buttonSettings,
-            theme === "light" ? "bg-red-400" : "bg-red-600",
+            "primary-border fixed top-[12vh] right-0 z-10 flex flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in",
+            "md:w-[25%] lg:w-[15%]",
+            "md:h-[40vh] lg:h-[30vh]",
+            settingOpen
+              ? "pointer-events-none md:pointer-events-auto md:opacity-100"
+              : "md:pointer-events-none md:opacity-0",
+            theme === "light" ? "light-bg" : "dark-bg",
           )}
         >
-          <img
-            src={theme === "light" ? lightLogoutSvg : darkLogoutSvg}
-            alt={theme === "light" ? "Light Log out" : "Dark Log out"}
-          />
-          {isLoading ? "Loading..." : "Log Out"}
-        </button>
-      </div>
+          <div className="flex items-center justify-center gap-2">
+            <button
+              onClick={() => {
+                ud();
+              }}
+              className={cn(
+                "h-12 w-12 cursor-pointer rounded-[50%] md:block lg:hidden",
+                theme === "light"
+                  ? "dark-bg text-white"
+                  : "light-bg text-black",
+                hoverSet,
+                primaryTransition,
+                shadowTheme,
+              )}
+            >
+              Prof
+            </button>
+            <p
+              onClick={() => {
+                ud();
+              }}
+              className={cn(
+                "primary-border rounded-lg p-1 capitalize underline md:block lg:hidden",
+                theme === "light" ? "text-black" : "text-white",
+              )}
+            >
+              {user?.user_metadata?.username}
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              setTheme(theme === "light" ? "dark" : "light");
+            }}
+            className="primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1"
+          >
+            <img src={theme === "light" ? lightModeSvg : darkModeSvg} alt="" />
+            {theme === "light" ? "☀️" : "🌙"}
+          </button>
+
+          <button onClick={() => ud()} className={cn(buttonSettings)}>
+            <img
+              src={theme === "light" ? lightSettingSvg : darkSettingSvg}
+              alt={theme === "light" ? "Light Setting" : "Dark Setting"}
+            />
+            Settings
+          </button>
+
+          <button
+            onClick={async () => {
+              setIsLoading(true);
+              await supabase.auth.signOut();
+              setIsLoading(false);
+              navigate("/");
+              setSettingHandle();
+            }}
+            className={cn(
+              buttonSettings,
+              theme === "light" ? "bg-red-400" : "bg-red-600",
+            )}
+          >
+            <img
+              src={theme === "light" ? lightLogoutSvg : darkLogoutSvg}
+              alt={theme === "light" ? "Light Log out" : "Dark Log out"}
+            />
+            {isLoading ? "Loading..." : "Log Out"}
+          </button>
+        </div>
+      ) : (
+        <div
+          className={cn(
+            "primary-border fixed top-[10vh] right-0 z-10 flex min-h-[35vh] w-[20%] flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in",
+            settingOpen
+              ? "pointer-events-none md:pointer-events-auto md:opacity-100"
+              : "md:pointer-events-none md:opacity-0",
+            theme === "light" ? "light-bg" : "dark-bg",
+          )}
+        >
+          <button
+            onClick={() => {
+              setTheme(theme === "light" ? "dark" : "light");
+            }}
+            className="primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1"
+          >
+            <img src={theme === "light" ? lightModeSvg : darkModeSvg} alt="" />
+            {theme === "light" ? "☀️" : "🌙"}
+          </button>
+          <button
+            onClick={() => {
+              navigate("/login");
+              setOpenHandle();
+            }}
+            className="primary-border h-15 w-30 rounded-xl font-bold"
+          >
+            Log In
+          </button>
+          <button
+            onClick={() => {
+              navigate("./signup");
+              setOpenHandle();
+            }}
+            className="primary-border h-15 w-30 rounded-xl font-bold"
+          >
+            Sign Up
+          </button>
+        </div>
+      )}
     </>
   );
 }

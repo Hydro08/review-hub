@@ -4,23 +4,40 @@
 
 - [x] Login
 - [x] Signup
-- [x] dark / light mode
+- [x] Dark / Light Mode
 - [x] Protected Route
+- [x] Landpage
+- [x] About Section
+- [x] Contact Section (EmailJS + Toast)
+- [x] OTP Boxes (Sign Up)
+- [x] Toast Notifications (Login, Sign Up)
+- [x] Header UI (Tablet & Desktop)
+- [x] Authentication Settings Dropdown (Tablet)
+
+## 🔧 IMPROVING
+
+- [ ] Landpage
+- [ ] Login
+- [ ] Signup
+- [ ] Responsive Design
 
 ## 🔄 IN PROGRESS
 
 - [ ] Forgot Password
-- [ ] Landpage
-- [ ] Dashboard
-- [ ] Icon
-- [ ] About Section
-- [ ] Contact Section
-- [ ] Responsive Design
+- [ ] Icons (from Flaticon and Google Icons)
 
 ## 📋 TODO
 
-- [ ] Create Dashboard
+- [ ] Dashboard
+- [ ] Create Decks
 - [ ] Create Flashcard
-- [ ] Create Profile
-- [ ] Edit And Delete Dashboard
-- [ ] Edit And Delete Flashcard
+- [ ] Profile
+- [ ] Settings
+- [ ] Edit and Delete Decks
+- [ ] Edit and Delete Flashcard
+- [ ] Search / Filter Decks
+- [ ] Favorites / Bookmark Decks
+- [ ] Progress Tracking / Stats
+- [ ] Share Decks (Public / Private)
+- [ ] Study Mode
+- [ ] Chat System (Coming Soon)

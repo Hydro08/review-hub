@@ -74,7 +74,7 @@ function HeaderNav({
   return (
     <header
       className={cn(
-        "primary-b-border sticky top-0 left-0 z-10 flex h-[10vh] w-full items-center justify-between px-2",
+        "primary-b-border sticky top-0 left-0 z-10 flex min-h-[10vh] w-full items-center justify-between px-2",
         primaryTransition,
         theme === "light" ? "light-bg" : "dark-bg",
       )}
@@ -246,7 +246,13 @@ function HeaderNav({
             <div className="flex items-center justify-center gap-1">
               <button
                 onClick={handleSettingClick}
-                className={cn("md:flex lg:hidden", authButton)}
+                className={cn(
+                  "md:flex lg:hidden",
+                  authButton,
+                  primaryTransition,
+                  hoverSet,
+                  shadowTheme,
+                )}
               >
                 <img
                   src={
