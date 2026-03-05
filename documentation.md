@@ -37,3 +37,5 @@
 - Added icons to list items
 - Added authentication settings dropdown (tablet view only)
 - Moved Theme, Login, and Signup inside Setting Menu when not logged in (tablet view)
+
+## Day 6 - March 6, 2026
