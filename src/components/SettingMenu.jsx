@@ -57,7 +57,7 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
       {user ? (
         <div
           className={cn(
-            "primary-border fixed top-[12vh] right-0 z-10 flex flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in",
+            "primary-border fixed top-[12vh] right-0 z-10 hidden flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in md:flex",
             "md:w-[25%] lg:w-[15%]",
             "md:h-[40vh] lg:h-[30vh]",
             settingOpen

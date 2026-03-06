@@ -42,3 +42,4 @@
 
 - Added icons to mobile, tablet, desktop
 - Improved Mobile Menu layout
+- Fixing setting menu bug in mobile

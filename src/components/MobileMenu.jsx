@@ -3,27 +3,26 @@ import { cn } from "../lib/cn";
 
 import supabase from "../lib/supabase";
 
-import lightModeSvg from "../assets/light-mode.svg";
-import lightSettingSvg from "../assets/light-settings.svg";
-import lightLogoutSvg from "../assets/light-logout.svg";
-
-import darkModeSvg from "../assets/dark-mode.svg";
-import darkSettingSvg from "../assets/dark-settings.svg";
-import darkLogoutSvg from "../assets/dark-logout.svg";
-import LightHomeSvg from "../assets/light-home.svg";
-import DarkHomeSvg from "../assets/dark-home.svg";
-import LightAboutSvg from "../assets/light-about.svg";
-import DarkAboutSvg from "../assets/dark-about.svg";
-import LightDashboardSvg from "../assets/light-dashboard.svg";
-import DarkDashboardSvg from "../assets/dark-dashboard.svg";
-import LightContactSvg from "../assets/light-contact.svg";
-import DarkContactSvg from "../assets/dark-contact.svg";
-import LightAuthSettingsSvg from "../assets/light-auth-setting.svg";
-import DarkAuthSettingsSvg from "../assets/dark-auth-setting.svg";
-import LightSignupPng from "../assets/light-signup.png";
-import DarkSignupPng from "../assets/dark-signup.png";
-import LightLoginPng from "../assets/light-login.png";
-import DarkLoginPng from "../assets/dark-login.png";
+import {
+  lightModeSvg,
+  darkModeSvg,
+  lightSettingSvg,
+  darkSettingSvg,
+  lightLogoutSvg,
+  darkLogoutSvg,
+  LightHomeSvg,
+  DarkHomeSvg,
+  LightAboutSvg,
+  DarkAboutSvg,
+  LightDashboardSvg,
+  DarkDashboardSvg,
+  LightContactSvg,
+  DarkContactSvg,
+  LightSignupPng,
+  DarkSignupPng,
+  LightLoginPng,
+  DarkLoginPng,
+} from "../assets/images";
 
 import { useEffect, useState } from "react";
 
@@ -63,8 +62,10 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
     <>
       <div
         className={cn(
-          "primary-b-border fixed left-0 z-10 flex w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden",
-          menuOpen ? "top-[10vh]" : "top-[-80vh]",
+          "primary-b-border fixed left-0 z-10 flex w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden", // 👈 flex md:hidden
+          menuOpen
+            ? "pointer-events-auto top-[10vh]"
+            : "pointer-events-none top-[-80vh]", // 👈 pointer-events fix
           theme === "light" ? "light-bg" : "dark-bg",
           user ? "h-[70vh]" : "h-[60vh]",
         )}
@@ -219,7 +220,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
               </button>
               <button
                 onClick={() => {
-                  navigate("./signup");
+                  navigate("/signup");
                   setOpenHandle();
                 }}
                 className="primary-border flex h-15 w-30 items-center justify-center gap-2 rounded-xl font-bold"

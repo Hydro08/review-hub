@@ -5,24 +5,26 @@ import supabase from "../lib/supabase";
 
 import { useEffect, useState } from "react";
 
-import lightModeSvg from "../assets/light-mode.svg";
-import darkModeSvg from "../assets/dark-mode.svg";
-import lightSettingSvg from "../assets/light-settings.svg";
-import darkSettingSvg from "../assets/dark-settings.svg";
-import LightHomeSvg from "../assets/light-home.svg";
-import DarkHomeSvg from "../assets/dark-home.svg";
-import LightAboutSvg from "../assets/light-about.svg";
-import DarkAboutSvg from "../assets/dark-about.svg";
-import LightDashboardSvg from "../assets/light-dashboard.svg";
-import DarkDashboardSvg from "../assets/dark-dashboard.svg";
-import LightContactSvg from "../assets/light-contact.svg";
-import DarkContactSvg from "../assets/dark-contact.svg";
-import LightAuthSettingsSvg from "../assets/light-auth-setting.svg";
-import DarkAuthSettingsSvg from "../assets/dark-auth-setting.svg";
-import LightSignupPng from "../assets/light-signup.png";
-import DarkSignupPng from "../assets/dark-signup.png";
-import LightLoginPng from "../assets/light-login.png";
-import DarkLoginPng from "../assets/dark-login.png";
+import {
+  lightModeSvg,
+  darkModeSvg,
+  lightSettingSvg,
+  darkSettingSvg,
+  LightHomeSvg,
+  DarkHomeSvg,
+  LightAboutSvg,
+  DarkAboutSvg,
+  LightDashboardSvg,
+  DarkDashboardSvg,
+  LightContactSvg,
+  DarkContactSvg,
+  LightAuthSettingsSvg,
+  DarkAuthSettingsSvg,
+  LightSignupPng,
+  DarkSignupPng,
+  LightLoginPng,
+  DarkLoginPng,
+} from "../assets/images";
 
 function HeaderNav({
   open,
