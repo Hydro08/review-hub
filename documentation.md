@@ -39,3 +39,6 @@
 - Moved Theme, Login, and Signup inside Setting Menu when not logged in (tablet view)
 
 ## Day 6 - March 6, 2026
+
+- Added icons to mobile, tablet, desktop
+- Improved Mobile Menu layout

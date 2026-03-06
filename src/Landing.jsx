@@ -104,6 +104,10 @@ const fadeUp = {
   show: { opacity: 1, y: 0 },
 };
 
+const ud = () => {
+  alert("Under Development :D");
+};
+
 function App() {
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
@@ -280,6 +284,7 @@ function App() {
           </motion.button>
 
           <motion.button
+            onClick={ud}
             variants={btnVariants}
             initial="popOut"
             whileInView="popIn"

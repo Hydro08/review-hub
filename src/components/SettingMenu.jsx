@@ -11,6 +11,10 @@ import lightSettingSvg from "../assets/light-settings.svg";
 import darkSettingSvg from "../assets/dark-settings.svg";
 import lightLogoutSvg from "../assets/light-logout.svg";
 import darkLogoutSvg from "../assets/dark-logout.svg";
+import LightSignupPng from "../assets/light-signup.png";
+import DarkSignupPng from "../assets/dark-signup.png";
+import LightLoginPng from "../assets/light-login.png";
+import DarkLoginPng from "../assets/dark-login.png";
 
 function SettingMenu({ settingOpen, setSettingOpen }) {
   const navigate = useNavigate();
@@ -23,6 +27,8 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
 
   const buttonSettings =
     "primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1 font-bold";
+  const authButton =
+    "primary-border flex h-15 w-30 items-center justify-center gap-2 rounded-xl font-bold cursor-pointer";
   const hoverSet = "hover:shadow-md";
   const primaryTransition = "transition-all duration-300 ease-in";
   const shadowTheme =
@@ -141,7 +147,12 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
             onClick={() => {
               setTheme(theme === "light" ? "dark" : "light");
             }}
-            className="primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1"
+            className={cn(
+              "primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1",
+              hoverSet,
+              primaryTransition,
+              shadowTheme,
+            )}
           >
             <img src={theme === "light" ? lightModeSvg : darkModeSvg} alt="" />
             {theme === "light" ? "☀️" : "🌙"}
@@ -151,8 +162,12 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
               navigate("/login");
               setOpenHandle();
             }}
-            className="primary-border h-15 w-30 rounded-xl font-bold"
+            className={cn(authButton, hoverSet, primaryTransition, shadowTheme)}
           >
+            <img
+              src={theme === "light" ? LightLoginPng : DarkLoginPng}
+              alt=""
+            />
             Log In
           </button>
           <button
@@ -160,8 +175,12 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
               navigate("./signup");
               setOpenHandle();
             }}
-            className="primary-border h-15 w-30 rounded-xl font-bold"
+            className={cn(authButton, hoverSet, primaryTransition, shadowTheme)}
           >
+            <img
+              src={theme === "light" ? LightSignupPng : DarkSignupPng}
+              alt=""
+            />
             Sign Up
           </button>
         </div>

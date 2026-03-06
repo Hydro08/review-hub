@@ -19,6 +19,10 @@ import LightContactSvg from "../assets/light-contact.svg";
 import DarkContactSvg from "../assets/dark-contact.svg";
 import LightAuthSettingsSvg from "../assets/light-auth-setting.svg";
 import DarkAuthSettingsSvg from "../assets/dark-auth-setting.svg";
+import LightSignupPng from "../assets/light-signup.png";
+import DarkSignupPng from "../assets/dark-signup.png";
+import LightLoginPng from "../assets/light-login.png";
+import DarkLoginPng from "../assets/dark-login.png";
 
 function HeaderNav({
   open,
@@ -37,7 +41,7 @@ function HeaderNav({
   const liBase =
     "primary-border rounded-xl text-lg px-3 py-2 text-base font-semibold";
   const authButton =
-    "primary-border rounded-xl px-3 py-2 font-bold cursor-pointer w-26 h-11 flex justify-center items-center";
+    "primary-border rounded-xl px-3 py-2 font-bold cursor-pointer gap-2 lg:w-32 h-11 flex justify-center items-center";
   const hoverSet = "hover:shadow-md";
   const primaryTransition = "transition-all duration-300 ease-in";
   const shadowTheme =
@@ -97,7 +101,7 @@ function HeaderNav({
           }}
           className={cn(
             "primary-border flex h-10 w-14 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold",
-            "py-1 lg:py-5.5",
+            "py-1 lg:py-5",
             primaryTransition,
             hoverSet,
             shadowTheme,
@@ -268,13 +272,17 @@ function HeaderNav({
                   navigate("/login");
                 }}
                 className={cn(
-                  "md:hidden lg:block",
+                  "md:hidden lg:flex",
                   authButton,
                   primaryTransition,
                   hoverSet,
                   shadowTheme,
                 )}
               >
+                <img
+                  src={theme === "light" ? LightLoginPng : DarkLoginPng}
+                  alt=""
+                />
                 Log In
               </button>
               <button
@@ -282,13 +290,17 @@ function HeaderNav({
                   navigate("/signup");
                 }}
                 className={cn(
-                  "md:hidden lg:block",
+                  "md:hidden lg:flex",
                   authButton,
                   primaryTransition,
                   hoverSet,
                   shadowTheme,
                 )}
               >
+                <img
+                  src={theme === "light" ? LightSignupPng : DarkSignupPng}
+                  alt=""
+                />
                 Sign Up
               </button>
             </div>

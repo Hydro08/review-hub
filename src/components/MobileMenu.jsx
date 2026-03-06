@@ -10,6 +10,20 @@ import lightLogoutSvg from "../assets/light-logout.svg";
 import darkModeSvg from "../assets/dark-mode.svg";
 import darkSettingSvg from "../assets/dark-settings.svg";
 import darkLogoutSvg from "../assets/dark-logout.svg";
+import LightHomeSvg from "../assets/light-home.svg";
+import DarkHomeSvg from "../assets/dark-home.svg";
+import LightAboutSvg from "../assets/light-about.svg";
+import DarkAboutSvg from "../assets/dark-about.svg";
+import LightDashboardSvg from "../assets/light-dashboard.svg";
+import DarkDashboardSvg from "../assets/dark-dashboard.svg";
+import LightContactSvg from "../assets/light-contact.svg";
+import DarkContactSvg from "../assets/dark-contact.svg";
+import LightAuthSettingsSvg from "../assets/light-auth-setting.svg";
+import DarkAuthSettingsSvg from "../assets/dark-auth-setting.svg";
+import LightSignupPng from "../assets/light-signup.png";
+import DarkSignupPng from "../assets/dark-signup.png";
+import LightLoginPng from "../assets/light-login.png";
+import DarkLoginPng from "../assets/dark-login.png";
 
 import { useEffect, useState } from "react";
 
@@ -67,8 +81,12 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 scrollToSection("homeSect");
                 setOpenHandle();
               }}
-              className="primary-border rounded-lg px-4 py-2 font-bold"
+              className="primary-border mt-2 flex items-center justify-center gap-2 rounded-lg px-3 py-2 font-bold"
             >
+              <img
+                src={theme === "light" ? LightHomeSvg : DarkHomeSvg}
+                alt=""
+              />
               HOME
             </li>
             <li
@@ -76,8 +94,12 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 scrollToSection("aboutSect");
                 setOpenHandle();
               }}
-              className="primary-border rounded-lg px-4 py-2 font-bold"
+              className="primary-border flex items-center justify-center gap-2 rounded-lg px-3 py-2 font-bold"
             >
+              <img
+                src={theme === "light" ? LightAboutSvg : DarkAboutSvg}
+                alt=""
+              />
               ABOUT
             </li>
             <li
@@ -85,8 +107,12 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 navigate("/dashboard");
                 setOpenHandle();
               }}
-              className="primary-border rounded-lg px-4 py-2 font-bold"
+              className="primary-border flex items-center justify-center gap-2 rounded-lg px-3 py-2 font-bold"
             >
+              <img
+                src={theme === "light" ? LightDashboardSvg : DarkDashboardSvg}
+                alt=""
+              />
               DASHBOARD
             </li>
             <li
@@ -94,8 +120,12 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 scrollToSection("contactSect");
                 setOpenHandle();
               }}
-              className="primary-border rounded-lg px-4 py-2 font-bold"
+              className="primary-border flex items-center justify-center gap-2 rounded-lg px-3 py-2 font-bold"
             >
+              <img
+                src={theme === "light" ? LightContactSvg : DarkContactSvg}
+                alt=""
+              />
               CONTACT
             </li>
           </ul>
@@ -103,7 +133,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
         <div className="flex h-[15%] w-full items-center justify-center">
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className="primary-border flex w-30 items-center justify-center gap-1 rounded-xl p-3 font-bold"
+            className="primary-border mt-5 flex w-30 items-center justify-center gap-1 rounded-xl p-3 font-bold"
           >
             <img
               src={theme === "light" ? lightModeSvg : darkModeSvg}
@@ -125,7 +155,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 className="flex items-center justify-center gap-2"
               >
                 <button
-                  onClick={() => ud()}
+                  onClick={ud}
                   className={cn(
                     "h-12 w-12 rounded-[50%]",
                     theme === "light"
@@ -135,13 +165,13 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 >
                   Prof
                 </button>
-                <p onClick={() => ud()} className="capitalize underline">
+                <p onClick={ud} className="capitalize underline">
                   {user.user_metadata.username}
                 </p>
               </Link>
               <div className="flex flex-col items-center justify-center gap-2">
                 <button
-                  onClick={() => ud()}
+                  onClick={ud}
                   className="primary-border flex w-30 items-center justify-center gap-2 rounded-lg p-2 font-bold"
                 >
                   <img
@@ -179,8 +209,12 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                   navigate("/login");
                   setOpenHandle();
                 }}
-                className="primary-border h-15 w-30 rounded-xl font-bold"
+                className="primary-border flex h-15 w-30 items-center justify-center gap-2 rounded-xl font-bold"
               >
+                <img
+                  src={theme === "light" ? LightLoginPng : DarkLoginPng}
+                  alt=""
+                />
                 Log In
               </button>
               <button
@@ -188,8 +222,12 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                   navigate("./signup");
                   setOpenHandle();
                 }}
-                className="primary-border h-15 w-30 rounded-xl font-bold"
+                className="primary-border flex h-15 w-30 items-center justify-center gap-2 rounded-xl font-bold"
               >
+                <img
+                  src={theme === "light" ? LightSignupPng : DarkSignupPng}
+                  alt=""
+                />
                 Sign Up
               </button>
             </div>
