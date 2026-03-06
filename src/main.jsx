@@ -5,6 +5,7 @@ import Landing from "./Landing";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import DashboardPage from "./pages/Dashboard";
+import ProfilePage from "./pages/Profile";
 import ForgotPasswordPage from "./pages/ForgotPass";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -26,6 +27,14 @@ createRoot(document.getElementById("root")).render(
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
               </ProtectedRoute>
             }
           ></Route>

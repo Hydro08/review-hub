@@ -46,3 +46,4 @@
 - Working on the dashboard page
 - Sidebar Desktop Done
 - Fixed Signup non-clickable when OTP modal showed
+- Added Profile Page (Working soon)

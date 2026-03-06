@@ -1,9 +1,8 @@
 import { cn } from "../lib/cn";
 import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import supabase from "../lib/supabase";
-
-import { useEffect, useState } from "react";
 
 import {
   lightModeSvg,
@@ -200,43 +199,40 @@ function HeaderNav({
         </ul>
         <div className="hidden md:flex">
           {user ? (
-            <Link
-              className={cn(
-                "ml-2 flex items-center justify-center gap-2",
-                primaryTransition,
-              )}
-            >
-              <button
-                onClick={() => {
-                  ud();
-                }}
+            <div className="flex items-center justify-center gap-2">
+              <Link
+                to="/profile"
                 className={cn(
-                  "h-12 w-12 cursor-pointer rounded-[50%] md:hidden lg:block",
-                  theme === "light"
-                    ? "dark-bg text-white"
-                    : "light-bg text-black",
-                  hoverSet,
+                  "flex items-center justify-center gap-2",
                   primaryTransition,
-                  shadowTheme,
                 )}
               >
-                Prof
-              </button>
-              <p
-                onClick={() => {
-                  ud();
-                }}
-                className={cn(
-                  "primary-border rounded-lg p-1 py-2 capitalize underline md:hidden lg:block",
-                  theme === "light" ? "text-black" : "text-white",
-                )}
-              >
-                {user.user_metadata.username}
-              </p>
+                <button
+                  className={cn(
+                    "h-12 w-12 cursor-pointer rounded-[50%] md:hidden lg:block",
+                    theme === "light"
+                      ? "dark-bg text-white"
+                      : "light-bg text-black",
+                    hoverSet,
+                    primaryTransition,
+                    shadowTheme,
+                  )}
+                >
+                  Prof
+                </button>
+                <p
+                  className={cn(
+                    "primary-border rounded-lg p-1 py-2 capitalize underline md:hidden lg:block",
+                    theme === "light" ? "text-black" : "text-white",
+                  )}
+                >
+                  {user.user_metadata.username}
+                </p>
+              </Link>
               <button
                 onClick={handleSettingClick}
                 className={cn(
-                  "primary-border cursor-pointer rounded-lg p-2",
+                  "primary-border cursor-pointer rounded-xl p-2",
                   primaryTransition,
                   hoverSet,
                   shadowTheme,
@@ -247,7 +243,7 @@ function HeaderNav({
                   alt="Settings"
                 />
               </button>
-            </Link>
+            </div>
           ) : (
             <div className="flex items-center justify-center gap-1">
               <button

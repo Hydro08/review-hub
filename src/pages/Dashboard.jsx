@@ -113,9 +113,13 @@ function DashboardPage() {
       </div>
 
       <div className="ml-[20vw] flex min-h-screen w-[80vw] flex-col items-center justify-center">
-        {activeTab === "decks" && <p>My Decks Content</p>}
-        {activeTab === "favourites" && <p>Favourites Content</p>}
-        {activeTab === "settings" && <p>Settings Content</p>}
+        {activeTab === "decks" && <p>My Decks Content "Under Development"</p>}
+        {activeTab === "favourites" && (
+          <p>Favourites Content "Under Development"</p>
+        )}
+        {activeTab === "settings" && (
+          <p>Settings Content "Under Development"</p>
+        )}
       </div>
     </main>
   );

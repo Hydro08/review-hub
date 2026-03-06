@@ -27,6 +27,9 @@ import {
 import { useEffect, useState } from "react";
 
 function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const scrollToSection = (id) => {
@@ -36,9 +39,6 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
   const setOpenHandle = () => {
     setOpen(!menuOpen);
   };
-
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const ud = () => {
     alert("under development :D");
@@ -86,7 +86,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
             >
               <img
                 src={theme === "light" ? LightHomeSvg : DarkHomeSvg}
-                alt=""
+                alt={theme === "light" ? "Light Home Icon" : "Dark Home Icon"}
               />
               HOME
             </li>
@@ -99,7 +99,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
             >
               <img
                 src={theme === "light" ? LightAboutSvg : DarkAboutSvg}
-                alt=""
+                alt={theme === "light" ? "Light About Icon" : "Dark About Icon"}
               />
               ABOUT
             </li>
@@ -112,7 +112,11 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
             >
               <img
                 src={theme === "light" ? LightDashboardSvg : DarkDashboardSvg}
-                alt=""
+                alt={
+                  theme === "light"
+                    ? "Light Dashboard Icon"
+                    : "Dark Dashboard Icon"
+                }
               />
               DASHBOARD
             </li>
@@ -125,7 +129,9 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
             >
               <img
                 src={theme === "light" ? LightContactSvg : DarkContactSvg}
-                alt=""
+                alt={
+                  theme === "light" ? "Light Contact Icon" : "Dark Contact Icon"
+                }
               />
               CONTACT
             </li>
@@ -152,11 +158,10 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
           {user ? (
             <div className="flex flex-col items-center justify-center gap-2">
               <Link
-                // to="/profile"
+                to="/profile"
                 className="flex items-center justify-center gap-2"
               >
                 <button
-                  onClick={ud}
                   className={cn(
                     "h-12 w-12 rounded-[50%]",
                     theme === "light"
@@ -166,7 +171,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                 >
                   Prof
                 </button>
-                <p onClick={ud} className="capitalize underline">
+                <p className="capitalize underline">
                   {user.user_metadata.username}
                 </p>
               </Link>
