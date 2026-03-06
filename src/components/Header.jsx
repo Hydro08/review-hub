@@ -227,7 +227,7 @@ function HeaderNav({
                   ud();
                 }}
                 className={cn(
-                  "primary-border rounded-lg p-1 capitalize underline md:hidden lg:block",
+                  "primary-border rounded-lg p-1 py-2 capitalize underline md:hidden lg:block",
                   theme === "light" ? "text-black" : "text-white",
                 )}
               >

@@ -10,6 +10,10 @@
   border-bottom: 2px solid #c263fd;
 }
 
+.primary-r-border {
+  border-right: 2px solid #c263fd;
+}
+
 .primary-shadow {
   box-shadow:
     0 0 10px #c263fd,

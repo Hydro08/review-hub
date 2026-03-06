@@ -356,6 +356,7 @@ function SignupPage() {
                 "primary-border w-30 rounded-lg p-2 font-bold",
                 "cursor-auto md:cursor-pointer",
                 "md:w-50",
+                showOtpModal ? "pointer-events-none" : "pointer-events-auto",
               )}
             >
               {isLoading ? "Loading..." : "Sign Up"}

@@ -62,10 +62,10 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
     <>
       <div
         className={cn(
-          "primary-b-border fixed left-0 z-10 flex w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden", // 👈 flex md:hidden
+          "primary-b-border fixed left-0 z-10 flex w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden",
           menuOpen
-            ? "pointer-events-auto top-[10vh]"
-            : "pointer-events-none top-[-80vh]", // 👈 pointer-events fix
+            ? "pointer-events-auto top-[10vh] opacity-100"
+            : "pointer-events-none top-[-80vh] opacity-0",
           theme === "light" ? "light-bg" : "dark-bg",
           user ? "h-[70vh]" : "h-[60vh]",
         )}

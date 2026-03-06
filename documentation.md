@@ -42,4 +42,7 @@
 
 - Added icons to mobile, tablet, desktop
 - Improved Mobile Menu layout
-- Fixing setting menu bug in mobile
+- Fixed Setting Menu bug where it was still clickable when hidden on mobile
+- Working on the dashboard page
+- Sidebar Desktop Done
+- Fixed Signup non-clickable when OTP modal showed
