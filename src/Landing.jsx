@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "./lib/cn";
+
 import emailjs from "@emailjs/browser";
 
 import { HeaderNav } from "./components/Header";
 import { MobileMenu } from "./components/MobileMenu";
 import { SettingMenu } from "./components/SettingMenu";
 import { useTheme } from "./context/ThemeContext";
+
+import { LoadingDots } from "./components/Loading";
 
 import {
   LightEmailSvg,
@@ -82,7 +85,7 @@ const CONTACT_LINKS = [
 ];
 
 const FORM_FIELDS = [
-  { key: "name", label: "NAME", type: "text", placeholder: "Your name" },
+  { key: "name", label: "NAME", type: "email", placeholder: "Your name" },
   {
     key: "email",
     label: "EMAIL",
@@ -538,7 +541,13 @@ function App() {
                   : "",
               )}
             >
-              {sending ? "SENDING..." : "SEND MESSAGE"}
+              {sending ? (
+                <span className="flex items-center justify-center gap-1">
+                  Sending <LoadingDots />
+                </span>
+              ) : (
+                "SEND MESSAGE"
+              )}
               <img
                 src={
                   sendHovered

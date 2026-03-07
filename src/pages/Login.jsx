@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext";
 import { useNavigate, Link } from "react-router-dom";
 import { cn } from "../lib/cn";
 import { motion } from "framer-motion";
+import { LoadingDots } from "../components/Loading";
 
 import supabase from "../lib/supabase";
 
@@ -220,7 +221,13 @@ function LoginPage() {
                 "md:w-50",
               )}
             >
-              {isLoading ? "Loading..." : "Log In"}
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-1">
+                  Loading <LoadingDots />
+                </span>
+              ) : (
+                "Log In"
+              )}
             </button>
           </div>
         </form>

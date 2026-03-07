@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { cn } from "../lib/cn";
 import { useTheme } from "../context/ThemeContext";
 import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import supabase from "../lib/supabase";
 
 import {
@@ -139,21 +139,22 @@ function ForgotPasswordPage() {
         primaryTransition,
       )}
     >
-      {/* Toast */}
-      {toast.show && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className={cn(
-            "fixed top-5 right-4 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
-            toast.success ? "bg-green-500" : "bg-red-500",
-          )}
-        >
-          {toast.success ? "✅" : "❌"} {toast.message}
-        </motion.div>
-      )}
-
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 1, x: 300 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className={cn(
+              "fixed right-5 bottom-5 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
+              toast.success ? "bg-green-500" : "bg-red-500",
+            )}
+          >
+            {toast.success ? "✅" : "❌"} {toast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <header className="primary-b-border flex min-h-[15vh] items-center justify-center px-2">
         <div className="w-[10vw]">
           <Link to="/login">
@@ -179,9 +180,7 @@ function ForgotPasswordPage() {
           </button>
         </div>
       </header>
-
       <section className="min-h-[85vh] w-full">
-        {/* Top - Image + Title + Description */}
         <div className="flex min-h-[40vh] w-full flex-col items-center justify-center gap-5 px-4">
           <img src={isLight ? LightForgotPng : DarkForgotPng} alt="" />
           <h1 className={cn("font-bold", "text-xl lg:text-2xl")}>
@@ -197,13 +196,11 @@ function ForgotPasswordPage() {
           </p>
         </div>
 
-        {/* Bottom - Horizontal Sections */}
         <div className="flex min-h-[45vh] w-full flex-col items-stretch md:flex-row">
-          {/* Section 1 - Email */}
           <div
             className={cn(
               "primary-b-border md:primary-r-border md:primary-b-0 flex flex-col items-center justify-center gap-2 px-4 transition-all duration-500",
-              "w-full py-6 md:py-0", // 👈 full width + padding sa mobile
+              "w-full py-6 md:py-0",
               step === 1
                 ? "md:w-full"
                 : step === 2
@@ -244,7 +241,6 @@ function ForgotPasswordPage() {
             )}
           </div>
 
-          {/* Section 2 - OTP */}
           {step >= 2 && (
             <div
               className={cn(
@@ -258,6 +254,11 @@ function ForgotPasswordPage() {
                   onSubmit={handleVerifyOtp}
                   className="flex w-full flex-col items-center justify-center gap-4"
                 >
+                  <div>
+                    <h1 className="text-base md:text-xl lg:text-2xl">
+                      Enter your OTP
+                    </h1>
+                  </div>
                   <div className="flex flex-wrap justify-center gap-1">
                     {otp.map((digit, index) => (
                       <input
@@ -289,7 +290,6 @@ function ForgotPasswordPage() {
             </div>
           )}
 
-          {/* Section 3 - New Password */}
           {step >= 3 && (
             <div className="flex w-full flex-col items-center justify-center gap-2 px-4 py-6 transition-all duration-500 md:w-[40%] md:py-0">
               <form

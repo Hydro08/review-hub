@@ -5,7 +5,7 @@
 - Initialized React project with Vite
 - Setup Tailwind CSS
 - Created basic folder structure
-- Connected VS Code folder to GitHub
+- Connected VS Code project folder to GitHub
 
 ## Day 2 — March 2, 2026
 
@@ -15,44 +15,48 @@
 
 ## Day 3 — March 3, 2026
 
-- Cleaned up and improved Auth page UI
-- Added About page
+- Improved Auth page UI
 - Fixed layout issues
+- Added About page
 
 ## Day 4 — March 4, 2026
 
 - Added hover effects and interactions (Send button, social links)
-- Improved overall UI polish
+- Improved overall UI
 - Added motion animations to Contact section and Footer
-- Built Contact form with EmailJS integration
+- Built Contact form with EmailJS
 - Added toast notification for form feedback
 - Stored EmailJS credentials in .env
 
 ## Day 5 — March 5, 2026
 
-- Fixed contact section height issue
-- Fixed landing page height issue (DevTools overlap)
-- Improved Login and Sign Up page (toast notifications, OTP boxes)
-- Improved Header UI in tablet and desktop
+- Fixed Contact section height issue
+- Fixed Landing Page height issue (DevTools overlap)
+- Improved Login and Sign Up pages (toast notifications, OTP inputs)
+- Improved Header UI for tablet and desktop
 - Added icons to list items
-- Added authentication settings dropdown (tablet view only)
-- Moved Theme, Login, and Signup inside Setting Menu when not logged in (tablet view)
+- Added authentication settings dropdown (tablet view)
+- Moved Theme, Login, and Sign Up inside Settings Menu when not logged in (tablet view)
 
-## Day 6 - March 6, 2026
+## Day 6 — March 6, 2026
 
-- Added icons to mobile, tablet, desktop
+- Added icons for mobile, tablet, and desktop
 - Improved Mobile Menu layout
-- Fixed Setting Menu bug where it was still clickable when hidden on mobile
-- Working on the dashboard page
-- Sidebar Desktop Done
-- Fixed Signup non-clickable when OTP modal showed
-- Added Profile Page (Working soon)
+- Fixed Settings Menu still clickable when hidden on mobile
+- Fixed Sign Up button becoming non-clickable when OTP modal appears
+- Started working on Dashboard page
+- Completed Desktop Sidebar
+- Added Profile page (coming soon)
 
-## Day 7 - March 7, 2026
+## Day 7 — March 7, 2026
 
-- Added Feed and Explore Page (Working Soon)
-- Added Feed button in the Landing Page (Not Working)
-- Working on Forgot Password Page (Mobile, Tablet, Desktop)
-- Added 3-step Forgot Password flow (Email → OTP → Reset)
+- Added Feed and Explore pages
+- Added Feed button on the Landing Page
+- Implemented Forgot Password page (mobile, tablet, desktop)
+- Implemented 3-step reset flow: Email → OTP → Reset Password
 - Added 8-digit OTP input boxes
-- Added Confirm Password on Reset step
+- Added Confirm Password field in reset step
+- Improved OTP input field on Sign Up page
+- Added AnimatePresence
+- Improved toast transitions
+- Added simple animations to Login, Sign Up, and Landing pages

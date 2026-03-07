@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate, Link } from "react-router-dom";
 import { cn } from "../lib/cn";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { LoadingDots } from "../components/Loading";
 
 import supabase from "../lib/supabase";
 
@@ -15,122 +16,46 @@ import darkVisiHideSvg from "../assets/dark-visi-hide.svg";
 
 function SignupPage() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfPass, setShowConfPass] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [canResend, setCanResend] = useState(true);
-  const [resendError, setResendError] = useState("");
-  const [countDown, setCountDown] = useState(0);
+  const inputs = useRef([]);
   const { theme, setTheme } = useTheme();
-  const themeBg =
-    theme === "light" ? "light-bg text-black" : "dark-bg text-white";
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const [otpCode, setOtpCode] = useState("");
+  const [otp, setOtp] = useState(Array(8).fill(""));
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfPass, setShowConfPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [canResend, setCanResend] = useState(true);
+  const [countDown, setCountDown] = useState(0);
+  const [resendError, setResendError] = useState("");
+  const [toast, setToast] = useState({
+    show: false,
+    success: true,
+    message: "",
+  });
 
-  const [toast, setToast] = useState({ show: false, success: true });
+  const isLight = theme === "light";
+  const themeBg = isLight ? "light-bg text-black" : "dark-bg text-white";
+  const primaryTransition = "transition-all duration-300 ease-in";
 
-  const showToast = (success) => {
-    setToast({ show: true, success });
-    setTimeout(() => setToast({ show: false, success: true }), 3000);
+  const showToast = (success, message = "") => {
+    setToast({ show: true, success, message });
+    setTimeout(
+      () => setToast({ show: false, success: true, message: "" }),
+      3000,
+    );
   };
 
-  const signupHandle = async (e) => {
-    e.preventDefault();
-
-    if (passwordHandle()) return;
-
-    setIsLoading(true);
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { username },
-      },
-    });
-
-    if (error) {
-      setIsLoading(false);
-      alert(error.message);
-      showToast(false);
-      return;
-    }
-
-    showToast(true);
-
-    const { error: profileError } = await supabase.from("profiles").insert({
-      id: data.user.id,
-      username,
-      email,
-    });
-
-    if (profileError) {
-      console.log("Profile error:", profileError.message);
-    }
-
-    setIsLoading(false);
-    setShowOtpModal(true);
-  };
-
-  const passwordHandle = () => {
-    if (password !== confPassword) {
-      alert("Password doesn't match");
-      return true;
-    }
-    return false;
-  };
-
-  const handleVerify = async () => {
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token: otpCode,
-      type: "signup",
-    });
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    navigate("/login");
-  };
-
-  const resendOtp = async () => {
-    const { error } = await supabase.auth.resend({
-      type: "signup",
-      email,
-    });
-
-    if (error) {
-      setResendError("For security purposes, you can only request this after ");
-      setCountDown(60);
-
-      const interval = setInterval(() => {
-        setCountDown((prev) => {
-          if (prev === 1) {
-            clearInterval(interval);
-            setResendError("");
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return;
-    }
-
-    setCanResend(false);
-    setResendError("");
+  const startCountdown = (onComplete) => {
     setCountDown(60);
-
     const interval = setInterval(() => {
       setCountDown((prev) => {
         if (prev === 1) {
           clearInterval(interval);
-          setCanResend(true);
+          onComplete?.();
           return 0;
         }
         return prev - 1;
@@ -138,15 +63,112 @@ function SignupPage() {
     }, 1000);
   };
 
-  const [showOtpModal, setShowOtpModal] = useState(false);
+  const signupHandle = async (e) => {
+    e.preventDefault();
+
+    if (password !== confPassword) {
+      showToast(false, "Password do not match.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { username } },
+    });
+
+    if (error) {
+      setIsLoading(false);
+      showToast(false);
+      return;
+    }
+
+    const { error: profileError } = await supabase.from("profiles").insert({
+      id: data.user.id,
+      username,
+      email,
+    });
+
+    if (profileError) console.error("Profile error:", profileError.message);
+
+    setIsLoading(false);
+    showToast(true);
+    setShowOtpModal(true);
+  };
+
+  const handleVerify = async () => {
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token: otp.join(""),
+      type: "signup",
+    });
+
+    if (error) {
+      showToast(false);
+      return;
+    }
+    navigate("/login");
+  };
+
+  const resendOtp = async () => {
+    const { error } = await supabase.auth.resend({ type: "signup", email });
+
+    if (error) {
+      setResendError("For security purposes, you can only request this after ");
+      startCountdown(() => setResendError(""));
+      return;
+    }
+
+    setCanResend(false);
+    setResendError("");
+    startCountdown(() => setCanResend(true));
+  };
+
+  const handleOtpChange = (value, index) => {
+    if (!/^\d*$/.test(value)) return;
+    const newOtp = [...otp];
+    newOtp[index] = value.slice(-1);
+    setOtp(newOtp);
+    if (value && index < 7) inputs.current[index + 1].focus();
+  };
+
+  const handleOtpKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputs.current[index - 1].focus();
+    }
+  };
+
+  const handlePaste = (e) => {
+    const pasted = e.clipboardData.getData("text").slice(0, 8).split("");
+    const newOtp = Array(8).fill("");
+    pasted.forEach((char, i) => (newOtp[i] = char));
+    setOtp(newOtp);
+    inputs.current[Math.min(pasted.length, 7)].focus();
+  };
+
+  const visiSrc = (show) =>
+    isLight
+      ? show
+        ? lightVisiHideSvg
+        : lightVisiSvg
+      : show
+        ? darkVisiHideSvg
+        : darkVisiSvg;
+
+  const inputBase = cn(
+    "primary-border rounded-xl p-2 font-bold w-[90%] md:w-full",
+    isLight ? "placeholder-black" : "placeholder-white",
+  );
+
+  const passwordInputBase = cn(
+    "primary-border rounded-xl p-2 font-bold w-[85%] lg:w-[95%]",
+    isLight ? "placeholder-black" : "placeholder-white",
+  );
 
   return (
-    <main
-      className={cn(
-        "min-h-screen w-full transition-all duration-300 ease-linear",
-        themeBg,
-      )}
-    >
+    <main className={cn("min-h-screen w-full", themeBg, primaryTransition)}>
       <header className="primary-b-border flex h-[10vh] items-center justify-center">
         <div
           className={cn(
@@ -170,24 +192,20 @@ function SignupPage() {
           )}
         >
           <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            onClick={() => setTheme(isLight ? "dark" : "light")}
             className={cn(
               "primary-border flex h-10 w-18 items-center justify-center gap-1 rounded-lg font-bold",
               "cursor-auto md:cursor-pointer",
             )}
           >
-            <img
-              src={theme === "light" ? lightModeSvg : darkModeSvg}
-              alt="light-mode"
-            />
-            {theme === "light" ? "☀️" : "🌙"}
+            <img src={isLight ? lightModeSvg : darkModeSvg} alt="theme" />
+            {isLight ? "☀️" : "🌙"}
           </button>
-
           <button
             onClick={() => navigate("/")}
             className={cn(
               "primary-border h-10 w-10 cursor-pointer rounded-lg font-bold",
-              theme === "light" ? "bg-red-400" : "bg-red-600",
+              isLight ? "bg-red-400" : "bg-red-600",
             )}
           >
             X
@@ -218,11 +236,7 @@ function SignupPage() {
               placeholder="Input Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className={cn(
-                "primary-border rounded-xl p-2 font-bold",
-                "w-[90%] md:w-full",
-                theme === "light" ? "placeholder-black" : "placeholder-white",
-              )}
+              className={inputBase}
               required
             />
           </fieldset>
@@ -238,11 +252,7 @@ function SignupPage() {
               placeholder="Input Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={cn(
-                "primary-border rounded-xl p-2 font-bold",
-                "w-[90%] md:w-full",
-                theme === "light" ? "placeholder-black" : "placeholder-white",
-              )}
+              className={inputBase}
               required
             />
           </fieldset>
@@ -259,34 +269,19 @@ function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Input Password"
-                className={cn(
-                  "primary-border rounded-xl p-2 font-bold",
-                  "w-[85%] lg:w-[95%]",
-                  theme === "light" ? "placeholder-black" : "placeholder-white",
-                )}
+                className={passwordInputBase}
                 required
               />
               <button
-                onClick={() => setShowPassword(!showPassword)}
                 type="button"
+                onClick={() => setShowPassword(!showPassword)}
                 className={cn(
                   "primary-border flex h-10 w-10 items-center justify-center rounded-lg",
                   "cursor-auto md:cursor-pointer",
                 )}
                 aria-label={showPassword ? "Hide Password" : "Show Password"}
               >
-                <img
-                  src={
-                    theme === "dark"
-                      ? !showPassword
-                        ? darkVisiSvg
-                        : darkVisiHideSvg
-                      : !showPassword
-                        ? lightVisiSvg
-                        : lightVisiHideSvg
-                  }
-                  alt={showPassword ? "Hide password" : "Show password"}
-                />
+                <img src={visiSrc(showPassword)} alt="" />
               </button>
             </div>
           </fieldset>
@@ -303,42 +298,23 @@ function SignupPage() {
                 value={confPassword}
                 onChange={(e) => setConfPassword(e.target.value)}
                 placeholder="Confirm Password"
-                className={cn(
-                  "primary-border rounded-xl p-2 font-bold",
-                  "w-[85%] lg:w-[95%]",
-                  theme === "light" ? "placeholder-black" : "placeholder-white",
-                )}
+                className={passwordInputBase}
                 required
               />
               <button
-                onClick={() => setShowConfPass(!showConfPass)}
                 type="button"
+                onClick={() => setShowConfPass(!showConfPass)}
                 className={cn(
                   "primary-border flex h-10 w-10 items-center justify-center rounded-lg",
                   "cursor-auto md:cursor-pointer",
                 )}
                 aria-label={
-                  showPassword
+                  showConfPass
                     ? "Hide Confirm Password"
                     : "Show Confirm Password"
                 }
               >
-                <img
-                  src={
-                    theme === "dark"
-                      ? !showConfPass
-                        ? darkVisiSvg
-                        : darkVisiHideSvg
-                      : !showConfPass
-                        ? lightVisiSvg
-                        : lightVisiHideSvg
-                  }
-                  alt={
-                    showConfPass
-                      ? "Hide confirm password"
-                      : "Show confirm password"
-                  }
-                />
+                <img src={visiSrc(showConfPass)} alt="" />
               </button>
             </div>
           </fieldset>
@@ -359,74 +335,87 @@ function SignupPage() {
                 showOtpModal ? "pointer-events-none" : "pointer-events-auto",
               )}
             >
-              {isLoading ? "Loading..." : "Sign Up"}
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-1">
+                  Loading <LoadingDots />
+                </span>
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </div>
         </form>
-        <div>
-          {showOtpModal && (
-            <div
-              className={cn(
-                "primary-border absolute top-[50%] left-[50%] flex h-[50vh] w-[70%] translate-x-[-50%] translate-y-[-50%] flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg",
-                themeBg,
-              )}
-            >
-              <h1 className="text-4xl">OTP</h1>
-              <span className="text-sm">(One Time Pin)</span>
-              <input
-                type="tel"
-                inputMode="numeric"
-                placeholder="Enter OTP"
-                value={otpCode}
-                maxLength={8}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/\D/g, "");
-                  setOtpCode(val);
-                }}
-                className={cn(
-                  "primary-border primary-shadow h-10 w-[90%] rounded-lg p-2 text-center font-bold tracking-widest",
-                  theme === "light" ? "placeholder-black" : "placeholder-white",
-                )}
-                aria-label="OTP Input"
-              />
-              <button
-                onClick={resendOtp}
-                disabled={!canResend}
-                className="primary-b-border cursor-pointer p-2 font-bold"
-              >
-                {canResend ? "Resend OTP" : `Resend in ${countDown}s`}
-              </button>
-              {resendError && (
-                <p className="text-sm text-red-500">
-                  {resendError}
-                  {countDown}s.
-                </p>
-              )}
-              <button
-                onClick={handleVerify}
-                className="primary-border cursor-pointer rounded-lg p-2 font-bold"
-              >
-                Verify
-              </button>
-            </div>
-          )}
-        </div>
-        {toast.show && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+
+        {showOtpModal && (
+          <div
             className={cn(
-              "fixed top-20 right-4 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
-              toast.success ? "bg-green-500" : "bg-red-500",
+              "primary-border absolute top-[50%] left-[50%] flex h-[50vh] w-[70%] translate-x-[-50%] translate-y-[-50%] flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg",
+              themeBg,
             )}
           >
-            {toast.success
-              ? "✅ Account created! Check your email for OTP."
-              : "❌ Something went wrong. Please try again."}
-          </motion.div>
+            <h1 className="text-4xl">OTP</h1>
+            <span className="text-sm">(One Time Pin)</span>
+            <div className="flex flex-wrap justify-center gap-1">
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (inputs.current[index] = el)}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(e.target.value, index)}
+                  onKeyDown={(e) => handleOtpKeyDown(e, index)}
+                  onPaste={handlePaste}
+                  className={cn(
+                    "primary-border h-12 rounded-lg text-center text-xl font-bold",
+                    "w-8 md:w-10",
+                  )}
+                />
+              ))}
+            </div>
+            <button
+              onClick={resendOtp}
+              disabled={!canResend}
+              className="primary-b-border cursor-pointer p-2 font-bold"
+            >
+              {canResend ? "Resend OTP" : `Resend in ${countDown}s`}
+            </button>
+            {resendError && (
+              <p className="text-sm text-red-500">
+                {resendError}
+                {countDown}s.
+              </p>
+            )}
+            <button
+              onClick={handleVerify}
+              className="primary-border cursor-pointer rounded-lg p-2 font-bold"
+            >
+              Verify
+            </button>
+          </div>
         )}
+
+        <AnimatePresence>
+          {toast.show && (
+            <motion.div
+              initial={{ opacity: 0, x: 300 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 300 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className={cn(
+                "fixed right-5 bottom-5 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
+                toast.success ? "bg-green-500" : "bg-red-500",
+              )}
+            >
+              {toast.success
+                ? "✅ Account created! Check your email for OTP."
+                : `❌ ${toast.message}`}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
+
       <footer className="flex h-[10vh] w-full items-center justify-center font-bold">
         <p>
           &copy; {new Date().getFullYear()} Review Hub. All rights reserved.
