@@ -59,4 +59,5 @@
 - Improved OTP input field on Sign Up page
 - Added AnimatePresence
 - Improved toast transitions
+- Created reusable LoadingDots component using Framer Motion
 - Added simple animations to Login, Sign Up, and Landing pages
