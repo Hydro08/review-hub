@@ -9,14 +9,16 @@ import { MobileMenu } from "./components/MobileMenu";
 import { SettingMenu } from "./components/SettingMenu";
 import { useTheme } from "./context/ThemeContext";
 
-import LightEmailSvg from "./assets/light-email.svg";
-import DarkEmailSvg from "./assets/dark-email.svg";
-import LightSendSvg from "./assets/light-send.svg";
-import DarkSendSvg from "./assets/dark-send.svg";
-import LightGithubPng from "./assets/light-github.png";
-import DarkGithubPng from "./assets/dark-github.png";
-import LightFacebookPng from "./assets/light-facebook.png";
-import DarkFacebookPng from "./assets/dark-facebook.png";
+import {
+  LightEmailSvg,
+  DarkEmailSvg,
+  LightSendSvg,
+  DarkSendSvg,
+  LightGithubPng,
+  DarkGithubPng,
+  LightFacebookPng,
+  DarkFacebookPng,
+} from "./assets/images";
 
 import supabase from "./lib/supabase";
 import "./App.css";
@@ -276,11 +278,30 @@ function App() {
               buttonBase,
               "w-40 hover:shadow-md sm:w-60 md:w-40 md:cursor-pointer",
               menuOpen ? "pointer-events-none" : "pointer-events-auto",
+              theme === "light" ? "dark-bg text-white" : "light-bg text-black",
               primaryTransition,
               shadowTheme,
             )}
           >
             Get Started
+          </motion.button>
+
+          <motion.button
+            onClick={ud}
+            variants={btnVariants}
+            initial="popOut"
+            whileInView="popIn"
+            transition={{ duration: 0.2 }}
+            aria-label="Demo with Review Hub"
+            className={cn(
+              buttonBase,
+              "w-40 hover:shadow-md sm:w-60 md:w-40 md:cursor-pointer",
+              menuOpen ? "pointer-events-none" : "pointer-events-auto",
+              primaryTransition,
+              shadowTheme,
+            )}
+          >
+            Feed
           </motion.button>
 
           <motion.button

@@ -47,3 +47,12 @@
 - Sidebar Desktop Done
 - Fixed Signup non-clickable when OTP modal showed
 - Added Profile Page (Working soon)
+
+## Day 7 - March 7, 2026
+
+- Added Feed and Explore Page (Working Soon)
+- Added Feed button in the Landing Page (Not Working)
+- Working on Forgot Password Page (Mobile, Tablet, Desktop)
+- Added 3-step Forgot Password flow (Email → OTP → Reset)
+- Added 8-digit OTP input boxes
+- Added Confirm Password on Reset step
