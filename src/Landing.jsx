@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "./lib/cn";
 
 import emailjs from "@emailjs/browser";
@@ -9,7 +9,6 @@ import { HeaderNav } from "./components/Header";
 import { MobileMenu } from "./components/MobileMenu";
 import { SettingMenu } from "./components/SettingMenu";
 import { useTheme } from "./context/ThemeContext";
-
 import { LoadingDots } from "./components/Loading";
 
 import {
@@ -85,7 +84,7 @@ const CONTACT_LINKS = [
 ];
 
 const FORM_FIELDS = [
-  { key: "name", label: "NAME", type: "email", placeholder: "Your name" },
+  { key: "name", label: "NAME", type: "text", placeholder: "Your name" },
   {
     key: "email",
     label: "EMAIL",
@@ -177,6 +176,24 @@ function App() {
     document.body.style.overflowY = menuOpen ? "hidden" : "auto";
   }, [menuOpen]);
 
+  useEffect(() => {
+    const handler = () => {
+      if (menuOpen) setMenuOpen(false);
+    };
+
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const handler = () => {
+      if (settingOpen) setSettingOpen(false);
+    };
+
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  });
+
   const showToast = (success) => {
     setToast({ show: true, success });
     setTimeout(() => setToast({ show: false, success: true }), 3000);
@@ -235,7 +252,24 @@ function App() {
         setTheme={setTheme}
       />
       <SettingMenu settingOpen={settingOpen} setSettingOpen={setSettingOpen} />
-
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 300 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className={cn(
+              "fixed right-5 bottom-5 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
+              toast.success ? "bg-green-500" : "bg-red-500",
+            )}
+          >
+            {toast.success
+              ? "✅ Message sent successfully!"
+              : "❌ Please fill in all fields."}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <section
         id="homeSect"
         className={cn(
@@ -420,22 +454,6 @@ function App() {
           themeBg,
         )}
       >
-        {toast.show && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className={cn(
-              "fixed top-20 right-4 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
-              toast.success ? "bg-green-500" : "bg-red-500",
-            )}
-          >
-            {toast.success
-              ? "✅ Message sent successfully!"
-              : "❌ Please fill in all fields."}
-          </motion.div>
-        )}
-
         <div
           className="flex w-full max-w-xl flex-col gap-8 px-8 py-16 md:px-12"
           id="contact"

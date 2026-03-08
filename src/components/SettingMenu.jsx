@@ -56,6 +56,9 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
     <>
       {user ? (
         <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
           className={cn(
             "primary-border fixed top-[12vh] right-0 z-10 hidden flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in md:flex",
             "md:w-[25%] lg:w-[15%]",
@@ -135,6 +138,9 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
         </div>
       ) : (
         <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
           className={cn(
             "primary-border fixed top-[10vh] right-0 z-10 flex min-h-[35vh] w-[20%] flex-col items-center justify-center gap-4 rounded-lg p-2 opacity-0 transition-all duration-200 ease-in",
             settingOpen

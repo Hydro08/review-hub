@@ -61,3 +61,7 @@
 - Improved toast transitions
 - Created reusable LoadingDots component using Framer Motion
 - Added simple animations to Login, Sign Up, and Landing pages
+
+## Day 8 - March 8, 2026
+
+- Improved setting menu and open menu hide when click other components

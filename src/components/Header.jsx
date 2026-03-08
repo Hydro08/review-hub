@@ -48,10 +48,6 @@ function HeaderNav({
   const shadowTheme =
     theme === "light" ? "hover:shadow-black" : "hover:shadow-white";
 
-  const ud = () => {
-    alert("Under Development :D");
-  };
-
   const handleClick = () => {
     setOpen(!open);
   };
@@ -90,7 +86,10 @@ function HeaderNav({
 
       <button
         className="primary-border h-10 w-10 rounded-lg font-bold md:hidden"
-        onClick={handleClick}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleClick();
+        }}
       >
         {open ? "X" : "≡"}
       </button>
@@ -230,7 +229,10 @@ function HeaderNav({
                 </p>
               </Link>
               <button
-                onClick={handleSettingClick}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSettingClick();
+                }}
                 className={cn(
                   "primary-border cursor-pointer rounded-xl p-2",
                   primaryTransition,
@@ -247,7 +249,10 @@ function HeaderNav({
           ) : (
             <div className="flex items-center justify-center gap-1">
               <button
-                onClick={handleSettingClick}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSettingClick();
+                }}
                 className={cn(
                   "md:flex lg:hidden",
                   authButton,
