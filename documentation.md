@@ -65,3 +65,7 @@
 ## Day 8 - March 8, 2026
 
 - Improved setting menu and open menu hide when click other components
+- Improved dashboard UI layout on mobile, tablet, and desktop
+- Fixed MobileDashboardFloat bugs (props, useTheme, layout)
+- Fixed useEffect resize missing dependency array
+- Added 2-column grid layout for nav items on tablet

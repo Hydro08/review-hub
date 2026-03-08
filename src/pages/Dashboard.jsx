@@ -1,8 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { cn } from "../lib/cn";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "../lib/supabase";
+
+import { MobileDashboardFloat } from "../components/MobileDashboard";
 
 function DashboardPage() {
   const { theme } = useTheme();
@@ -10,10 +12,14 @@ function DashboardPage() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("decks");
+  const [dashboardOpen, setDashboardOpen] = useState(false);
 
   const navigate = useNavigate();
   const isLight = theme === "light";
   const primaryTransition = "transition-all duration-300 ease-in";
+  const handleDashboardClick = () => {
+    setDashboardOpen(!dashboardOpen);
+  };
 
   const navItems = [
     { label: "Home", type: "link", to: "/" },
@@ -40,14 +46,37 @@ function DashboardPage() {
   return (
     <main
       className={cn(
-        "relative min-h-screen w-screen",
+        "relative min-h-screen w-full",
         isLight ? "light-bg text-black" : "dark-bg text-white",
         primaryTransition,
       )}
     >
+      <MobileDashboardFloat
+        dashboardOpen={dashboardOpen}
+        setDashboardOpen={setDashboardOpen}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
+      <div className="primary-b-border relative flex min-h-[20vh] w-full items-center justify-center">
+        <div className="flex w-[20vw] items-center justify-center">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDashboardClick();
+            }}
+            className="primary-border h-10 w-12 rounded-lg text-2xl font-bold"
+          >
+            {dashboardOpen ? "x" : "≡"}
+          </button>
+        </div>
+        <div className="flex h-full w-[80vw] items-center justify-center text-2xl font-semibold tracking-widest">
+          My Decks
+        </div>
+      </div>
+
       <div
         className={cn(
-          "primary-r-border fixed top-0 left-0 flex h-screen w-[20vw] flex-col justify-between",
+          "primary-r-border fixed top-0 left-0 hidden h-screen w-[20vw] flex-col justify-between lg:flex",
           isLight ? "light-bg" : "dark-bg",
         )}
       >
@@ -112,7 +141,13 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="ml-[20vw] flex min-h-screen w-[80vw] flex-col items-center justify-center">
+      <div
+        className={cn(
+          "flex min-h-screen flex-col items-center justify-center",
+          "w-full lg:w-[80vw]",
+          "lg:ml-[20vw]",
+        )}
+      >
         {activeTab === "decks" && <p>My Decks Content "Under Development"</p>}
         {activeTab === "favourites" && (
           <p>Favourites Content "Under Development"</p>
