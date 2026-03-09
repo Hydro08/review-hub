@@ -28,6 +28,8 @@ import LightFacebookPng from "./light-facebook.png";
 import DarkFacebookPng from "./dark-facebook.png";
 import LightGithubPng from "./light-github.png";
 import DarkGithubPng from "./dark-github.png";
+import LightSearchSvg from "./light-search.svg";
+import DarkSearchSvg from "./dark-search.svg";
 
 export {
   lightModeSvg,
@@ -60,4 +62,6 @@ export {
   DarkFacebookPng,
   LightGithubPng,
   DarkGithubPng,
+  LightSearchSvg,
+  DarkSearchSvg,
 };

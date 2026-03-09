@@ -251,7 +251,9 @@ function App() {
         theme={theme}
         setTheme={setTheme}
       />
+
       <SettingMenu settingOpen={settingOpen} setSettingOpen={setSettingOpen} />
+
       <AnimatePresence>
         {toast.show && (
           <motion.div

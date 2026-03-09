@@ -61,6 +61,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
   return (
     <>
       <div
+        onClick={(e) => e.stopPropagation()}
         className={cn(
           "primary-b-border fixed left-0 z-10 flex w-full flex-col justify-center transition-all duration-300 ease-linear md:hidden",
           menuOpen

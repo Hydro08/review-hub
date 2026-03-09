@@ -1,21 +1,24 @@
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "../lib/cn";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+
 import supabase from "../lib/supabase";
 
-function MobileDashboardFloat({
-  dashboardOpen,
-  setDashboardOpen,
+function SidebarDashboardLeft({
+  sidebarOpen,
+  setSidebarOpen,
   activeTab,
   setActiveTab,
 }) {
-  const navigate = useNavigate();
-  const { theme } = useTheme();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const theme = useTheme();
   const isLight = theme === "light";
+  const navigate = useNavigate();
+
   const primaryTransition = "transition-all duration-300 ease-in";
 
   const navItems = [
@@ -40,37 +43,32 @@ function MobileDashboardFloat({
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setDashboardOpen(false);
-        document.body.style.overflow = "unset";
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
     <div
       onClick={(e) => e.stopPropagation()}
       className={cn(
-        "primary-b-border fixed z-10 flex min-h-[70vh] w-full flex-col lg:hidden",
-        dashboardOpen
-          ? "pointer-events-auto top-[10vh] opacity-100"
-          : "pointer-events-none top-[-100vh] opacity-0",
+        "primary-r-border fixed top-0 z-10 hidden min-h-screen w-[20vw] flex-col justify-between lg:flex",
+        sidebarOpen
+          ? "pointer-events-auto left-0"
+          : "pointer-events-none left-[-100vh]",
         primaryTransition,
         isLight ? "light-bg" : "dark-bg",
       )}
     >
-      <div className="flex min-h-[10vh] w-full items-center justify-center border-b border-gray-600">
+      <div className="flex min-h-[15vh] w-full items-center justify-center border-b border-gray-600">
         <Link to="/profile" className="flex items-center justify-center gap-2">
-          <img src="#" alt="" className="h-[50px] w-[50px] rounded-[50%]" />
-          <p>{user?.user_metadata?.username}</p>
+          <img
+            src="#"
+            alt=""
+            className={cn(
+              "h-[50px] w-[50px] rounded-[50%]",
+              isLight ? "dark-bg" : "light-bg",
+            )}
+          />
+          <p className="underline">{user?.user_metadata?.username}</p>
         </Link>
       </div>
-
-      <div className="grid w-full flex-1 grid-cols-1 gap-1 p-2 md:grid-cols-2">
+      <div className="flex w-full flex-1 flex-col justify-center gap-1 p-2">
         {navItems.map(({ label, type, to, tab }) => (
           <div
             key={label}
@@ -78,7 +76,7 @@ function MobileDashboardFloat({
             onClick={() => {
               if (type === "tab") {
                 setActiveTab(tab);
-                setDashboardOpen(false);
+                setSidebarOpen(false);
               }
             }}
           >
@@ -122,4 +120,4 @@ function MobileDashboardFloat({
   );
 }
 
-export { MobileDashboardFloat };
+export { SidebarDashboardLeft };

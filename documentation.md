@@ -69,3 +69,11 @@
 - Fixed MobileDashboardFloat bugs (props, useTheme, layout)
 - Fixed useEffect resize missing dependency array
 - Added 2-column grid layout for nav items on tablet
+
+## Day 9 - March 9, 2026
+
+- Added a search bar to the dashboard
+- Added a dynamic header title based on the active tab
+- Hid the search bar when the Settings tab is active
+- Added an "X" button and its function for the dashboard search bar
+- Removed the sidebar from the dashboard and added a DashboardSidebar component for desktop
