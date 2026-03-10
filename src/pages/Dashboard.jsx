@@ -1,19 +1,27 @@
 import { useTheme } from "../context/ThemeContext";
 import { cn } from "../lib/cn";
 import { useEffect, useState } from "react";
-import supabase from "../lib/supabase";
+import { Link } from "react-router-dom";
 
 import { MobileDashboardFloat } from "../components/MobileDashboard";
-import { DarkSearchSvg, LightSearchSvg } from "../assets/images";
+import {
+  DarkAddDecksSvg,
+  DarkSearchSvg,
+  LightAddDecksSvg,
+  LightSearchSvg,
+  darkModeSvg,
+  lightModeSvg,
+} from "../assets/images";
 import { SidebarDashboardLeft } from "../components/SidebarDashboard";
 
 function DashboardPage() {
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const [activeTab, setActiveTab] = useState("decks");
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [decks] = useState([]);
 
   const isLight = theme === "light";
   const primaryTransition = "transition-all duration-300 ease-in";
@@ -53,6 +61,10 @@ function DashboardPage() {
     document.body.style.overflowY = dashboardOpen ? "hidden" : "auto";
   }, [dashboardOpen]);
 
+  useEffect(() => {
+    document.body.style.overflowY = sidebarOpen ? "hidden" : "auto";
+  }, [sidebarOpen]);
+
   return (
     <main
       className={cn(
@@ -81,6 +93,7 @@ function DashboardPage() {
           "w-full",
           "min-h-[10vh] lg:min-h-[15vh]",
           isLight ? "light-bg" : "dark-bg",
+          primaryTransition,
         )}
       >
         <div className={cn("flex w-[10vw] items-center justify-center")}>
@@ -88,12 +101,10 @@ function DashboardPage() {
             onClick={(e) => {
               e.stopPropagation();
 
-              if (innerWidth > 1028) {
+              if (window.innerWidth > 1028) {
                 handleLeftDashboardClick();
-                console.log(sidebarOpen);
               } else {
                 handleDashboardClick();
-                console.log(dashboardOpen);
               }
             }}
             className="primary-border h-10 w-12 rounded-lg text-2xl font-bold"
@@ -101,8 +112,25 @@ function DashboardPage() {
             {dashboardOpen || sidebarOpen ? "x" : "≡"}
           </button>
         </div>
-        <div className="flex h-full w-[90vw] items-center justify-center text-2xl font-semibold tracking-widest">
+        <div className="flex h-full w-[75vw] items-center justify-center text-2xl font-semibold tracking-widest">
           {titleNav[activeTab]}
+        </div>
+        <div className="flex h-full w-[15vw] items-center justify-center">
+          <button
+            onClick={() => {
+              setTheme(theme === "light" ? "dark" : "light");
+            }}
+            className={cn(
+              "primary-border flex h-10 w-16 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold",
+              "py-1 lg:py-5",
+            )}
+          >
+            <img
+              src={theme === "light" ? lightModeSvg : darkModeSvg}
+              alt="light-mode"
+            />
+            {theme === "light" ? "☀️" : "🌙"}
+          </button>
         </div>
       </div>
 
@@ -143,22 +171,32 @@ function DashboardPage() {
 
       <div
         className={cn(
-          "flex min-h-screen flex-col items-center justify-center",
-          "w-full lg:w-[79vw]",
-          "lg:ml-[20vw]",
+          "flex min-h-screen w-full flex-col items-center justify-center",
         )}
       >
         {activeTab === "decks" && (
-          <div className="grid min-h-screen w-[79vw] grid-cols-2 gap-2 p-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-            <div className="flex h-[40vh] items-center justify-center bg-black">
-              Create New Decks
-            </div>
-            <div className="flex h-[40vh] items-center justify-center bg-black">
-              Decks Under Development
-            </div>
-            <div className="flex h-[40vh] items-center justify-center bg-black">
-              Decks Under Development
-            </div>
+          <div className="grid min-h-screen w-full grid-cols-2 gap-2 p-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+            <Link
+              to="/create-deck"
+              className="primary-border flex h-[40vh] flex-col items-center justify-center gap-2 rounded-lg"
+            >
+              <img
+                src={isLight ? LightAddDecksSvg : DarkAddDecksSvg}
+                alt=""
+                className="h-16 w-16"
+              />
+              <p className="text-center text-2xl font-semibold">
+                Create New Decks
+              </p>
+            </Link>
+            {decks.map((deck) => (
+              <div
+                key={deck.id}
+                className="primary-border flex h-[40vh] items-center justify-center rounded-lg"
+              >
+                <p className="text-center">{deck.title}</p>
+              </div>
+            ))}
           </div>
         )}
         {activeTab === "favourites" && (

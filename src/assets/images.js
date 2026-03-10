@@ -30,6 +30,8 @@ import LightGithubPng from "./light-github.png";
 import DarkGithubPng from "./dark-github.png";
 import LightSearchSvg from "./light-search.svg";
 import DarkSearchSvg from "./dark-search.svg";
+import LightAddDecksSvg from "./light-add-decks.svg";
+import DarkAddDecksSvg from "./dark-add-decks.svg";
 
 export {
   lightModeSvg,
@@ -64,4 +66,6 @@ export {
   DarkGithubPng,
   LightSearchSvg,
   DarkSearchSvg,
+  LightAddDecksSvg,
+  DarkAddDecksSvg,
 };

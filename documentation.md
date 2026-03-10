@@ -77,3 +77,9 @@
 - Hid the search bar when the Settings tab is active
 - Added an "X" button and its function for the dashboard search bar
 - Removed the sidebar from the dashboard and added a DashboardSidebar component for desktop
+
+## Day 10 - March 10, 2026
+
+- Added decks table in supabase
+- Created CreateDeck page
+- Added light and dark toggle in dashboard

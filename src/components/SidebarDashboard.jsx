@@ -43,14 +43,25 @@ function SidebarDashboardLeft({
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setSidebarOpen(false);
+        document.body.style.overflow = "unset";
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div
       onClick={(e) => e.stopPropagation()}
       className={cn(
-        "primary-r-border fixed top-0 z-10 hidden min-h-screen w-[20vw] flex-col justify-between lg:flex",
+        "primary-r-border fixed top-0 z-10 hidden min-h-[85vh] w-[20vw] flex-col justify-between lg:flex",
         sidebarOpen
-          ? "pointer-events-auto left-0"
-          : "pointer-events-none left-[-100vh]",
+          ? "pointer-events-auto top-[15vh] left-0"
+          : "pointer-events-none top-[15vh] left-[-100vh]",
         primaryTransition,
         isLight ? "light-bg" : "dark-bg",
       )}

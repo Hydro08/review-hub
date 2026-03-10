@@ -8,6 +8,7 @@ import DashboardPage from "./pages/Dashboard";
 import ProfilePage from "./pages/Profile";
 import ForgotPasswordPage from "./pages/ForgotPass";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CreateDeckPage from "./pages/CreateDeck";
 
 import "./index.css";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -35,6 +36,14 @@ createRoot(document.getElementById("root")).render(
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/create-deck"
+            element={
+              <ProtectedRoute>
+                <CreateDeckPage />
               </ProtectedRoute>
             }
           ></Route>

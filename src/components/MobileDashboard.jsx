@@ -42,7 +42,7 @@ function MobileDashboardFloat({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 1028) {
         setDashboardOpen(false);
         document.body.style.overflow = "unset";
       }
