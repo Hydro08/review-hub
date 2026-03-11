@@ -83,3 +83,14 @@
 - Added decks table in supabase
 - Created CreateDeck page
 - Added light and dark toggle in dashboard
+
+## Day 11 - March 11, 2026
+
+- Created Create Deck page
+- Fixed form validation (title & category required, `.trim()` on inputs)
+- Improved error handling with `try/catch/finally` in `handleCreate`
+- Added dynamic toast messages in created deck for different error types
+- Refactored `CreateDeckPage` — cleaner code with comments
+- Added RLS policies in Supabase (INSERT & SELECT) for `decks` table
+- Fixed `auth.uid()` policy to allow users to view their own decks
+- Improving Dashboard decks display

@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import supabase from "../lib/supabase";
 
 import {
-  lightModeSvg,
-  darkModeSvg,
+  LightModeSvg,
+  DarkModeSvg,
   LightForgotPng,
   DarkForgotPng,
   LightSendSvg,
@@ -175,7 +175,7 @@ function ForgotPasswordPage() {
               "cursor-auto md:cursor-pointer",
             )}
           >
-            <img src={isLight ? lightModeSvg : darkModeSvg} alt="theme" />
+            <img src={isLight ? LightModeSvg : DarkModeSvg} alt="theme" />
             {isLight ? "☀️" : "🌙"}
           </button>
         </div>

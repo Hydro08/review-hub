@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import supabase from "../lib/supabase";
 
 import {
-  lightModeSvg,
-  darkModeSvg,
-  lightSettingSvg,
-  darkSettingSvg,
+  LightModeSvg,
+  DarkModeSvg,
+  LightSettingSvg,
+  DarkSettingSvg,
   LightHomeSvg,
   DarkHomeSvg,
   LightAboutSvg,
@@ -109,7 +109,7 @@ function HeaderNav({
           )}
         >
           <img
-            src={theme === "light" ? lightModeSvg : darkModeSvg}
+            src={theme === "light" ? LightModeSvg : DarkModeSvg}
             alt="light-mode"
           />
           {theme === "light" ? "☀️" : "🌙"}
@@ -241,7 +241,7 @@ function HeaderNav({
                 )}
               >
                 <img
-                  src={theme === "light" ? lightSettingSvg : darkSettingSvg}
+                  src={theme === "light" ? LightSettingSvg : DarkSettingSvg}
                   alt="Settings"
                 />
               </button>

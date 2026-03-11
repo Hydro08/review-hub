@@ -1,7 +1,7 @@
-import lightModeSvg from "./light-mode.svg";
-import darkModeSvg from "./dark-mode.svg";
-import lightSettingSvg from "./light-settings.svg";
-import darkSettingSvg from "./dark-settings.svg";
+import LightModeSvg from "./light-mode.svg";
+import DarkModeSvg from "./dark-mode.svg";
+import LightSettingSvg from "./light-settings.svg";
+import DarkSettingSvg from "./dark-settings.svg";
 import lightLogoutSvg from "../assets/light-logout.svg";
 import darkLogoutSvg from "../assets/dark-logout.svg";
 import LightHomeSvg from "./light-home.svg";
@@ -32,12 +32,14 @@ import LightSearchSvg from "./light-search.svg";
 import DarkSearchSvg from "./dark-search.svg";
 import LightAddDecksSvg from "./light-add-decks.svg";
 import DarkAddDecksSvg from "./dark-add-decks.svg";
+import LightCreateFolderPng from "./light-create-folder.png";
+import DarkCreateFolderPng from "./dark-create-folder.png";
 
 export {
-  lightModeSvg,
-  darkModeSvg,
-  lightSettingSvg,
-  darkSettingSvg,
+  LightModeSvg,
+  DarkModeSvg,
+  LightSettingSvg,
+  DarkSettingSvg,
   LightHomeSvg,
   DarkHomeSvg,
   lightLogoutSvg,
@@ -68,4 +70,6 @@ export {
   DarkSearchSvg,
   LightAddDecksSvg,
   DarkAddDecksSvg,
+  LightCreateFolderPng,
+  DarkCreateFolderPng,
 };

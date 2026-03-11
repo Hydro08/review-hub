@@ -13,6 +13,8 @@
 - [x] Toast Notifications (Login, Sign Up)
 - [x] Header UI (Tablet & Desktop)
 - [x] Authentication Settings Dropdown (Tablet)
+- [x] Dashboard
+- [x] Create Decks
 
 ## 🔧 IMPROVING
 
@@ -20,20 +22,20 @@
 - [ ] Login
 - [ ] Signup
 - [ ] Responsive Design
+- [ ] Dashboard
+- [ ] Create Decks
 
 ## 🔄 IN PROGRESS
 
 - [ ] Forgot Password
 - [ ] Icons (from Flaticon and Google Icons)
+- [ ] Edit and Delete Decks
 
 ## 📋 TODO
 
-- [ ] Dashboard
-- [ ] Create Decks
 - [ ] Create Flashcard
 - [ ] Profile
 - [ ] Settings
-- [ ] Edit and Delete Decks
 - [ ] Edit and Delete Flashcard
 - [ ] Search / Filter Decks
 - [ ] Favorites / Bookmark Decks

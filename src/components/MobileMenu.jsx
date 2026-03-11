@@ -4,10 +4,10 @@ import { cn } from "../lib/cn";
 import supabase from "../lib/supabase";
 
 import {
-  lightModeSvg,
-  darkModeSvg,
-  lightSettingSvg,
-  darkSettingSvg,
+  LightModeSvg,
+  DarkModeSvg,
+  LightSettingSvg,
+  DarkSettingSvg,
   lightLogoutSvg,
   darkLogoutSvg,
   LightHomeSvg,
@@ -144,7 +144,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
             className="primary-border mt-5 flex w-30 items-center justify-center gap-1 rounded-xl p-3 font-bold"
           >
             <img
-              src={theme === "light" ? lightModeSvg : darkModeSvg}
+              src={theme === "light" ? LightModeSvg : DarkModeSvg}
               alt="light-mode"
             />
             {theme === "light" ? "☀️" : "🌙"}
@@ -182,7 +182,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                   className="primary-border flex w-30 items-center justify-center gap-2 rounded-lg p-2 font-bold"
                 >
                   <img
-                    src={theme === "light" ? lightSettingSvg : darkSettingSvg}
+                    src={theme === "light" ? LightSettingSvg : DarkSettingSvg}
                     alt={theme === "light" ? "Light Setting" : "Dark Setting"}
                   />
                   Settings

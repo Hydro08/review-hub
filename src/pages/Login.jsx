@@ -98,7 +98,7 @@ function LoginPage() {
         <div
           className={cn(
             "flex h-full items-center justify-end gap-5 px-6",
-            "w-[40%] md:w-[30%] lg:w-[20%]",
+            "w-[45%] md:w-[30%] lg:w-[20%]",
           )}
         >
           <button
@@ -118,7 +118,7 @@ function LoginPage() {
           <button
             onClick={() => navigate("/")}
             className={cn(
-              "primary-border h-10 w-10 rounded-lg font-bold",
+              "primary-border h-10 w-12 rounded-lg font-bold",
               theme === "light" ? "bg-red-400" : "bg-red-600",
             )}
           >

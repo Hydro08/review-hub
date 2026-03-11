@@ -188,13 +188,13 @@ function SignupPage() {
         <div
           className={cn(
             "flex h-full items-center justify-end gap-5 px-6",
-            "w-[40%] md:w-[30%] lg:w-[20%]",
+            "w-[45%] md:w-[30%] lg:w-[20%]",
           )}
         >
           <button
             onClick={() => setTheme(isLight ? "dark" : "light")}
             className={cn(
-              "primary-border flex h-10 w-18 items-center justify-center gap-1 rounded-lg font-bold",
+              "primary-border flex h-10 w-20 items-center justify-center gap-1 rounded-lg font-bold",
               "cursor-auto md:cursor-pointer",
             )}
           >
@@ -204,7 +204,7 @@ function SignupPage() {
           <button
             onClick={() => navigate("/")}
             className={cn(
-              "primary-border h-10 w-10 cursor-pointer rounded-lg font-bold",
+              "primary-border h-10 w-12 cursor-pointer rounded-lg font-bold",
               isLight ? "bg-red-400" : "bg-red-600",
             )}
           >

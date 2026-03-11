@@ -3,16 +3,19 @@ import { cn } from "../lib/cn";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import supabase from "../lib/supabase";
+
 import { MobileDashboardFloat } from "../components/MobileDashboard";
 import {
   DarkAddDecksSvg,
   DarkSearchSvg,
   LightAddDecksSvg,
   LightSearchSvg,
-  darkModeSvg,
-  lightModeSvg,
+  DarkModeSvg,
+  LightModeSvg,
 } from "../assets/images";
 import { SidebarDashboardLeft } from "../components/SidebarDashboard";
+import { LoadingDots } from "../components/Loading";
 
 function DashboardPage() {
   const { theme, setTheme } = useTheme();
@@ -21,7 +24,8 @@ function DashboardPage() {
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [decks] = useState([]);
+  const [decks, setDecks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const isLight = theme === "light";
   const primaryTransition = "transition-all duration-300 ease-in";
@@ -65,6 +69,26 @@ function DashboardPage() {
     document.body.style.overflowY = sidebarOpen ? "hidden" : "auto";
   }, [sidebarOpen]);
 
+  useEffect(() => {
+    const fetchDecks = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from("decks")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (!error) setDecks(data);
+      setIsLoading(false);
+    };
+
+    fetchDecks();
+  }, []);
+
   return (
     <main
       className={cn(
@@ -107,9 +131,9 @@ function DashboardPage() {
                 handleDashboardClick();
               }
             }}
-            className="primary-border h-10 w-12 rounded-lg text-2xl font-bold"
+            className="primary-border h-10 w-12 cursor-pointer rounded-lg text-2xl font-bold"
           >
-            {dashboardOpen || sidebarOpen ? "x" : "≡"}
+            {dashboardOpen || sidebarOpen ? "X" : "≡"}
           </button>
         </div>
         <div className="flex h-full w-[75vw] items-center justify-center text-2xl font-semibold tracking-widest">
@@ -126,7 +150,7 @@ function DashboardPage() {
             )}
           >
             <img
-              src={theme === "light" ? lightModeSvg : darkModeSvg}
+              src={theme === "light" ? LightModeSvg : DarkModeSvg}
               alt="light-mode"
             />
             {theme === "light" ? "☀️" : "🌙"}
@@ -178,25 +202,68 @@ function DashboardPage() {
           <div className="grid min-h-screen w-full grid-cols-2 gap-2 p-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
             <Link
               to="/create-deck"
-              className="primary-border flex h-[40vh] flex-col items-center justify-center gap-2 rounded-lg"
+              className={cn(
+                "primary-border flex flex-col items-center justify-center gap-2 rounded-lg",
+                "h-[30vh] lg:h-[40vh]",
+              )}
             >
               <img
                 src={isLight ? LightAddDecksSvg : DarkAddDecksSvg}
                 alt=""
-                className="h-16 w-16"
+                className={"h-14 w-14 lg:h-16 lg:w-16"}
               />
-              <p className="text-center text-2xl font-semibold">
+              <p
+                className={cn(
+                  "text-center font-semibold",
+                  "text-xl lg:text-2xl",
+                )}
+              >
                 Create New Decks
               </p>
             </Link>
-            {decks.map((deck) => (
-              <div
-                key={deck.id}
-                className="primary-border flex h-[40vh] items-center justify-center rounded-lg"
-              >
-                <p className="text-center">{deck.title}</p>
-              </div>
-            ))}
+            {isLoading ? (
+              <span className="col-span-full items-center justify-center text-center">
+                Loading decks <LoadingDots />
+              </span>
+            ) : decks.length === 0 ? (
+              <p className="col-span-full text-center opacity-50">
+                No decks yet. Create one!
+              </p>
+            ) : (
+              decks
+                .filter((deck) =>
+                  deck.title.toLowerCase().includes(search.toLowerCase()),
+                )
+                .map((deck) => (
+                  <div
+                    key={deck.id}
+                    className="primary-border flex h-[30vh] flex-col items-center justify-start gap-2 rounded-lg p-1 lg:h-[40vh]"
+                  >
+                    <div className="flex w-full items-center justify-center py-1">
+                      <div className="w-[80%]">
+                        <p className="text-center text-lg font-bold">
+                          {deck.title}
+                        </p>
+                      </div>
+                      <div className="flex min-h-[5vh] w-[20%] items-center justify-center">
+                        <button
+                          className={cn(
+                            "primary-border cursor-pointer rounded-lg",
+                            "h-10 w-10 lg:h-10 lg:w-12",
+                            "text-lg lg:text-2xl",
+                          )}
+                        >
+                          ⋮
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="text-center text-sm opacity-60">
+                      {deck.category}
+                    </p>
+                  </div>
+                ))
+            )}
           </div>
         )}
         {activeTab === "favourites" && (
