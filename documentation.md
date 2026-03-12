@@ -94,3 +94,11 @@
 - Added RLS policies in Supabase (INSERT & SELECT) for `decks` table
 - Fixed `auth.uid()` policy to allow users to view their own decks
 - Improving Dashboard decks display
+
+## Day 12 - March 12, 2026
+
+- Improved deck cards in dashboard (progress bar, card count, last opened, privacy indicator)
+- Added DeckOptionMenu component (edit, delete, change background)
+- Added AnimatePresence for dropdown animation in DeckOptionMenu
+- Fixed deck card height consistency using min-h-55 and self-start
+- Added simple bouncing dots animation in forgot password page

@@ -60,8 +60,8 @@ function SidebarDashboardLeft({
       className={cn(
         "primary-r-border fixed top-0 z-10 hidden min-h-[85vh] w-[20vw] flex-col justify-between lg:flex",
         sidebarOpen
-          ? "pointer-events-auto top-[15vh] left-0"
-          : "pointer-events-none top-[15vh] left-[-100vh]",
+          ? "pointer-events-auto top-[15vh] left-0 opacity-100"
+          : "pointer-events-none top-[15vh] left-[-100vh] opacity-0",
         primaryTransition,
         isLight ? "light-bg" : "dark-bg",
       )}

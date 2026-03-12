@@ -13,6 +13,7 @@ import {
   LightSendSvg,
   DarkSendSvg,
 } from "../assets/images";
+import { LoadingDots } from "../components/Loading";
 
 function ForgotPasswordPage() {
   const { theme, setTheme } = useTheme();
@@ -230,7 +231,13 @@ function ForgotPasswordPage() {
                   type="submit"
                   className="primary-border flex items-center justify-center gap-2 rounded-lg px-6 py-2"
                 >
-                  {isLoading ? "Sending..." : "Continue"}
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-1">
+                      Sending <LoadingDots />
+                    </span>
+                  ) : (
+                    "Continue"
+                  )}
                   <img src={isLight ? LightSendSvg : DarkSendSvg} alt="send" />
                 </button>
               </form>
@@ -326,7 +333,13 @@ function ForgotPasswordPage() {
                   type="submit"
                   className="primary-border flex items-center justify-center gap-2 rounded-lg px-6 py-2"
                 >
-                  {isLoading ? "Updating..." : "Reset Password"}
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      Updating <LoadingDots />
+                    </span>
+                  ) : (
+                    "Reset Password"
+                  )}
                 </button>
               </form>
             </div>
