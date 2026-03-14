@@ -17,11 +17,13 @@
 - [x] Dashboard (deck cards, progress bar, card count, last opened, privacy)
 - [x] Create Decks
 - [x] Deck Options Menu (Edit, Delete, Change Background)
+- [x] Favourite Decks
 - [x] Search / Filter Decks
 
 ## 🔄 IN PROGRESS
 
 - [ ] Edit and Delete Decks (Supabase)
+- [ ] Flashcard Page
 - [ ] Responsive Design
 - [ ] Icons (from Flaticon and Google Icons)
 
@@ -31,10 +33,9 @@
 - [ ] Edit and Delete Flashcard
 - [ ] Profile
 - [ ] Settings
-- [ ] Feed
-- [ ] Explore People
-- [ ] Favorites / Bookmark Decks
 - [ ] Progress Tracking / Stats
-- [ ] Share Decks (Public / Private)
 - [ ] Study Mode
+- [ ] Share Decks (Public / Private)
+- [ ] Feed Page (Public Decks + Trending Decks)
+- [ ] Explore People
 - [ ] Chat System (Coming Soon)

@@ -34,6 +34,14 @@ import LightAddDecksSvg from "./light-add-decks.svg";
 import DarkAddDecksSvg from "./dark-add-decks.svg";
 import LightCreateFolderPng from "./light-create-folder.png";
 import DarkCreateFolderPng from "./dark-create-folder.png";
+import LightCancelSvg from "./light-cancel.svg";
+import DarkCancelSvg from "./dark-cancel.svg";
+import LightUnfavoritePng from "./light-unfavorite.png";
+import DarkUnfavoritePng from "./dark-unfavorite.png";
+import LightFavoritedPng from "./light-favorited.png";
+import DarkFavoritedPng from "./dark-favorited.png";
+import LightShareSvg from "./light-share.svg";
+import DarkShareSvg from "./dark-share.svg";
 
 export {
   LightModeSvg,
@@ -72,4 +80,12 @@ export {
   DarkAddDecksSvg,
   LightCreateFolderPng,
   DarkCreateFolderPng,
+  LightCancelSvg,
+  DarkCancelSvg,
+  LightUnfavoritePng,
+  DarkUnfavoritePng,
+  LightFavoritedPng,
+  DarkFavoritedPng,
+  LightShareSvg,
+  DarkShareSvg,
 };

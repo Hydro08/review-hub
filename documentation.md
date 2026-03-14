@@ -102,3 +102,16 @@
 - Added AnimatePresence for dropdown animation in DeckOptionMenu
 - Fixed deck card height consistency using min-h-55 and self-start
 - Added simple bouncing dots animation in forgot password page
+
+## Day 13 - March 13, 2026
+
+- Added Cancel Icon in create deck page
+- Created Flashcard Page
+- Fixed description in decks
+
+## Day 14 – March 14, 2026
+
+- Created DeckDescription component with horizontal scroll for long descriptions
+- Added favourite toggle per deck (is_favorite column in Supabase)
+- Added Supabase Realtime subscription for live deck updates
+- Fixed last_opened default value (NULL na instead of now())

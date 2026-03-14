@@ -11,6 +11,8 @@ import {
   DarkDashboardSvg,
   LightCreateFolderPng,
   DarkCreateFolderPng,
+  LightCancelSvg,
+  DarkCancelSvg,
 } from "../assets/images";
 import { LoadingDots } from "../components/Loading";
 
@@ -250,8 +252,12 @@ function CreateDeckPage() {
         <div className="flex items-center justify-center gap-5">
           <button
             onClick={() => navigate("/dashboard")}
-            className="primary-border h-10 w-24 cursor-pointer rounded-lg font-bold"
+            className="primary-border flex h-10 w-28 cursor-pointer items-center justify-center gap-2 rounded-lg font-bold"
           >
+            <img
+              src={isLight ? LightCancelSvg : DarkCancelSvg}
+              alt={isLight ? "Light Cancel Icon" : "Dark Cancel Icon"}
+            />{" "}
             Cancel
           </button>
 

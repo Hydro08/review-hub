@@ -9,6 +9,7 @@ import ProfilePage from "./pages/Profile";
 import ForgotPasswordPage from "./pages/ForgotPass";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateDeckPage from "./pages/CreateDeck";
+import FeedPage from "./pages/Feed";
 
 import "./index.css";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/forgotPass" element={<ForgotPasswordPage />} />
+          <Route path="/feed" element={<FeedPage />} />
 
           <Route
             path="/dashboard"

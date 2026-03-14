@@ -27,7 +27,7 @@ function DeckOptionMenuChoices({ deckId, onDelete, onEdit }) {
           setOptionOpen(!optionOpen);
         }}
         className={cn(
-          "primary-border h-10 w-10 cursor-pointer rounded-lg text-lg lg:w-12 lg:text-2xl",
+          "primary-border h-10 w-10 cursor-pointer rounded-lg text-base font-bold lg:w-12 lg:text-2xl",
         )}
       >
         {optionOpen ? "X" : "⋮"}

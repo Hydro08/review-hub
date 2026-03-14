@@ -15,7 +15,7 @@ function SidebarDashboardLeft({
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const theme = useTheme();
+  const { theme } = useTheme();
   const isLight = theme === "light";
   const navigate = useNavigate();
 

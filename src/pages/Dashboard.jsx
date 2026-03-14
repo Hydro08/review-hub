@@ -1,6 +1,6 @@
 import { useTheme } from "../context/ThemeContext";
 import { cn } from "../lib/cn";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
@@ -9,7 +9,9 @@ import supabase from "../lib/supabase";
 import { MobileDashboardFloat } from "../components/MobileDashboard";
 import { DeckOptionMenuChoices } from "../components/DeckOptionMenu";
 import { SidebarDashboardLeft } from "../components/SidebarDashboard";
+import { DeckDescription } from "../components/DeckDescription";
 import { LoadingDots } from "../components/Loading";
+
 import {
   DarkAddDecksSvg,
   DarkSearchSvg,
@@ -17,6 +19,12 @@ import {
   LightSearchSvg,
   DarkModeSvg,
   LightModeSvg,
+  LightUnfavoritePng,
+  DarkUnfavoritePng,
+  LightFavoritedPng,
+  DarkFavoritedPng,
+  LightShareSvg,
+  DarkShareSvg,
 } from "../assets/images";
 
 function DashboardPage() {
@@ -29,9 +37,12 @@ function DashboardPage() {
 
   const [decks, setDecks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [favourite, setFavourite] = useState({});
 
   const isLight = theme === "light";
   const primaryTransition = "transition-all duration-300 ease-in";
+
+  const descRef = useRef(null);
 
   const titleNav = {
     decks: "My Decks",
@@ -76,6 +87,16 @@ function DashboardPage() {
     document.body.style.overflowY = sidebarOpen ? "hidden" : "auto";
   }, [sidebarOpen]);
 
+  const handleFavourite = async (deckId) => {
+    const newValue = !favourite[deckId];
+    setFavourite((prev) => ({ ...prev, [deckId]: newValue }));
+
+    await supabase
+      .from("decks")
+      .update({ is_favorite: newValue })
+      .eq("id", deckId);
+  };
+
   useEffect(() => {
     const fetchDecks = async () => {
       const {
@@ -89,11 +110,29 @@ function DashboardPage() {
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
-      if (!error) setDecks(data);
+      if (!error) {
+        setDecks(data);
+        const initialFavourite = {};
+        data.forEach((deck) => {
+          initialFavourite[deck.id] = deck.is_favorite;
+        });
+        setFavourite(initialFavourite);
+      }
       setIsLoading(false);
     };
 
     fetchDecks();
+
+    const channel = supabase
+      .channel("decks-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "decks" },
+        () => fetchDecks(),
+      )
+      .subscribe();
+
+    return () => supabase.removeChannel(channel);
   }, []);
 
   return (
@@ -120,7 +159,7 @@ function DashboardPage() {
 
       <div
         className={cn(
-          "primary-b-border sticky top-0 left-0 z-10 flex items-center justify-center",
+          "primary-b-border sticky top-0 left-0 z-10 flex items-center justify-center p-2",
           "min-h-[10vh] w-full lg:min-h-[15vh]",
           isLight ? "light-bg" : "dark-bg",
           primaryTransition,
@@ -182,6 +221,7 @@ function DashboardPage() {
             isLight ? "placeholder-black" : "placeholder-white",
           )}
         />
+
         <button
           onClick={() => setSearch("")}
           className={cn(
@@ -197,12 +237,10 @@ function DashboardPage() {
 
       <div className="flex min-h-screen w-full flex-col items-center justify-center">
         {activeTab === "decks" && (
-          <div className="grid min-h-screen w-full grid-cols-2 gap-2 p-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+          <div className="grid min-h-screen w-full auto-rows-min grid-cols-2 gap-2 p-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
             <Link
               to="/create-deck"
-              className={cn(
-                "primary-border flex h-52 flex-col items-center justify-center gap-2 rounded-lg",
-              )}
+              className="flex h-52 flex-col items-center justify-center gap-2 rounded-lg"
             >
               <img
                 src={isLight ? LightAddDecksSvg : DarkAddDecksSvg}
@@ -220,7 +258,7 @@ function DashboardPage() {
             </Link>
 
             {isLoading ? (
-              <span className="col-span-full flex items-start justify-center gap-1">
+              <span className="col-span-full flex items-center justify-center gap-1">
                 Loading decks <LoadingDots />
               </span>
             ) : decks.length === 0 ? (
@@ -235,7 +273,7 @@ function DashboardPage() {
                 .map((deck) => (
                   <div
                     key={deck.id}
-                    className="primary-border flex min-h-52 flex-col items-start justify-start gap-2 self-start rounded-lg p-2"
+                    className="primary-border flex h-auto flex-col items-start justify-start gap-2 rounded-lg p-2"
                   >
                     <div className="flex w-full items-center justify-center py-1">
                       <div className="w-[80%]">
@@ -243,6 +281,7 @@ function DashboardPage() {
                           {deck.title}
                         </p>
                       </div>
+
                       <div className="flex min-h-[5vh] w-[20%] items-center justify-center">
                         <DeckOptionMenuChoices
                           deckId={deck.id}
@@ -257,6 +296,10 @@ function DashboardPage() {
                       {deck.category}
                     </p>
 
+                    {deck.description && (
+                      <DeckDescription description={deck.description} />
+                    )}
+
                     <p className="w-full text-center text-xs">
                       {getCardLabel(deck.card_count)}
                     </p>
@@ -268,7 +311,7 @@ function DashboardPage() {
                       </div>
                       <div className="h-2 w-full overflow-hidden rounded-full bg-gray-600">
                         <div
-                          className="h-full rounded-full transition-all duration-500"
+                          className="h-full rounded-full bg-purple-500 transition-all duration-500"
                           style={{ width: `${getProgress(deck)}%` }}
                         />
                       </div>
@@ -280,9 +323,35 @@ function DashboardPage() {
                         : "Never opened"}
                     </p>
 
-                    <p className="w-full text-center text-xs">
-                      {deck.is_public ? "Public" : "Private"}
-                    </p>
+                    <div className="flex w-full items-center justify-center">
+                      <button
+                        onClick={() => handleFavourite(deck.id)}
+                        className="cursor-pointer"
+                      >
+                        <img
+                          src={
+                            favourite[deck.id]
+                              ? isLight
+                                ? LightFavoritedPng
+                                : DarkFavoritedPng
+                              : isLight
+                                ? LightUnfavoritePng
+                                : DarkUnfavoritePng
+                          }
+                          alt="favourite icon"
+                          className="h-5 w-5"
+                        />
+                      </button>
+                      <p className="w-full text-center text-xs">
+                        {deck.is_public ? "🌐 Public" : "🔒 Private"}
+                      </p>
+                      <button className="cursor-pointer">
+                        <img
+                          src={isLight ? LightShareSvg : DarkShareSvg}
+                          alt="Share Icon"
+                        />
+                      </button>
+                    </div>
                   </div>
                 ))
             )}
