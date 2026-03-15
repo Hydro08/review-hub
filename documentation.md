@@ -118,3 +118,6 @@
 - Added animation in favorite icon
 
 ## Day 15 - March 15, 2025
+
+- Added Favorite Tab function
+- Fixed decks height aligned to create new deck

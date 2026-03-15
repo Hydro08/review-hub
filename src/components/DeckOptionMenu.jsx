@@ -41,7 +41,7 @@ function DeckOptionMenuChoices({ deckId, onDelete, onEdit }) {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             className={cn(
-              "primary-border absolute top-[6vh] right-0 z-20 rounded-lg p-1",
+              "primary-border absolute top-[6vh] right-0 z-50 rounded-lg p-1",
               "w-36 lg:w-45",
               isLight ? "light-bg" : "dark-bg",
             )}

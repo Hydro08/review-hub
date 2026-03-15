@@ -5,6 +5,7 @@ import { cn } from "../lib/cn";
 import { useTheme } from "../context/ThemeContext";
 
 import supabase from "../lib/supabase";
+import { LoadingDots } from "./Loading";
 
 function SidebarDashboardLeft({
   sidebarOpen,
@@ -58,7 +59,7 @@ function SidebarDashboardLeft({
     <div
       onClick={(e) => e.stopPropagation()}
       className={cn(
-        "primary-r-border fixed top-0 z-10 hidden min-h-[85vh] w-[20vw] flex-col justify-between lg:flex",
+        "primary-r-border fixed top-0 z-50 hidden min-h-[85vh] w-[20vw] flex-col justify-between lg:flex",
         sidebarOpen
           ? "pointer-events-auto top-[15vh] left-0 opacity-100"
           : "pointer-events-none top-[15vh] left-[-100vh] opacity-0",
@@ -124,7 +125,13 @@ function SidebarDashboardLeft({
           }}
           className="primary-border h-10 w-30 cursor-pointer rounded-lg bg-red-600 font-bold"
         >
-          {isLoading ? "Loading..." : "Log Out"}
+          {isLoading ? (
+            <span className="flex items-center justify-center gap-2">
+              Loading <LoadingDots />
+            </span>
+          ) : (
+            "Log Out"
+          )}
         </button>
       </div>
     </div>

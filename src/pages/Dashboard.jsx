@@ -1,7 +1,7 @@
 import { useTheme } from "../context/ThemeContext";
 import { cn } from "../lib/cn";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -31,14 +31,17 @@ import {
 function DashboardPage() {
   const { theme, setTheme } = useTheme();
 
-  const [activeTab, setActiveTab] = useState("decks");
+  const [activeTab, setActiveTab] = useState(
+    localStorage.getItem("activeTab") || "decks",
+  );
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
-
   const [decks, setDecks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [favourite, setFavourite] = useState({});
+
+  const navigate = useNavigate();
 
   const isLight = theme === "light";
   const primaryTransition = "transition-all duration-300 ease-in";
@@ -62,31 +65,26 @@ function DashboardPage() {
   const handleDashboardClick = () => setDashboardOpen(!dashboardOpen);
   const handleLeftDashboardClick = () => setSidebarOpen(!sidebarOpen);
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    localStorage.setItem("activeTab", tab);
+  };
+
   const handleFavourite = async (deckId) => {
     const newValue = !favourite[deckId];
     setFavourite((prev) => ({ ...prev, [deckId]: newValue }));
-
+    await new Promise((resolve) => setTimeout(resolve, 300));
     await supabase
       .from("decks")
       .update({ is_favorite: newValue })
       .eq("id", deckId);
   };
 
-  const ud = () => {
-    alert("Under Development. Pasinsya!");
-  };
+  const ud = () => alert("Under Development. Pasinsya!");
 
   useEffect(() => {
     const handler = () => {
       if (dashboardOpen) setDashboardOpen(false);
-    };
-    document.addEventListener("click", handler);
-    return () => document.removeEventListener("click", handler);
-  });
-
-  useEffect(() => {
-    const handler = () => {
-      if (sidebarOpen) setSidebarOpen(false);
     };
     document.addEventListener("click", handler);
     return () => document.removeEventListener("click", handler);
@@ -138,6 +136,91 @@ function DashboardPage() {
     return () => supabase.removeChannel(channel);
   }, []);
 
+  const renderDeckCardContent = (deck) => (
+    <>
+      <div className="flex w-full items-center justify-center py-1">
+        <div className="w-[80%]">
+          <p className="text-center text-lg font-bold">{deck.title}</p>
+        </div>
+        <div className="flex min-h-[5vh] w-[20%] items-center justify-center">
+          <DeckOptionMenuChoices
+            deckId={deck.id}
+            onEdit={() => navigate("/edit-deck")}
+            // Last Touch
+            onDelete={() => setDecks(decks.filter((d) => d.id !== deck.id))}
+          />
+        </div>
+      </div>
+
+      <p className="w-full text-center text-sm">{deck.category}</p>
+
+      {deck.description && <DeckDescription description={deck.description} />}
+
+      <p className="w-full text-center text-xs">
+        {getCardLabel(deck.card_count)}
+      </p>
+
+      <div className="w-full px-2">
+        <div className="mb-1 flex justify-between text-xs">
+          <span>Progress</span>
+          <span>{getProgress(deck)}%</span>
+        </div>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-gray-600">
+          <div
+            className="h-full rounded-full bg-purple-500 transition-all duration-500"
+            style={{ width: `${getProgress(deck)}%` }}
+          />
+        </div>
+      </div>
+
+      <p className="w-full text-center text-xs">
+        {deck.last_opened
+          ? `Last opened: ${formatDistanceToNow(new Date(deck.last_opened), { addSuffix: true })}`
+          : "Never opened"}
+      </p>
+
+      <div className="flex w-full items-center justify-center">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleFavourite(deck.id);
+          }}
+          className="z-20 cursor-pointer"
+        >
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={favourite[deck.id] ? "favourited" : "unfavourited"}
+              src={
+                favourite[deck.id]
+                  ? isLight
+                    ? LightFavoritedPng
+                    : DarkFavoritedPng
+                  : isLight
+                    ? LightUnfavoritePng
+                    : DarkUnfavoritePng
+              }
+              alt="favourite icon"
+              className="h-5 w-5"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 0.2 }}
+            />
+          </AnimatePresence>
+        </button>
+        <p className="w-full text-center text-xs">
+          {deck.is_public ? "🌐 Public" : "🔒 Private"}
+        </p>
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="z-20 cursor-pointer"
+        >
+          <img src={isLight ? LightShareSvg : DarkShareSvg} alt="Share Icon" />
+        </button>
+      </div>
+    </>
+  );
+
   return (
     <main
       className={cn(
@@ -146,18 +229,25 @@ function DashboardPage() {
         isLight ? "light-bg text-black" : "dark-bg text-white",
       )}
     >
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       <MobileDashboardFloat
         dashboardOpen={dashboardOpen}
         setDashboardOpen={setDashboardOpen}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
       />
 
       <SidebarDashboardLeft
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
       />
 
       <div
@@ -205,7 +295,6 @@ function DashboardPage() {
                 transition={{ duration: 0.2 }}
               />
             </AnimatePresence>
-
             <AnimatePresence mode="wait">
               <motion.span
                 key={isLight ? "sun" : "moon"}
@@ -242,7 +331,6 @@ function DashboardPage() {
             isLight ? "placeholder-black" : "placeholder-white",
           )}
         />
-
         <button
           onClick={() => setSearch("")}
           className={cn(
@@ -261,7 +349,7 @@ function DashboardPage() {
           <div className="grid min-h-screen w-full auto-rows-min grid-cols-2 gap-2 p-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
             <Link
               to="/create-deck"
-              className="flex h-52 flex-col items-center justify-center gap-2 rounded-lg"
+              className="primary-border flex h-52 flex-col items-center justify-center gap-2 rounded-lg"
             >
               <img
                 src={isLight ? LightAddDecksSvg : DarkAddDecksSvg}
@@ -287,119 +375,67 @@ function DashboardPage() {
                 No decks yet. Create one!
               </p>
             ) : (
-              decks
-                .filter((deck) =>
-                  deck.title.toLowerCase().includes(search.toLowerCase()),
-                )
-                .map((deck) => (
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      ud();
-                    }}
-                    key={deck.id}
-                    className="primary-border z-10 flex h-auto cursor-pointer flex-col items-start justify-start gap-2 rounded-lg p-2"
-                  >
-                    <div className="flex w-full items-center justify-center py-1">
-                      <div className="w-[80%]">
-                        <p className="text-center text-lg font-bold">
-                          {deck.title}
-                        </p>
-                      </div>
-
-                      <div className="flex min-h-[5vh] w-[20%] items-center justify-center">
-                        <DeckOptionMenuChoices
-                          deckId={deck.id}
-                          onDelete={() =>
-                            setDecks(decks.filter((d) => d.id !== deck.id))
-                          }
-                        />
-                      </div>
-                    </div>
-
-                    <p className="w-full text-center text-sm">
-                      {deck.category}
-                    </p>
-
-                    {deck.description && (
-                      <DeckDescription description={deck.description} />
-                    )}
-
-                    <p className="w-full text-center text-xs">
-                      {getCardLabel(deck.card_count)}
-                    </p>
-
-                    <div className="w-full px-2">
-                      <div className="mb-1 flex justify-between text-xs">
-                        <span>Progress</span>
-                        <span>{getProgress(deck)}%</span>
-                      </div>
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-gray-600">
-                        <div
-                          className="h-full rounded-full bg-purple-500 transition-all duration-500"
-                          style={{ width: `${getProgress(deck)}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    <p className="w-full text-center text-xs">
-                      {deck.last_opened
-                        ? `Last opened: ${formatDistanceToNow(new Date(deck.last_opened), { addSuffix: true })}`
-                        : "Never opened"}
-                    </p>
-
-                    <div className="flex w-full items-center justify-center">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleFavourite(deck.id);
-                        }}
-                        className="z-20 cursor-pointer"
-                      >
-                        <AnimatePresence mode="wait">
-                          <motion.img
-                            key={
-                              favourite[deck.id] ? "favourited" : "unfavourited"
-                            }
-                            src={
-                              favourite[deck.id]
-                                ? isLight
-                                  ? LightFavoritedPng
-                                  : DarkFavoritedPng
-                                : isLight
-                                  ? LightUnfavoritePng
-                                  : DarkUnfavoritePng
-                            }
-                            alt="favourite icon"
-                            className="h-5 w-5"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0 }}
-                            transition={{ duration: 0.2 }}
-                          />
-                        </AnimatePresence>
-                      </button>
-                      <p className="w-full text-center text-xs">
-                        {deck.is_public ? "🌐 Public" : "🔒 Private"}
-                      </p>
-                      <button
-                        onClick={(e) => e.stopPropagation()}
-                        className="z-20 cursor-pointer"
-                      >
-                        <img
-                          src={isLight ? LightShareSvg : DarkShareSvg}
-                          alt="Share Icon"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                ))
+              <AnimatePresence>
+                {decks
+                  .filter((deck) =>
+                    deck.title.toLowerCase().includes(search.toLowerCase()),
+                  )
+                  .map((deck) => (
+                    <motion.div
+                      key={deck.id}
+                      layout
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        ud();
+                      }}
+                      className="primary-border z-10 flex h-auto cursor-pointer flex-col items-start justify-start gap-1 rounded-lg p-2"
+                    >
+                      {renderDeckCardContent(deck)}
+                    </motion.div>
+                  ))}
+              </AnimatePresence>
             )}
           </div>
         )}
 
         {activeTab === "favourites" && (
-          <p>Favourites Content "Under Development"</p>
+          <div className="grid min-h-screen w-full auto-rows-min grid-cols-2 gap-2 p-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+            {isLoading ? (
+              <span className="col-span-full flex items-center justify-center gap-1">
+                Loading Favourites <LoadingDots />
+              </span>
+            ) : decks.filter((deck) => favourite[deck.id]).length === 0 ? (
+              <p className="col-span-full text-center opacity-50">
+                No favourites yet!
+              </p>
+            ) : (
+              <AnimatePresence>
+                {decks
+                  .filter((deck) => favourite[deck.id])
+                  .map((deck) => (
+                    <motion.div
+                      key={deck.id}
+                      layout
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        ud();
+                      }}
+                      className="primary-border z-10 flex h-auto cursor-pointer flex-col items-start justify-start gap-1 rounded-lg p-2"
+                    >
+                      {renderDeckCardContent(deck)}
+                    </motion.div>
+                  ))}
+              </AnimatePresence>
+            )}
+          </div>
         )}
 
         {activeTab === "settings" && (
