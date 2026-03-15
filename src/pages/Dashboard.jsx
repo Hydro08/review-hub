@@ -1,8 +1,9 @@
 import { useTheme } from "../context/ThemeContext";
 import { cn } from "../lib/cn";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
+import { AnimatePresence, motion } from "framer-motion";
 
 import supabase from "../lib/supabase";
 
@@ -42,8 +43,6 @@ function DashboardPage() {
   const isLight = theme === "light";
   const primaryTransition = "transition-all duration-300 ease-in";
 
-  const descRef = useRef(null);
-
   const titleNav = {
     decks: "My Decks",
     favourites: "Favourites",
@@ -62,6 +61,20 @@ function DashboardPage() {
 
   const handleDashboardClick = () => setDashboardOpen(!dashboardOpen);
   const handleLeftDashboardClick = () => setSidebarOpen(!sidebarOpen);
+
+  const handleFavourite = async (deckId) => {
+    const newValue = !favourite[deckId];
+    setFavourite((prev) => ({ ...prev, [deckId]: newValue }));
+
+    await supabase
+      .from("decks")
+      .update({ is_favorite: newValue })
+      .eq("id", deckId);
+  };
+
+  const ud = () => {
+    alert("Under Development. Pasinsya!");
+  };
 
   useEffect(() => {
     const handler = () => {
@@ -86,16 +99,6 @@ function DashboardPage() {
   useEffect(() => {
     document.body.style.overflowY = sidebarOpen ? "hidden" : "auto";
   }, [sidebarOpen]);
-
-  const handleFavourite = async (deckId) => {
-    const newValue = !favourite[deckId];
-    setFavourite((prev) => ({ ...prev, [deckId]: newValue }));
-
-    await supabase
-      .from("decks")
-      .update({ is_favorite: newValue })
-      .eq("id", deckId);
-  };
 
   useEffect(() => {
     const fetchDecks = async () => {
@@ -191,11 +194,29 @@ function DashboardPage() {
               "py-1 lg:py-5",
             )}
           >
-            <img
-              src={isLight ? LightModeSvg : DarkModeSvg}
-              alt="theme-toggle"
-            />
-            {isLight ? "☀️" : "🌙"}
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={isLight ? "light-img" : "dark-img"}
+                src={isLight ? LightModeSvg : DarkModeSvg}
+                alt="theme-toggle"
+                initial={{ rotateY: 90, opacity: 0 }}
+                animate={{ rotateY: 0, opacity: 1 }}
+                exit={{ rotateY: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={isLight ? "sun" : "moon"}
+                initial={{ scale: 0, rotate: -90 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, rotate: 90 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isLight ? "☀️" : "🌙"}
+              </motion.span>
+            </AnimatePresence>
           </button>
         </div>
       </div>
@@ -272,8 +293,12 @@ function DashboardPage() {
                 )
                 .map((deck) => (
                   <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      ud();
+                    }}
                     key={deck.id}
-                    className="primary-border flex h-auto flex-col items-start justify-start gap-2 rounded-lg p-2"
+                    className="primary-border z-10 flex h-auto cursor-pointer flex-col items-start justify-start gap-2 rounded-lg p-2"
                   >
                     <div className="flex w-full items-center justify-center py-1">
                       <div className="w-[80%]">
@@ -325,27 +350,42 @@ function DashboardPage() {
 
                     <div className="flex w-full items-center justify-center">
                       <button
-                        onClick={() => handleFavourite(deck.id)}
-                        className="cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleFavourite(deck.id);
+                        }}
+                        className="z-20 cursor-pointer"
                       >
-                        <img
-                          src={
-                            favourite[deck.id]
-                              ? isLight
-                                ? LightFavoritedPng
-                                : DarkFavoritedPng
-                              : isLight
-                                ? LightUnfavoritePng
-                                : DarkUnfavoritePng
-                          }
-                          alt="favourite icon"
-                          className="h-5 w-5"
-                        />
+                        <AnimatePresence mode="wait">
+                          <motion.img
+                            key={
+                              favourite[deck.id] ? "favourited" : "unfavourited"
+                            }
+                            src={
+                              favourite[deck.id]
+                                ? isLight
+                                  ? LightFavoritedPng
+                                  : DarkFavoritedPng
+                                : isLight
+                                  ? LightUnfavoritePng
+                                  : DarkUnfavoritePng
+                            }
+                            alt="favourite icon"
+                            className="h-5 w-5"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0 }}
+                            transition={{ duration: 0.2 }}
+                          />
+                        </AnimatePresence>
                       </button>
                       <p className="w-full text-center text-xs">
                         {deck.is_public ? "🌐 Public" : "🔒 Private"}
                       </p>
-                      <button className="cursor-pointer">
+                      <button
+                        onClick={(e) => e.stopPropagation()}
+                        className="z-20 cursor-pointer"
+                      >
                         <img
                           src={isLight ? LightShareSvg : DarkShareSvg}
                           alt="Share Icon"

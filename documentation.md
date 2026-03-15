@@ -115,3 +115,6 @@
 - Added favourite toggle per deck (is_favorite column in Supabase)
 - Added Supabase Realtime subscription for live deck updates
 - Fixed last_opened default value (NULL na instead of now())
+- Added animation in favorite icon
+
+## Day 15 - March 15, 2025

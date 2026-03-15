@@ -245,12 +245,7 @@ function App() {
         settingOpen={settingOpen}
         setSettingOpen={setSettingOpen}
       />
-      <MobileMenu
-        menuOpen={menuOpen}
-        setOpen={setMenuOpen}
-        theme={theme}
-        setTheme={setTheme}
-      />
+      <MobileMenu menuOpen={menuOpen} setOpen={setMenuOpen} />
 
       <SettingMenu settingOpen={settingOpen} setSettingOpen={setSettingOpen} />
 

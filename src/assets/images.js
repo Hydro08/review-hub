@@ -2,8 +2,8 @@ import LightModeSvg from "./light-mode.svg";
 import DarkModeSvg from "./dark-mode.svg";
 import LightSettingSvg from "./light-settings.svg";
 import DarkSettingSvg from "./dark-settings.svg";
-import lightLogoutSvg from "../assets/light-logout.svg";
-import darkLogoutSvg from "../assets/dark-logout.svg";
+import LightLogoutSvg from "../assets/light-logout.svg";
+import DarkLogoutSvg from "../assets/dark-logout.svg";
 import LightHomeSvg from "./light-home.svg";
 import DarkHomeSvg from "./dark-home.svg";
 import LightAboutSvg from "./light-about.svg";
@@ -50,8 +50,8 @@ export {
   DarkSettingSvg,
   LightHomeSvg,
   DarkHomeSvg,
-  lightLogoutSvg,
-  darkLogoutSvg,
+  LightLogoutSvg,
+  DarkLogoutSvg,
   LightAboutSvg,
   DarkAboutSvg,
   LightDashboardSvg,

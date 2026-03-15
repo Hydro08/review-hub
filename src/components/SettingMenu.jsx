@@ -2,19 +2,23 @@ import { cn } from "../lib/cn";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import supabase from "../lib/supabase";
 
-import lightModeSvg from "../assets/light-mode.svg";
-import darkModeSvg from "../assets/dark-mode.svg";
-import lightSettingSvg from "../assets/light-settings.svg";
-import darkSettingSvg from "../assets/dark-settings.svg";
-import lightLogoutSvg from "../assets/light-logout.svg";
-import darkLogoutSvg from "../assets/dark-logout.svg";
-import LightSignupPng from "../assets/light-signup.png";
-import DarkSignupPng from "../assets/dark-signup.png";
-import LightLoginPng from "../assets/light-login.png";
-import DarkLoginPng from "../assets/dark-login.png";
+import {
+  LightModeSvg,
+  DarkModeSvg,
+  LightSettingSvg,
+  DarkSettingSvg,
+  LightLogoutSvg,
+  DarkLogoutSvg,
+  LightSignupPng,
+  DarkSignupPng,
+  LightLoginPng,
+  DarkLoginPng,
+} from "../assets/images";
+import { LoadingDots } from "./Loading";
 
 function SettingMenu({ settingOpen, setSettingOpen }) {
   const navigate = useNavigate();
@@ -25,14 +29,15 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
     setSettingOpen(!settingOpen);
   };
 
+  const isLight = theme === "light";
+
   const buttonSettings =
     "primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1 font-bold";
   const authButton =
     "primary-border flex h-15 w-30 items-center justify-center gap-2 rounded-xl font-bold cursor-pointer";
   const hoverSet = "hover:shadow-md";
   const primaryTransition = "transition-all duration-300 ease-in";
-  const shadowTheme =
-    theme === "light" ? "hover:shadow-black" : "hover:shadow-white";
+  const shadowTheme = isLight ? "hover:shadow-black" : "hover:shadow-white";
 
   const ud = () => {
     alert("Under Development :D");
@@ -66,7 +71,7 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
             settingOpen
               ? "pointer-events-none md:pointer-events-auto md:opacity-100"
               : "md:pointer-events-none md:opacity-0",
-            theme === "light" ? "light-bg" : "dark-bg",
+            isLight ? "light-bg" : "dark-bg",
           )}
         >
           <div className="flex items-center justify-center gap-2">
@@ -76,9 +81,7 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
               }}
               className={cn(
                 "h-12 w-12 cursor-pointer rounded-[50%] md:block lg:hidden",
-                theme === "light"
-                  ? "dark-bg text-white"
-                  : "light-bg text-black",
+                isLight ? "dark-bg text-white" : "light-bg text-black",
                 hoverSet,
                 primaryTransition,
                 shadowTheme,
@@ -92,26 +95,51 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
               }}
               className={cn(
                 "primary-border rounded-lg p-1 capitalize underline md:block lg:hidden",
-                theme === "light" ? "text-black" : "text-white",
+                isLight ? "text-black" : "text-white",
               )}
             >
               {user?.user_metadata?.username}
             </p>
           </div>
           <button
-            onClick={() => {
-              setTheme(theme === "light" ? "dark" : "light");
+            onClick={(e) => {
+              e.stopPropagation();
+              setTheme(isLight ? "dark" : "light");
             }}
-            className="primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1"
+            className={cn(
+              "primary-border flex h-10 w-16 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold",
+              "py-1 lg:py-5",
+            )}
           >
-            <img src={theme === "light" ? lightModeSvg : darkModeSvg} alt="" />
-            {theme === "light" ? "☀️" : "🌙"}
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={isLight ? "light-img" : "dark-img"}
+                src={isLight ? LightModeSvg : DarkModeSvg}
+                alt="theme-toggle"
+                initial={{ rotateY: 90, opacity: 0 }}
+                animate={{ rotateY: 0, opacity: 1 }}
+                exit={{ rotateY: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={isLight ? "sun" : "moon"}
+                initial={{ scale: 0, rotate: -90 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, rotate: 90 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isLight ? "☀️" : "🌙"}
+              </motion.span>
+            </AnimatePresence>
           </button>
 
           <button onClick={() => ud()} className={cn(buttonSettings)}>
             <img
-              src={theme === "light" ? lightSettingSvg : darkSettingSvg}
-              alt={theme === "light" ? "Light Setting" : "Dark Setting"}
+              src={isLight ? LightSettingSvg : DarkSettingSvg}
+              alt={isLight ? "Light Setting" : "Dark Setting"}
             />
             Settings
           </button>
@@ -126,14 +154,20 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
             }}
             className={cn(
               buttonSettings,
-              theme === "light" ? "bg-red-400" : "bg-red-600",
+              isLight ? "bg-red-400" : "bg-red-600",
             )}
           >
             <img
-              src={theme === "light" ? lightLogoutSvg : darkLogoutSvg}
-              alt={theme === "light" ? "Light Log out" : "Dark Log out"}
+              src={isLight ? LightLogoutSvg : DarkLogoutSvg}
+              alt="Logout Icon"
             />
-            {isLoading ? "Loading..." : "Log Out"}
+            {isLoading ? (
+              <span className="flex items-center justify-center gap-2">
+                Loading <LoadingDots />
+              </span>
+            ) : (
+              "Log Out"
+            )}
           </button>
         </div>
       ) : (
@@ -146,22 +180,42 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
             settingOpen
               ? "pointer-events-none md:pointer-events-auto md:opacity-100"
               : "md:pointer-events-none md:opacity-0",
-            theme === "light" ? "light-bg" : "dark-bg",
+            isLight ? "light-bg" : "dark-bg",
           )}
         >
           <button
-            onClick={() => {
-              setTheme(theme === "light" ? "dark" : "light");
+            onClick={(e) => {
+              e.stopPropagation();
+              setTheme(isLight ? "dark" : "light");
             }}
             className={cn(
-              "primary-border flex cursor-pointer items-center justify-center gap-2 rounded-lg p-1",
-              hoverSet,
-              primaryTransition,
-              shadowTheme,
+              "primary-border flex h-10 w-16 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold",
+              "py-1 lg:py-5",
             )}
           >
-            <img src={theme === "light" ? lightModeSvg : darkModeSvg} alt="" />
-            {theme === "light" ? "☀️" : "🌙"}
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={isLight ? "light-img" : "dark-img"}
+                src={isLight ? LightModeSvg : DarkModeSvg}
+                alt="theme-toggle"
+                initial={{ rotateY: 90, opacity: 0 }}
+                animate={{ rotateY: 0, opacity: 1 }}
+                exit={{ rotateY: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={isLight ? "sun" : "moon"}
+                initial={{ scale: 0, rotate: -90 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, rotate: 90 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isLight ? "☀️" : "🌙"}
+              </motion.span>
+            </AnimatePresence>
           </button>
           <button
             onClick={() => {
@@ -170,10 +224,7 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
             }}
             className={cn(authButton, hoverSet, primaryTransition, shadowTheme)}
           >
-            <img
-              src={theme === "light" ? LightLoginPng : DarkLoginPng}
-              alt=""
-            />
+            <img src={isLight ? LightLoginPng : DarkLoginPng} alt="" />
             Log In
           </button>
           <button
@@ -183,10 +234,7 @@ function SettingMenu({ settingOpen, setSettingOpen }) {
             }}
             className={cn(authButton, hoverSet, primaryTransition, shadowTheme)}
           >
-            <img
-              src={theme === "light" ? LightSignupPng : DarkSignupPng}
-              alt=""
-            />
+            <img src={isLight ? LightSignupPng : DarkSignupPng} alt="" />
             Sign Up
           </button>
         </div>

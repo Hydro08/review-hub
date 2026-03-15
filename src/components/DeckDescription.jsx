@@ -20,7 +20,7 @@ function DeckDescription({ description }) {
     <p
       title={description}
       ref={ref}
-      className="w-full overflow-x-auto px-2 text-center text-xs whitespace-nowrap italic opacity-60"
+      className="w-full cursor-text overflow-x-auto px-2 text-center text-xs whitespace-nowrap italic opacity-60"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       {description}

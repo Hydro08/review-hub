@@ -55,7 +55,7 @@ function MobileDashboardFloat({
     <div
       onClick={(e) => e.stopPropagation()}
       className={cn(
-        "primary-b-border fixed z-10 flex min-h-[70vh] w-full flex-col lg:hidden",
+        "primary-b-border fixed z-50 flex min-h-[70vh] w-full flex-col lg:hidden",
         dashboardOpen
           ? "pointer-events-auto top-[10vh] opacity-100"
           : "pointer-events-none top-[-100vh] opacity-0",

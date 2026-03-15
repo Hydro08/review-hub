@@ -1,5 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { cn } from "../lib/cn";
+import { AnimatePresence, motion } from "framer-motion";
+import { useTheme } from "../context/ThemeContext";
 
 import supabase from "../lib/supabase";
 
@@ -8,8 +10,8 @@ import {
   DarkModeSvg,
   LightSettingSvg,
   DarkSettingSvg,
-  lightLogoutSvg,
-  darkLogoutSvg,
+  LightLogoutSvg,
+  DarkLogoutSvg,
   LightHomeSvg,
   DarkHomeSvg,
   LightAboutSvg,
@@ -26,9 +28,12 @@ import {
 
 import { useEffect, useState } from "react";
 
-function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
+function MobileMenu({ menuOpen, setOpen }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  const isLight = theme === "light";
 
   const navigate = useNavigate();
 
@@ -140,14 +145,38 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
         </div>
         <div className="flex h-[15%] w-full items-center justify-center">
           <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className="primary-border mt-5 flex w-30 items-center justify-center gap-1 rounded-xl p-3 font-bold"
+            onClick={(e) => {
+              e.stopPropagation();
+              setTheme(isLight ? "dark" : "light");
+            }}
+            className={cn(
+              "primary-border flex h-10 w-16 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold",
+              "py-1 lg:py-5",
+            )}
           >
-            <img
-              src={theme === "light" ? LightModeSvg : DarkModeSvg}
-              alt="light-mode"
-            />
-            {theme === "light" ? "☀️" : "🌙"}
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={isLight ? "light-img" : "dark-img"}
+                src={isLight ? LightModeSvg : DarkModeSvg}
+                alt="theme-toggle"
+                initial={{ rotateY: 90, opacity: 0 }}
+                animate={{ rotateY: 0, opacity: 1 }}
+                exit={{ rotateY: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={isLight ? "sun" : "moon"}
+                initial={{ scale: 0, rotate: -90 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, rotate: 90 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isLight ? "☀️" : "🌙"}
+              </motion.span>
+            </AnimatePresence>
           </button>
         </div>
         <div
@@ -202,7 +231,7 @@ function MobileMenu({ menuOpen, setOpen, theme, setTheme }) {
                   )}
                 >
                   <img
-                    src={theme === "light" ? lightLogoutSvg : darkLogoutSvg}
+                    src={theme === "light" ? LightLogoutSvg : DarkLogoutSvg}
                     alt={theme === "light" ? "Light Logout" : "Dark Logout"}
                   />
                   {isLoading ? "Loading..." : "Log Out"}
