@@ -47,7 +47,10 @@ function DeckOptionMenuChoices({ deckId, onDelete, onEdit }) {
             )}
           >
             <button
-              onClick={onEdit}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
               className={cn(
                 "w-full cursor-pointer rounded p-2 text-left text-sm font-bold",
                 "lg:hover:bg-gray-700 lg:hover:opacity-100",

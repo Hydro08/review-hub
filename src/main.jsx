@@ -51,13 +51,13 @@ createRoot(document.getElementById("root")).render(
             }
           ></Route>
           <Route
-            path="/edit-deck"
+            path="/edit-deck/:id"
             element={
               <ProtectedRoute>
                 <EditDeckPage />
               </ProtectedRoute>
             }
-          ></Route>
+          />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

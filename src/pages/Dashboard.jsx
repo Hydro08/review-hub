@@ -145,8 +145,7 @@ function DashboardPage() {
         <div className="flex min-h-[5vh] w-[20%] items-center justify-center">
           <DeckOptionMenuChoices
             deckId={deck.id}
-            onEdit={() => navigate("/edit-deck")}
-            // Last Touch
+            onEdit={() => navigate(`/edit-deck/${deck.id}`)}
             onDelete={() => setDecks(decks.filter((d) => d.id !== deck.id))}
           />
         </div>

@@ -117,7 +117,11 @@
 - Fixed last_opened default value (NULL na instead of now())
 - Added animation in favorite icon
 
-## Day 15 - March 15, 2025
+## Day 15 - March 15, 2026
 
-- Added Favorite Tab function
-- Fixed decks height aligned to create new deck
+- Added Favourites Tab functionality with exit animation
+- Fixed deck card height alignment with Create New Deck card
+- Added Edit Deck Page with pre-filled form fields
+- Added AnimatePresence exit animation on unfavourite in Favourites tab
+- Fixed DeckOptionMenu Edit button (missing parentheses on onEdit call)
+- Added localStorage for active tab persistence on refresh

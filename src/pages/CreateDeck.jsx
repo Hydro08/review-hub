@@ -86,10 +86,6 @@ function CreateDeckPage() {
     }
   };
 
-  const handleToggleTheme = () => {
-    setTheme(isLight ? "dark" : "light");
-  };
-
   return (
     <main
       className={cn(
@@ -142,17 +138,34 @@ function CreateDeckPage() {
 
         <div className="flex h-full w-[15vw] items-center justify-center">
           <button
-            onClick={handleToggleTheme}
+            onClick={() => setTheme(isLight ? "dark" : "light")}
             className={cn(
               "primary-border flex h-10 w-16 cursor-pointer items-center justify-center gap-1 rounded-xl font-semibold",
               "py-1 lg:py-5",
             )}
           >
-            <img
-              src={isLight ? LightModeSvg : DarkModeSvg}
-              alt="theme-toggle"
-            />
-            {isLight ? "☀️" : "🌙"}
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={isLight ? "light-img" : "dark-img"}
+                src={isLight ? LightModeSvg : DarkModeSvg}
+                alt="theme-toggle"
+                initial={{ rotateY: 90, opacity: 0 }}
+                animate={{ rotateY: 0, opacity: 1 }}
+                exit={{ rotateY: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={isLight ? "sun" : "moon"}
+                initial={{ scale: 0, rotate: -90 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, rotate: 90 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isLight ? "☀️" : "🌙"}
+              </motion.span>
+            </AnimatePresence>
           </button>
         </div>
       </header>
