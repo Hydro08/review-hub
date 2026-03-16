@@ -16,13 +16,15 @@
 - [x] Authentication Settings Dropdown (Tablet)
 - [x] Dashboard (deck cards, progress bar, card count, last opened, privacy)
 - [x] Create Decks
-- [x] Deck Options Menu (Edit, Delete, Change Background)
+- [x] Edit Decks
+- [x] Delete Decks (with Confirm Modal)
 - [x] Favourite Decks
 - [x] Search / Filter Decks
+- [x] ScrollableText Component
+- [x] Favicon / Logo
 
 ## 🔄 IN PROGRESS
 
-- [ ] Edit and Delete Decks (Supabase)
 - [ ] Flashcard Page
 - [ ] Responsive Design
 - [ ] Icons (from Flaticon and Google Icons)
@@ -38,4 +40,5 @@
 - [ ] Share Decks (Public / Private)
 - [ ] Feed Page (Public Decks + Trending Decks)
 - [ ] Explore People
+- [ ] Admin Panel
 - [ ] Chat System (Coming Soon)
