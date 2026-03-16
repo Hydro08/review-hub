@@ -42,8 +42,10 @@ import LightFavoritedPng from "./light-favorited.png";
 import DarkFavoritedPng from "./dark-favorited.png";
 import LightShareSvg from "./light-share.svg";
 import DarkShareSvg from "./dark-share.svg";
-import LightWebLogoSvg from "./light-web-logo.svg";
-import DarkWebLogoSvg from "./dark-web-logo.svg";
+import LightWebLogoPng from "./light-web-logo.png";
+import DarkWebLogoPng from "./dark-web-logo.png";
+import LightEditPng from "./light-edit.png";
+import DarkEditPng from "./dark-edit.png";
 
 export {
   LightModeSvg,
@@ -90,6 +92,8 @@ export {
   DarkFavoritedPng,
   LightShareSvg,
   DarkShareSvg,
-  LightWebLogoSvg,
-  DarkWebLogoSvg,
+  LightWebLogoPng,
+  DarkWebLogoPng,
+  LightEditPng,
+  DarkEditPng,
 };

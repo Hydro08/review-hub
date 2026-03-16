@@ -27,7 +27,7 @@ function SidebarDashboardLeft({
     { label: "Feed", type: "link", to: "/feed" },
     { label: "Explore People", type: "link", to: "/explore" },
     { label: "My Decks", type: "tab", tab: "decks" },
-    { label: "Favourites", type: "tab", tab: "favourites" },
+    { label: "Favorites", type: "tab", tab: "favorites" },
     { label: "Settings", type: "tab", tab: "settings" },
   ];
 

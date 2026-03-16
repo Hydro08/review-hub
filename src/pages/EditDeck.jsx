@@ -4,23 +4,38 @@ import { cn } from "../lib/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
+import supabase from "../lib/supabase";
+import { LoadingDots } from "../components/Loading";
+
 import {
   LightDashboardSvg,
   DarkDashboardSvg,
   LightModeSvg,
   DarkModeSvg,
+  LightCancelSvg,
+  DarkCancelSvg,
+  DarkEditPng,
+  LightEditPng,
 } from "../assets/images";
-import supabase from "../lib/supabase";
 
 function EditDeckPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [isPublic, setIsPublic] = useState(true);
+
+  const [toast, setToast] = useState({
+    show: false,
+    success: true,
+    message: "",
+  });
 
   const isLight = theme === "light";
   const primaryTransition = "transition-all duration-300 ease-in";
@@ -28,6 +43,14 @@ function EditDeckPage() {
     "primary-border w-[80%] rounded-lg p-2 font-semibold",
     isLight ? "placeholder-black" : "placeholder-white",
   );
+
+  const showToast = (success, message) => {
+    setToast({ show: true, success, message });
+    setTimeout(
+      () => setToast({ show: false, success: true, message: "" }),
+      3000,
+    );
+  };
 
   useEffect(() => {
     const fetchDeck = async () => {
@@ -43,10 +66,43 @@ function EditDeckPage() {
         setDescription(data.description ?? "");
         setIsPublic(data.is_public);
       }
+      setIsFetching(false);
     };
 
     fetchDeck();
   }, [id]);
+
+  const handleEdit = async () => {
+    if (!title.trim() || !category.trim()) {
+      showToast(false, "❌ Title and Category are required.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase
+        .from("decks")
+        .update({
+          title: title.trim(),
+          description: description.trim(),
+          category: category.trim(),
+          is_public: isPublic,
+        })
+        .eq("id", id);
+
+      if (error) {
+        showToast(false, "❌ Something went wrong. Please try again.");
+      } else {
+        showToast(true, "✅ Deck updated successfully!");
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      showToast(false, "❌ Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <main
@@ -56,6 +112,23 @@ function EditDeckPage() {
         primaryTransition,
       )}
     >
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 300 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className={cn(
+              "fixed right-5 bottom-5 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
+              toast.success ? "bg-green-500" : "bg-red-500",
+            )}
+          >
+            {toast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <header
         className={cn(
           "primary-b-border flex min-h-[15vh] w-full items-center justify-center p-1",
@@ -126,7 +199,9 @@ function EditDeckPage() {
             <input
               id="category"
               type="text"
-              placeholder="e.g. Math, Science..."
+              placeholder={
+                isFetching ? "Loading category..." : "Put category..."
+              }
               required
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -145,7 +220,7 @@ function EditDeckPage() {
             <input
               id="title"
               type="text"
-              placeholder="Input title..."
+              placeholder={isFetching ? "Loading title..." : "Put title..."}
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -163,7 +238,9 @@ function EditDeckPage() {
           <div className="flex w-full">
             <textarea
               id="description"
-              placeholder="Enter Description..."
+              placeholder={
+                isFetching ? "Loading description..." : "Put description..."
+              }
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className={inputBase}
@@ -171,7 +248,7 @@ function EditDeckPage() {
           </div>
         </div>
 
-        <div className="flex min-h-[20vh] w-full flex-col items-center justify-center gap-2 p-2">
+        <div className="flex min-h-[20vh] w-full flex-col items-center justify-start gap-2 p-2">
           <div className="flex w-full items-start justify-start">
             <label className="text-xl">Privacy</label>
           </div>
@@ -205,6 +282,43 @@ function EditDeckPage() {
           </div>
         </div>
       </section>
+
+      <footer className="flex min-h-[20vh] w-full items-center justify-center">
+        <div className="flex items-center justify-center gap-5">
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="primary-border flex h-10 w-28 cursor-pointer items-center justify-center gap-2 rounded-lg font-bold"
+          >
+            <img
+              src={isLight ? LightCancelSvg : DarkCancelSvg}
+              alt={isLight ? "Light Cancel Icon" : "Dark Cancel Icon"}
+            />
+            Cancel
+          </button>
+
+          <button
+            onClick={handleEdit}
+            disabled={isLoading}
+            className={cn(
+              "primary-border flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg font-bold",
+              isLight ? "dark-bg text-white" : "light-bg text-black",
+              isLoading ? "w-40" : "w-30",
+            )}
+          >
+            <img
+              src={isLight ? DarkEditPng : LightEditPng}
+              alt="edit-deck-icon"
+            />
+            {isLoading ? (
+              <span className="flex items-center justify-center gap-1">
+                Editing <LoadingDots />
+              </span>
+            ) : (
+              "Edit"
+            )}
+          </button>
+        </div>
+      </footer>
     </main>
   );
 }

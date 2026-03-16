@@ -14,6 +14,7 @@ import {
   LightCancelSvg,
   DarkCancelSvg,
 } from "../assets/images";
+
 import { LoadingDots } from "../components/Loading";
 
 function CreateDeckPage() {
@@ -59,11 +60,6 @@ function CreateDeckPage() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-
-      if (!user) {
-        showToast(false, "❌ You must be logged in to create a deck.");
-        return;
-      }
 
       const { error } = await supabase.from("decks").insert({
         user_id: user.id,

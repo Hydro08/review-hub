@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
+import { cn } from "../lib/cn";
 
-function DeckDescription({ description }) {
+function ScrollableText({ text, className }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -19,12 +20,15 @@ function DeckDescription({ description }) {
   return (
     <p
       ref={ref}
-      className="w-full cursor-text overflow-x-auto px-2 text-center text-xs whitespace-nowrap italic opacity-60"
+      className={cn(
+        "w-full cursor-text overflow-x-auto px-2 text-center whitespace-nowrap opacity-100",
+        className,
+      )}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-      {description}
+      {text}
     </p>
   );
 }
 
-export { DeckDescription };
+export { ScrollableText };

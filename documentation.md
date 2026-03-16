@@ -128,4 +128,8 @@
 
 ## Day 16 - March 16, 2026
 
--
+- Added favicon/logo in browser tab
+- Added ConfirmModal component for deck delete confirmation
+- Renamed DeckDescription to ScrollableText for reusability (title, category, description)
+- Added createPortal for modal rendering
+- Fixed delete flow — Supabase delete + UI update

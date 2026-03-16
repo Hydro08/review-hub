@@ -10,8 +10,9 @@ import supabase from "../lib/supabase";
 import { MobileDashboardFloat } from "../components/MobileDashboard";
 import { DeckOptionMenuChoices } from "../components/DeckOptionMenu";
 import { SidebarDashboardLeft } from "../components/SidebarDashboard";
-import { DeckDescription } from "../components/DeckDescription";
+import { ScrollableText } from "../components/ScrollableText";
 import { LoadingDots } from "../components/Loading";
+import { ModalConfirmation } from "../components/ConfirmModal";
 
 import {
   DarkAddDecksSvg,
@@ -39,7 +40,7 @@ function DashboardPage() {
   const [search, setSearch] = useState("");
   const [decks, setDecks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [favourite, setFavourite] = useState({});
+  const [favorite, setFavourite] = useState({});
 
   const navigate = useNavigate();
 
@@ -48,7 +49,7 @@ function DashboardPage() {
 
   const titleNav = {
     decks: "My Decks",
-    favourites: "Favourites",
+    favorites: "Favorites",
     settings: "Settings",
   };
 
@@ -71,7 +72,7 @@ function DashboardPage() {
   };
 
   const handleFavourite = async (deckId) => {
-    const newValue = !favourite[deckId];
+    const newValue = !favorite[deckId];
     setFavourite((prev) => ({ ...prev, [deckId]: newValue }));
     await new Promise((resolve) => setTimeout(resolve, 300));
     await supabase
@@ -140,7 +141,7 @@ function DashboardPage() {
     <>
       <div className="flex w-full items-center justify-center py-1">
         <div className="w-[80%]">
-          <p className="text-center text-lg font-bold">{deck.title}</p>
+          <ScrollableText text={deck.title} className="text-xl" />
         </div>
         <div className="flex min-h-[5vh] w-[20%] items-center justify-center">
           <DeckOptionMenuChoices
@@ -151,9 +152,14 @@ function DashboardPage() {
         </div>
       </div>
 
-      <p className="w-full text-center text-sm">{deck.category}</p>
+      <ScrollableText text={deck.category} className="text-sm" />
 
-      {deck.description && <DeckDescription description={deck.description} />}
+      {deck.description && (
+        <ScrollableText
+          text={deck.description}
+          className={cn("text-xs italic opacity-60")}
+        />
+      )}
 
       <p className="w-full text-center text-xs">
         {getCardLabel(deck.card_count)}
@@ -188,9 +194,9 @@ function DashboardPage() {
         >
           <AnimatePresence mode="wait">
             <motion.img
-              key={favourite[deck.id] ? "favourited" : "unfavourited"}
+              key={favorite[deck.id] ? "favourited" : "unfavourited"}
               src={
-                favourite[deck.id]
+                favorite[deck.id]
                   ? isLight
                     ? LightFavoritedPng
                     : DarkFavoritedPng
@@ -198,7 +204,7 @@ function DashboardPage() {
                     ? LightUnfavoritePng
                     : DarkUnfavoritePng
               }
-              alt="favourite icon"
+              alt="favorite icon"
               className="h-5 w-5"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -401,20 +407,23 @@ function DashboardPage() {
           </div>
         )}
 
-        {activeTab === "favourites" && (
+        {activeTab === "favorites" && (
           <div className="grid min-h-screen w-full auto-rows-min grid-cols-2 gap-2 p-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
             {isLoading ? (
               <span className="col-span-full flex items-center justify-center gap-1">
-                Loading Favourites <LoadingDots />
+                Loading Favorites <LoadingDots />
               </span>
-            ) : decks.filter((deck) => favourite[deck.id]).length === 0 ? (
+            ) : decks.filter((deck) => favorite[deck.id]).length === 0 ? (
               <p className="col-span-full text-center opacity-50">
-                No favourites yet!
+                No favorites yet!
               </p>
             ) : (
               <AnimatePresence>
                 {decks
-                  .filter((deck) => favourite[deck.id])
+                  .filter((deck) => favorite[deck.id])
+                  .filter((deck) =>
+                    deck.title.toLowerCase().includes(search.toLowerCase()),
+                  )
                   .map((deck) => (
                     <motion.div
                       key={deck.id}
