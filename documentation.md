@@ -125,3 +125,7 @@
 - Added AnimatePresence exit animation on unfavourite in Favourites tab
 - Fixed DeckOptionMenu Edit button (missing parentheses on onEdit call)
 - Added localStorage for active tab persistence on refresh
+
+## Day 16 - March 16, 2026
+
+-
