@@ -395,7 +395,7 @@ function DashboardPage() {
                       transition={{ duration: 0.2 }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        ud();
+                        navigate(`/flashcard/${deck.id}`);
                       }}
                       className="primary-border z-10 flex h-auto cursor-pointer flex-col items-start justify-start gap-1 rounded-lg p-2"
                     >

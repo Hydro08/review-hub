@@ -134,3 +134,10 @@
 - Added createPortal for modal rendering
 - Fixed delete flow — Supabase delete + UI update
 - Added role column in profiles table (user/admin)
+
+## Day 17 - March 17, 2026
+
+- Added Flashcard Page
+- Fixed stray dot character bug
+- Fixed 3 bugs sa FlashcardPage
+- Fixed ScrollableText scroll issue

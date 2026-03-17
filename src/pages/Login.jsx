@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate, Link } from "react-router-dom";
 import { cn } from "../lib/cn";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { LoadingDots } from "../components/Loading";
 
 import supabase from "../lib/supabase";
@@ -231,21 +231,23 @@ function LoginPage() {
             </button>
           </div>
         </form>
-        {toast.show && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className={cn(
-              "fixed top-20 right-4 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
-              toast.success ? "bg-green-500" : "bg-red-500",
-            )}
-          >
-            {toast.success
-              ? "✅ Successfully Login."
-              : "❌ Invalid Credentials."}
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {toast.show && (
+            <motion.div
+              initial={{ opacity: 0, x: 300 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 300 }}
+              className={cn(
+                "fixed right-4 bottom-0 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg",
+                toast.success ? "bg-green-500" : "bg-red-500",
+              )}
+            >
+              {toast.success
+                ? "✅ Successfully Login."
+                : "❌ Invalid Credentials."}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
       <footer className="flex h-[10vh] w-full items-center justify-center font-bold">
