@@ -120,11 +120,16 @@ function FlashcardPage() {
         </div>
       </header>
 
-      <section className={cn("min-h-screen w-full p-2")}>
-        <div>
+      <section className={cn("min-h-screen w-full px-2 py-6")}>
+        <div className="flex w-full items-center justify-center py-6">
           <h1>
             <ScrollableText text={category} className="text-2xl" />
           </h1>
+        </div>
+        <div className="flex w-full items-center justify-center gap-2">
+          <button className="primary-border h-12 w-48">Create Flashcard</button>
+          <button className="primary-border h-12 w-44">Select Category</button>
+          <button className="primary-border h-12 w-24">...</button>
         </div>
       </section>
     </main>
