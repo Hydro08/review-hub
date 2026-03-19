@@ -141,3 +141,13 @@
 - Fixed stray dot character bug
 - Fixed 3 bugs sa FlashcardPage
 - Fixed ScrollableText scroll issue
+
+## Day 18 - March 18, 2026
+
+- Added buttons in Flashcard (Create Flashcard, Select Category, undefined)
+- Busy in CISCO
+
+## Day 19 - March 19, 2026
+
+- Fixed login button
+- Busy in CISCO
