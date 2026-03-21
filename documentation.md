@@ -155,3 +155,11 @@
 ## Day 19 - March 19, 2026
 
 - Rest Day
+
+## Day 20 - March 20, 2026
+
+- Rest Day
+
+## Day 21 - March 21, 2026
+
+- Rest Day
