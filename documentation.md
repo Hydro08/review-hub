@@ -154,20 +154,20 @@
 
 ## Day 19 - March 19, 2026
 
-- Rest Day
+- Rest Day (School)
 
 ## Day 20 - March 20, 2026
 
-- Rest Day
+- Rest Day (School)
 
 ## Day 21 - March 21, 2026
 
-- Rest Day
+- Rest Day (School)
 
 ## Day 22 - March 22, 2026
 
-- Rest Day
+- Rest Day (School)
 
 ## DAY 23 - March 23, 2026
 
-- Rest Day
+- Rest Day (School)
