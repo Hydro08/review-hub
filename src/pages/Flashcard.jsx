@@ -128,7 +128,7 @@ function FlashcardPage() {
         </div>
         <div className="flex w-full items-center justify-center gap-2">
           <button className="primary-border h-12 w-48">Create Flashcard</button>
-          <button className="primary-border h-12 w-44">Select Category</button>
+          <button className="primary-border h-12 w-44">Select Category (Dropdown)</button>
           <button className="primary-border h-12 w-24">
             Refresh Flashcard
           </button>
