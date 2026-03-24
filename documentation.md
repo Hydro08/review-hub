@@ -171,3 +171,7 @@
 ## DAY 23 - March 23, 2026
 
 - Rest Day (School)
+
+## Day 24 - March 24, 2026
+
+- Rest Day (School)
