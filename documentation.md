@@ -174,4 +174,4 @@
 
 ## Day 24 - March 24, 2026
 
-- Rest Day (School)
+- Rest Day (School )
