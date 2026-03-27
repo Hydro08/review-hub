@@ -46,6 +46,10 @@ import LightWebLogoPng from "./light-web-logo.png";
 import DarkWebLogoPng from "./dark-web-logo.png";
 import LightEditPng from "./light-edit.png";
 import DarkEditPng from "./dark-edit.png";
+import LightDropdownPng from "./light-dropdown.png";
+import DarkDropdownPng from "./dark-dropdown.png";
+import LightCreateFlashcardPng from "./light-create-flashcard.png";
+import DarkCreateFlashcardPng from "./dark-create-flashcard.png";
 
 export {
   LightModeSvg,
@@ -96,4 +100,8 @@ export {
   DarkWebLogoPng,
   LightEditPng,
   DarkEditPng,
+  LightDropdownPng,
+  DarkDropdownPng,
+  LightCreateFlashcardPng,
+  DarkCreateFlashcardPng,
 };

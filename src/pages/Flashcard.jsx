@@ -11,6 +11,10 @@ import {
   DarkDashboardSvg,
   LightModeSvg,
   DarkModeSvg,
+  LightDropdownPng,
+  DarkDropdownPng,
+  LightCreateFlashcardPng,
+  DarkCreateFlashcardPng,
 } from "../assets/images";
 import { LoadingDots } from "../components/Loading";
 import { ScrollableText } from "../components/ScrollableText";
@@ -127,13 +131,58 @@ function FlashcardPage() {
           </h1>
         </div>
         <div className="flex w-full items-center justify-center gap-2">
-          <button className="primary-border h-12 w-48">Create Flashcard</button>
-          <button className="primary-border h-12 w-44">
-            Select Category (Dropdown button)
-          </button>
-          <button className="primary-border h-12 w-24">
-            Refresh Flashcard (Button)
-          </button>
+          <div className="flex w-[30%] items-center justify-center">
+            <button
+              className={cn(
+                "primary-border flex h-15 w-54 cursor-pointer items-center justify-center rounded-lg px-2 text-left",
+                "gap-2 md:gap-3 lg:gap-4",
+                "text-sm md:text-base",
+                isLight ? "font-extrabold" : "font-base",
+              )}
+            >
+              Create Flashcard
+              <img
+                src={isLight ? LightCreateFlashcardPng : DarkCreateFlashcardPng}
+                alt="Create Flashcard Image"
+                className="w-[20px] md:w-[24px]"
+              />
+            </button>
+          </div>
+
+          <div className="flex w-[30%] items-center justify-center">
+            <button
+              className={cn(
+                "primary-border flex h-15 w-54 cursor-pointer items-center justify-center rounded-lg px-2 text-left",
+                "gap-2 md:gap-3 lg:gap-4",
+                "text-xs md:text-base",
+                isLight ? "font-extrabold" : "font-base",
+              )}
+            >
+              Select Category
+              <img
+                src={isLight ? LightDropdownPng : DarkDropdownPng}
+                alt="Dropdown Image"
+                className="w-[18px] md:w-[24px]"
+              />
+            </button>
+          </div>
+          <div className="flex w-[30%] items-center justify-center">
+            <button
+              className={cn(
+                "primary-border flex h-15 w-44 cursor-pointer items-center justify-center rounded-lg px-2 text-left",
+                "gap-2 md:gap-3 lg:gap-4",
+                "text-sm md:text-base",
+                isLight ? "font-extrabold" : "font-base",
+              )}
+            >
+              Study Mode
+              <img
+                src={isLight ? LightDropdownPng : DarkDropdownPng}
+                alt="Dropdown Image"
+                className="w-[18px] md:w-[24px]"
+              />
+            </button>
+          </div>
         </div>
       </section>
     </main>
