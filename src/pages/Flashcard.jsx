@@ -1,3 +1,4 @@
+// src/pages/FlashcardPage.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { cn } from "../lib/cn";
@@ -5,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 import supabase from "../lib/supabase";
+import { DropdownSheet } from "../components/DropdownSheet";
 
 import {
   LightDashboardSvg,
@@ -19,6 +21,46 @@ import {
 import { LoadingDots } from "../components/Loading";
 import { ScrollableText } from "../components/ScrollableText";
 
+// ─── Study Mode options ────────────────────────────────────────────────────────
+const STUDY_MODE_OPTIONS = [
+  {
+    id: "freedom",
+    label: "Freedom Mode",
+    icon: "🕊️",
+    description: "No timer — answer at your own pace",
+    subOptions: null,
+  },
+  {
+    id: "challenge",
+    label: "Challenge Mode",
+    icon: "⚡",
+    description: "Race against the clock",
+    subOptions: [
+      {
+        id: "easy",
+        label: "Easy",
+        icon: "🟢",
+        description: "1 minute per card",
+        timerSeconds: 60,
+      },
+      {
+        id: "medium",
+        label: "Medium",
+        icon: "🟡",
+        description: "30 seconds per card",
+        timerSeconds: 30,
+      },
+      {
+        id: "hard",
+        label: "Hard",
+        icon: "🔴",
+        description: "15 seconds per card",
+        timerSeconds: 15,
+      },
+    ],
+  },
+];
+
 function FlashcardPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,25 +71,92 @@ function FlashcardPage() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
 
+  // Dropdown open state — null | "category" | "study"
+  const [openDropdown, setOpenDropdown] = useState(null);
+
+  // Category options fetched from flashcards of this deck
+  const [categoryOptions, setCategoryOptions] = useState([]);
+
+  // Selected values (optional — use however you need downstream)
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedMode, setSelectedMode] = useState(null); // { mode, difficulty? }
+
   const primaryTransition = "transition-all duration-300 ease-in";
 
   useEffect(() => {
     const fetchDeck = async () => {
-      const { data, error } = await supabase
+      // Fetch deck info
+      const { data: deck, error: deckError } = await supabase
         .from("decks")
         .select("*")
         .eq("id", id)
         .single();
 
-      if (!error) {
-        setTitle(data.title);
-        setCategory(data.category);
+      if (!deckError) {
+        setTitle(deck.title);
+        setCategory(deck.category);
+
+        // Auto-select the deck's category in the dropdown
+        if (deck.category) {
+          setSelectedCategory({
+            id: deck.category,
+            label: deck.category,
+            icon: "🗂️",
+          });
+        }
       }
+
+      // Fetch all unique categories from the decks table (same user)
+      if (!deckError) {
+        const { data: allDecks } = await supabase
+          .from("decks")
+          .select("category")
+          .eq("user_id", deck.user_id);
+
+        if (allDecks) {
+          const unique = [
+            ...new Set(allDecks.map((d) => d.category).filter(Boolean)),
+          ];
+          setCategoryOptions(
+            unique.map((cat) => ({ id: cat, label: cat, icon: "🗂️" })),
+          );
+        }
+      }
+
       setIsLoading(false);
     };
 
     fetchDeck();
   }, [id]);
+
+  // ── Handlers ──────────────────────────────────────────────────────────────
+  const handleCategorySelect = (option) => {
+    setSelectedCategory(option);
+    // TODO: filter flashcards by selected category
+  };
+
+  const handleStudyModeSelect = (mode, difficulty) => {
+    if (difficulty) {
+      // Challenge mode with a difficulty picked
+      setSelectedMode({ type: "challenge", difficulty });
+      // TODO: navigate to study session with timer = difficulty.timerSeconds
+    } else {
+      // Freedom mode
+      setSelectedMode({ type: "freedom" });
+      // TODO: navigate to study session
+    }
+  };
+
+  // ── Label helpers (show selection on button) ──────────────────────────────
+  const categoryLabel = selectedCategory
+    ? selectedCategory.label
+    : "Select Category";
+
+  const studyModeLabel = selectedMode
+    ? selectedMode.type === "freedom"
+      ? "Freedom Mode 🕊️"
+      : `Challenge · ${selectedMode.difficulty.label}`
+    : "Study Mode";
 
   return (
     <main
@@ -57,6 +166,7 @@ function FlashcardPage() {
         primaryTransition,
       )}
     >
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
       <header
         className={cn(
           "primary-b-border flex min-h-[15vh] w-full items-center justify-center p-1",
@@ -124,18 +234,21 @@ function FlashcardPage() {
         </div>
       </header>
 
+      {/* ── Main Section ───────────────────────────────────────────────────── */}
       <section className={cn("min-h-screen w-full px-2 py-6")}>
         <div className="flex w-full items-center justify-center py-6">
           <h1>
             <ScrollableText text={category} className="text-2xl" />
           </h1>
         </div>
+
         <div className="flex w-full items-center justify-center gap-2">
+          {/* ── Create Flashcard ── */}
           <div className="flex w-[30%] items-center justify-center">
             <button
               className={cn(
                 "primary-border flex h-15 w-54 cursor-pointer items-center justify-center rounded-lg px-2 text-left",
-                "gap-2 md:gap-3 lg:gap-4",
+                "gap-1 md:gap-3 lg:gap-4",
                 "text-sm md:text-base",
                 isLight ? "font-extrabold" : "font-base",
               )}
@@ -149,39 +262,77 @@ function FlashcardPage() {
             </button>
           </div>
 
-          <div className="flex w-[30%] items-center justify-center">
+          {/* ── Select Category — dropdown/sheet anchor ── */}
+          <div className="relative flex w-[30%] items-center justify-center">
             <button
+              onClick={() =>
+                setOpenDropdown((prev) =>
+                  prev === "category" ? null : "category",
+                )
+              }
               className={cn(
                 "primary-border flex h-15 w-54 cursor-pointer items-center justify-center rounded-lg px-2 text-left",
                 "gap-2 md:gap-3 lg:gap-4",
-                "text-xs md:text-base",
+                "text-sm md:text-base",
                 isLight ? "font-extrabold" : "font-base",
+                // Highlight when active
+                openDropdown === "category" && "ring-2 ring-offset-1",
               )}
             >
-              Select Category
-              <img
+              {categoryLabel}
+              <motion.img
                 src={isLight ? LightDropdownPng : DarkDropdownPng}
-                alt="Dropdown Image"
+                alt="Dropdown"
                 className="w-[18px] md:w-[24px]"
+                animate={{ rotate: openDropdown === "category" ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
               />
             </button>
+
+            <DropdownSheet
+              isOpen={openDropdown === "category"}
+              onClose={() => setOpenDropdown(null)}
+              title="Select Category"
+              options={
+                categoryOptions.length
+                  ? categoryOptions
+                  : [{ id: "__all__", label: "All Cards", icon: "📋" }]
+              }
+              onSelect={handleCategorySelect}
+            />
           </div>
-          <div className="flex w-[30%] items-center justify-center">
+
+          {/* ── Study Mode — dropdown/sheet anchor ── */}
+          <div className="relative flex w-[30%] items-center justify-center">
             <button
+              onClick={() =>
+                setOpenDropdown((prev) => (prev === "study" ? null : "study"))
+              }
               className={cn(
                 "primary-border flex h-15 w-44 cursor-pointer items-center justify-center rounded-lg px-2 text-left",
                 "gap-2 md:gap-3 lg:gap-4",
                 "text-sm md:text-base",
                 isLight ? "font-extrabold" : "font-base",
+                openDropdown === "study" && "ring-2 ring-offset-1",
               )}
             >
-              Study Mode
-              <img
+              {studyModeLabel}
+              <motion.img
                 src={isLight ? LightDropdownPng : DarkDropdownPng}
-                alt="Dropdown Image"
+                alt="Dropdown"
                 className="w-[18px] md:w-[24px]"
+                animate={{ rotate: openDropdown === "study" ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
               />
             </button>
+
+            <DropdownSheet
+              isOpen={openDropdown === "study"}
+              onClose={() => setOpenDropdown(null)}
+              title="Study Mode"
+              options={STUDY_MODE_OPTIONS}
+              onSelect={handleStudyModeSelect}
+            />
           </div>
         </div>
       </section>
