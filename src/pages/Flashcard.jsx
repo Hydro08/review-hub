@@ -166,7 +166,6 @@ function FlashcardPage() {
         primaryTransition,
       )}
     >
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
       <header
         className={cn(
           "primary-b-border flex min-h-[15vh] w-full items-center justify-center p-1",
@@ -302,7 +301,6 @@ function FlashcardPage() {
             />
           </div>
 
-          {/* ── Study Mode — dropdown/sheet anchor ── */}
           <div className="relative flex w-[30%] items-center justify-center">
             <button
               onClick={() =>

@@ -152,30 +152,18 @@
 - Fixed login button
 - Busy in CISCO
 
-## Day 19 - March 19, 2026
+## Day 19 - Day 25 : March 19, 2026 - March 25, 2026
 
 - Rest Day (School)
 
-## Day 20 - March 20, 2026
+## Day 26 - March 26, 2026
 
-- Rest Day (School)
+- Rest Day (Renovate House)
 
-## Day 21 - March 21, 2026
+## Day 27 - March 27, 2026
 
-- Rest Day (School)
+- Added dropdown
 
-## Day 22 - March 22, 2026
+## Day 28 - March 28, 2026
 
-- Rest Day (School)
-
-## DAY 23 - March 23, 2026
-
-- Rest Day (School)
-
-## Day 24 - March 24, 2026
-
-- Rest Day (School )
-
-## Day 25 - March 25, 2026
-
-- Rest Day (School)
+- Fixed cursor in category dropdown

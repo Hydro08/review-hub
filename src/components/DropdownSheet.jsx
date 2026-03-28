@@ -148,9 +148,6 @@ export function DropdownSheet({ isOpen, onClose, title, options, onSelect }) {
     );
   }
 
-  /* ─────────────────────────────────────────
-     DESKTOP — dropdown
-  ───────────────────────────────────────── */
   return (
     <AnimatePresence>
       {isOpen && (
@@ -193,7 +190,7 @@ export function DropdownSheet({ isOpen, onClose, title, options, onSelect }) {
                   activeSub ? handleSubOptionClick(opt) : handleOptionClick(opt)
                 }
                 className={cn(
-                  "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-all",
+                  "flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-all",
                   hover,
                 )}
               >
