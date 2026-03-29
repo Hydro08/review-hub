@@ -1,4 +1,3 @@
-// src/pages/FlashcardPage.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { cn } from "../lib/cn";
@@ -21,7 +20,6 @@ import {
 import { LoadingDots } from "../components/Loading";
 import { ScrollableText } from "../components/ScrollableText";
 
-// ─── Study Mode options ────────────────────────────────────────────────────────
 const STUDY_MODE_OPTIONS = [
   {
     id: "freedom",
@@ -71,21 +69,17 @@ function FlashcardPage() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
 
-  // Dropdown open state — null | "category" | "study"
   const [openDropdown, setOpenDropdown] = useState(null);
 
-  // Category options fetched from flashcards of this deck
   const [categoryOptions, setCategoryOptions] = useState([]);
 
-  // Selected values (optional — use however you need downstream)
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedMode, setSelectedMode] = useState(null); // { mode, difficulty? }
+  const [selectedMode, setSelectedMode] = useState(null);
 
   const primaryTransition = "transition-all duration-300 ease-in";
 
   useEffect(() => {
     const fetchDeck = async () => {
-      // Fetch deck info
       const { data: deck, error: deckError } = await supabase
         .from("decks")
         .select("*")
@@ -96,7 +90,6 @@ function FlashcardPage() {
         setTitle(deck.title);
         setCategory(deck.category);
 
-        // Auto-select the deck's category in the dropdown
         if (deck.category) {
           setSelectedCategory({
             id: deck.category,
@@ -106,7 +99,6 @@ function FlashcardPage() {
         }
       }
 
-      // Fetch all unique categories from the decks table (same user)
       if (!deckError) {
         const { data: allDecks } = await supabase
           .from("decks")
@@ -129,25 +121,18 @@ function FlashcardPage() {
     fetchDeck();
   }, [id]);
 
-  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleCategorySelect = (option) => {
     setSelectedCategory(option);
-    // TODO: filter flashcards by selected category
   };
 
   const handleStudyModeSelect = (mode, difficulty) => {
     if (difficulty) {
-      // Challenge mode with a difficulty picked
       setSelectedMode({ type: "challenge", difficulty });
-      // TODO: navigate to study session with timer = difficulty.timerSeconds
     } else {
-      // Freedom mode
       setSelectedMode({ type: "freedom" });
-      // TODO: navigate to study session
     }
   };
 
-  // ── Label helpers (show selection on button) ──────────────────────────────
   const categoryLabel = selectedCategory
     ? selectedCategory.label
     : "Select Category";
@@ -233,7 +218,6 @@ function FlashcardPage() {
         </div>
       </header>
 
-      {/* ── Main Section ───────────────────────────────────────────────────── */}
       <section className={cn("min-h-screen w-full px-2 py-6")}>
         <div className="flex w-full items-center justify-center py-6">
           <h1>
@@ -242,7 +226,6 @@ function FlashcardPage() {
         </div>
 
         <div className="flex w-full items-center justify-center gap-2">
-          {/* ── Create Flashcard ── */}
           <div className="flex w-[30%] items-center justify-center">
             <button
               className={cn(
@@ -261,7 +244,6 @@ function FlashcardPage() {
             </button>
           </div>
 
-          {/* ── Select Category — dropdown/sheet anchor ── */}
           <div className="relative flex w-[30%] items-center justify-center">
             <button
               onClick={() =>
@@ -274,7 +256,6 @@ function FlashcardPage() {
                 "gap-2 md:gap-3 lg:gap-4",
                 "text-sm md:text-base",
                 isLight ? "font-extrabold" : "font-base",
-                // Highlight when active
                 openDropdown === "category" && "ring-2 ring-offset-1",
               )}
             >
@@ -330,6 +311,7 @@ function FlashcardPage() {
               title="Study Mode"
               options={STUDY_MODE_OPTIONS}
               onSelect={handleStudyModeSelect}
+              // Last Code
             />
           </div>
         </div>
