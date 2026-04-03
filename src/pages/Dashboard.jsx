@@ -12,7 +12,6 @@ import { DeckOptionMenuChoices } from "../components/DeckOptionMenu";
 import { SidebarDashboardLeft } from "../components/SidebarDashboard";
 import { ScrollableText } from "../components/ScrollableText";
 import { LoadingDots } from "../components/Loading";
-import { ModalConfirmation } from "../components/ConfirmModal";
 
 import {
   DarkAddDecksSvg,
@@ -74,7 +73,11 @@ function DashboardPage() {
   const handleFavourite = async (deckId) => {
     const newValue = !favorite[deckId];
     setFavourite((prev) => ({ ...prev, [deckId]: newValue }));
-    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    setDecks((prev) =>
+      prev.map((d) => (d.id === deckId ? { ...d, is_favorite: newValue } : d)),
+    );
+
     await supabase
       .from("decks")
       .update({ is_favorite: newValue })
@@ -129,7 +132,16 @@ function DashboardPage() {
       .channel("decks-changes")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "decks" },
+        { event: "INSERT", schema: "public", table: "decks" },
+        () => fetchDecks(),
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "decks",
+        },
         () => fetchDecks(),
       )
       .subscribe();
@@ -413,14 +425,14 @@ function DashboardPage() {
               <span className="col-span-full flex items-center justify-center gap-1">
                 Loading Favorites <LoadingDots />
               </span>
-            ) : decks.filter((deck) => favorite[deck.id]).length === 0 ? (
+            ) : decks.filter((deck) => deck.is_favorite).length === 0 ? (
               <p className="col-span-full text-center opacity-50">
                 No favorites yet!
               </p>
             ) : (
               <AnimatePresence>
                 {decks
-                  .filter((deck) => favorite[deck.id])
+                  .filter((deck) => deck.is_favorite)
                   .filter((deck) =>
                     deck.title.toLowerCase().includes(search.toLowerCase()),
                   )

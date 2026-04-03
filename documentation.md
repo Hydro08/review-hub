@@ -167,3 +167,11 @@
 ## Day 28 - March 28, 2026
 
 - Fixed cursor in category dropdown
+
+## Day 29 - Day 33 - March 29, 2026 - April 2, 2026
+
+- Rest Day (Busy, School)
+
+## Day 34 - April 3, 2026
+
+- Fixed the favorites tab not showing on mobile view

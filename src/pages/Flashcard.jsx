@@ -78,6 +78,10 @@ function FlashcardPage() {
 
   const primaryTransition = "transition-all duration-300 ease-in";
 
+  const ud = () => {
+    alert("under development pasinsya!!!");
+  };
+
   useEffect(() => {
     const fetchDeck = async () => {
       const { data: deck, error: deckError } = await supabase
@@ -121,10 +125,26 @@ function FlashcardPage() {
     fetchDeck();
   }, [id]);
 
-  const handleCategorySelect = (option) => {
-    setSelectedCategory(option);
-  };
+  const handleCategorySelect = async (option) => {
+    setOpenDropdown(null);
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const { data, error } = await supabase
+      .from("decks")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("category", option.label)
+      .limit(1);
+
+    console.log("data:", data, "error:", error);
+
+    if (data && data.length > 0) {
+      navigate(`/flashcard/${data[0].id}`);
+    }
+  };
   const handleStudyModeSelect = (mode, difficulty) => {
     if (difficulty) {
       setSelectedMode({ type: "challenge", difficulty });
@@ -234,6 +254,7 @@ function FlashcardPage() {
                 "text-sm md:text-base",
                 isLight ? "font-extrabold" : "font-base",
               )}
+              onClick={() => ud()}
             >
               Create Flashcard
               <img
@@ -259,7 +280,7 @@ function FlashcardPage() {
                 openDropdown === "category" && "ring-2 ring-offset-1",
               )}
             >
-              {categoryLabel}
+              <span className="truncate"> {categoryLabel}</span>
               <motion.img
                 src={isLight ? LightDropdownPng : DarkDropdownPng}
                 alt="Dropdown"
@@ -315,6 +336,8 @@ function FlashcardPage() {
             />
           </div>
         </div>
+
+        <div>{/* Code here */}</div>
       </section>
     </main>
   );
