@@ -175,3 +175,10 @@
 ## Day 34 - April 3, 2026
 
 - Fixed the favorites tab not showing on mobile view
+
+## Day 35 - April 4, 2026
+
+- Added study info section in the flashcard page showing study mode, card count, and progress
+- Added loading animation when switching between deck categories
+- Fixed category name overflow on mobile view
+- Made the category dropdown scrollable on both mobile and desktop

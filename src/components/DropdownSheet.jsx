@@ -109,7 +109,7 @@ export function DropdownSheet({ isOpen, onClose, title, options, onSelect }) {
                 </h2>
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex max-h-[30vh] flex-col gap-2 overflow-y-auto">
                 {displayed.map((opt) => (
                   <button
                     key={opt.id}
@@ -183,31 +183,35 @@ export function DropdownSheet({ isOpen, onClose, title, options, onSelect }) {
               {activeSub ? activeSub.label : title}
             </p>
 
-            {displayed.map((opt) => (
-              <button
-                key={opt.id}
-                onClick={() =>
-                  activeSub ? handleSubOptionClick(opt) : handleOptionClick(opt)
-                }
-                className={cn(
-                  "flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-all",
-                  hover,
-                )}
-              >
-                {opt.icon && (
-                  <span className="text-lg leading-none">{opt.icon}</span>
-                )}
-                <div className="flex-1">
-                  <p className="text-sm font-semibold">{opt.label}</p>
-                  {opt.description && (
-                    <p className="text-xs opacity-50">{opt.description}</p>
+            <div className="max-h-[25vh] overflow-y-auto">
+              {displayed.map((opt) => (
+                <button
+                  key={opt.id}
+                  onClick={() =>
+                    activeSub
+                      ? handleSubOptionClick(opt)
+                      : handleOptionClick(opt)
+                  }
+                  className={cn(
+                    "flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-all",
+                    hover,
                   )}
-                </div>
-                {opt.subOptions?.length && (
-                  <span className="text-sm opacity-40">›</span>
-                )}
-              </button>
-            ))}
+                >
+                  {opt.icon && (
+                    <span className="text-lg leading-none">{opt.icon}</span>
+                  )}
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold">{opt.label}</p>
+                    {opt.description && (
+                      <p className="text-xs opacity-50">{opt.description}</p>
+                    )}
+                  </div>
+                  {opt.subOptions?.length && (
+                    <span className="text-sm opacity-40">›</span>
+                  )}
+                </button>
+              ))}
+            </div>
           </motion.div>
         </>
       )}

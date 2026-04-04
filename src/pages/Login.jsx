@@ -244,7 +244,7 @@ function LoginPage() {
             >
               {toast.success
                 ? "✅ Successfully Login."
-                : "❌ Invalid Credentials."}
+                : "❎ Invalid Credentials."}
             </motion.div>
           )}
         </AnimatePresence>

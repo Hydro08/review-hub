@@ -16,6 +16,8 @@ import {
   DarkDropdownPng,
   LightCreateFlashcardPng,
   DarkCreateFlashcardPng,
+  LightBooksFcPng,
+  DarkBooksFcPng,
 } from "../assets/images";
 import { LoadingDots } from "../components/Loading";
 import { ScrollableText } from "../components/ScrollableText";
@@ -76,6 +78,14 @@ function FlashcardPage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedMode, setSelectedMode] = useState(null);
 
+  const [learnedCount, setLearnedCount] = useState(0);
+  const [cardCount, setCardCount] = useState(0);
+
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const progress =
+    cardCount === 0 ? 0 : Math.round((learnedCount / cardCount) * 100);
+
   const primaryTransition = "transition-all duration-300 ease-in";
 
   const ud = () => {
@@ -83,6 +93,9 @@ function FlashcardPage() {
   };
 
   useEffect(() => {
+    setIsNavigating(false);
+    setIsLoading(true);
+
     const fetchDeck = async () => {
       const { data: deck, error: deckError } = await supabase
         .from("decks")
@@ -93,6 +106,8 @@ function FlashcardPage() {
       if (!deckError) {
         setTitle(deck.title);
         setCategory(deck.category);
+        setCardCount(deck.card_count ?? 0);
+        setLearnedCount(deck.learned_count ?? 0);
 
         if (deck.category) {
           setSelectedCategory({
@@ -127,6 +142,7 @@ function FlashcardPage() {
 
   const handleCategorySelect = async (option) => {
     setOpenDropdown(null);
+    setIsNavigating(true);
 
     const {
       data: { user },
@@ -139,12 +155,13 @@ function FlashcardPage() {
       .eq("category", option.label)
       .limit(1);
 
-    console.log("data:", data, "error:", error);
-
     if (data && data.length > 0) {
       navigate(`/flashcard/${data[0].id}`);
+    } else {
+      setIsNavigating(false);
     }
   };
+
   const handleStudyModeSelect = (mode, difficulty) => {
     if (difficulty) {
       setSelectedMode({ type: "challenge", difficulty });
@@ -159,7 +176,7 @@ function FlashcardPage() {
 
   const studyModeLabel = selectedMode
     ? selectedMode.type === "freedom"
-      ? "Freedom Mode 🕊️"
+      ? "Freedom Mode"
       : `Challenge · ${selectedMode.difficulty.label}`
     : "Study Mode";
 
@@ -180,7 +197,7 @@ function FlashcardPage() {
       >
         <div className="flex h-full w-[10vw] items-center justify-center">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/dashboard")}
             className="primary-border cursor-pointer rounded-lg p-2"
             title="Back to Dashboard"
             aria-label="Go Back"
@@ -194,7 +211,7 @@ function FlashcardPage() {
 
         <div className="flex w-[75vw] items-center justify-center px-2">
           <h1 className="w-full text-2xl font-bold lg:text-4xl">
-            {isLoading ? (
+            {isLoading || isNavigating ? (
               <span className="flex items-center justify-center gap-2">
                 Loading <LoadingDots />
               </span>
@@ -239,8 +256,8 @@ function FlashcardPage() {
       </header>
 
       <section className={cn("min-h-screen w-full px-2 py-6")}>
-        <div className="flex w-full items-center justify-center py-6">
-          <h1>
+        <div className="flex w-full items-center justify-center p-6">
+          <h1 className="max-w-[80vw]">
             <ScrollableText text={category} className="text-2xl" />
           </h1>
         </div>
@@ -273,7 +290,8 @@ function FlashcardPage() {
                 )
               }
               className={cn(
-                "primary-border flex h-15 w-54 cursor-pointer items-center justify-center rounded-lg px-2 text-left",
+                "primary-border flex h-15 cursor-pointer items-center justify-center rounded-lg px-2 text-left",
+                "w-30 md:w-54",
                 "gap-2 md:gap-3 lg:gap-4",
                 "text-sm md:text-base",
                 isLight ? "font-extrabold" : "font-base",
@@ -332,12 +350,38 @@ function FlashcardPage() {
               title="Study Mode"
               options={STUDY_MODE_OPTIONS}
               onSelect={handleStudyModeSelect}
-              // Last Code
             />
           </div>
         </div>
 
-        <div>{/* Code here */}</div>
+        <div className="flex h-[75vh] w-full flex-col items-center justify-center">
+          <h1 className="text-base md:text-xl lg:text-xl">
+            Study Mode: {studyModeLabel}
+          </h1>
+          <h1 className="text-base md:text-xl lg:text-xl">{cardCount} Cards</h1>
+          <div className="h-3 w-64 overflow-hidden rounded-full bg-gray-400 md:h-4">
+            <div
+              className="h-full rounded-full bg-purple-500 transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="text-base opacity-60 md:text-xl lg:text-xl">
+            {learnedCount === 0
+              ? "It has not been studied"
+              : `${progress}%`}{" "}
+          </p>
+          <img src={isLight ? LightBooksFcPng : DarkBooksFcPng} alt="" />
+          <button
+            onClick={() => ud()}
+            className={cn(
+              "w-40 cursor-pointer rounded-lg",
+              "h-10 md:h-15",
+              isLight ? "dark-bg text-white" : "light-bg font-bold text-black",
+            )}
+          >
+            Start Review
+          </button>
+        </div>
       </section>
     </main>
   );

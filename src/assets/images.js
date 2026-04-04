@@ -50,6 +50,8 @@ import LightDropdownPng from "./light-dropdown.png";
 import DarkDropdownPng from "./dark-dropdown.png";
 import LightCreateFlashcardPng from "./light-create-flashcard.png";
 import DarkCreateFlashcardPng from "./dark-create-flashcard.png";
+import LightBooksFcPng from "./light-books-fc.png";
+import DarkBooksFcPng from "./dark-books-fc.png";
 
 export {
   LightModeSvg,
@@ -104,4 +106,6 @@ export {
   DarkDropdownPng,
   LightCreateFlashcardPng,
   DarkCreateFlashcardPng,
+  LightBooksFcPng,
+  DarkBooksFcPng,
 };

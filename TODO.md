@@ -22,23 +22,20 @@
 - [x] Search / Filter Decks
 - [x] ScrollableText Component
 - [x] Favicon / Logo
-
-## 🔄 IN PROGRESS
-
-- [ ] Flashcard Page
-- [ ] Responsive Design
-- [ ] Icons (from Flaticon and Google Icons)
+- [x] Flashcard Page (study info, category switching, progress)
 
 ## 📋 TODO
 
 - [ ] Create Flashcard
 - [ ] Edit and Delete Flashcard
+- [ ] Study Mode (Freedom & Challenge)
+- [ ] Progress Tracking / Stats
 - [ ] Profile
 - [ ] Settings
-- [ ] Progress Tracking / Stats
-- [ ] Study Mode
 - [ ] Share Decks (Public / Private)
 - [ ] Feed Page (Public Decks + Trending Decks)
 - [ ] Explore People
+- [ ] Responsive Design
+- [ ] Icons (from Flaticon and Google Icons)
 - [ ] Admin Panel
 - [ ] Chat System (Coming Soon)
